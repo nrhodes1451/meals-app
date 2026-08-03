@@ -1,0 +1,13 @@
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:var(--font-body);font-size:var(--size-body);line-height:var(--leading-body);font-weight:var(--weight-regular)}
+h1,h2,h3,h4{font-family:var(--font-display);text-transform:uppercase;font-weight:var(--weight-black);letter-spacing:var(--track-heading);line-height:var(--leading-heading);margin:0}
+h1{font-size:var(--size-h1)}h2{font-size:var(--size-h2)}h3{font-size:var(--size-h3);font-weight:var(--weight-bold)}
+p{margin:0 0 var(--space-2);text-wrap:pretty}
+a{color:var(--text-link);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+a:hover{color:var(--action-hover);text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:var(--focus-outline);outline-offset:var(--focus-offset)}
+table{border-collapse:collapse}
+.pen-tabular{font-variant-numeric:tabular-nums}
+.pen-rule{border:0;border-top:var(--keyline);margin:0}
+.pen-rule-metallic{border:0;border-top:var(--keyline-metallic);margin:0}
+*{box-sizing:border-box}

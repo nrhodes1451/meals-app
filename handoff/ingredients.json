@@ -1,0 +1,2127 @@
+{
+  "categories": [
+    {
+      "name": "Fruit & Veg",
+      "order": 1
+    },
+    {
+      "name": "Herbs",
+      "order": 2
+    },
+    {
+      "name": "Dairy",
+      "order": 3
+    },
+    {
+      "name": "Meat",
+      "order": 4
+    },
+    {
+      "name": "Bakery",
+      "order": 5
+    },
+    {
+      "name": "Drinks",
+      "order": 6
+    },
+    {
+      "name": "Cereal",
+      "order": 7
+    },
+    {
+      "name": "Nuts & Seeds",
+      "order": 8
+    },
+    {
+      "name": "World Foods",
+      "order": 9
+    },
+    {
+      "name": "Tinned",
+      "order": 10
+    },
+    {
+      "name": "Frozen",
+      "order": 11
+    }
+  ],
+  "ingredients": [
+    {
+      "slug": "aubergines",
+      "name": "aubergines",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "aubergine"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "baby-aubergines",
+      "name": "baby aubergines",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "baby aubergine"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "avocados",
+      "name": "avocados",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "avocado"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "asparagus",
+      "name": "asparagus",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "baby-corn",
+      "name": "baby corn",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "beansprouts",
+      "name": "beansprouts",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "beetroot",
+      "name": "beetroot",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "broccol",
+      "name": "broccol",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "broccoli"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "broccolini",
+      "name": "broccolini",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "brussel-sprouts",
+      "name": "brussel sprouts",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "butternut-squash",
+      "name": "butternut squash",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cabbage",
+      "name": "cabbage",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "savoy-cabbage",
+      "name": "savoy cabbage",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "red-cabbage",
+      "name": "red cabbage",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "carrots",
+      "name": "carrots",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "carrot"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cauliflower",
+      "name": "cauliflower",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "celeriac",
+      "name": "celeriac",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "celery",
+      "name": "celery",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "courgettes",
+      "name": "courgettes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "courgette"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cucumbers",
+      "name": "cucumbers",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "cucumber"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "garlic-cloves",
+      "name": "garlic cloves",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "garlic clove",
+        "garlic"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "ginger",
+      "name": "ginger",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "greens",
+      "name": "greens",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "green-beans",
+      "name": "green beans",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "kale",
+      "name": "kale",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "lemons",
+      "name": "lemons",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "lemon"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "limes",
+      "name": "limes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "lime"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mangetout",
+      "name": "mangetout",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "marrow",
+      "name": "marrow",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mushrooms",
+      "name": "mushrooms",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "mushroom"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "jumbo-mushrooms",
+      "name": "jumbo mushrooms",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "onions",
+      "name": "onions",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "onion"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "red-onions",
+      "name": "red onions",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "red onion"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "spring-onions",
+      "name": "spring onions",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "spring onion"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "shallots",
+      "name": "shallots",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "shallot"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "oranges",
+      "name": "oranges",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "orange"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pak-choi",
+      "name": "pak choi",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "peppers",
+      "name": "peppers",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "pepper"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "potatoes",
+      "name": "potatoes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "potato"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "jacket-potatoes",
+      "name": "jacket potatoes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "jacket potato"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "new-potatoes",
+      "name": "new potatoes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "radicchio",
+      "name": "radicchio",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "radishes",
+      "name": "radishes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "radish"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "red-chillies",
+      "name": "red chillies",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "red chili",
+        "red chilli"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "spinach",
+      "name": "spinach",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "fresh spinach"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "stir-fry-veg",
+      "name": "stir fry veg",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "swede",
+      "name": "swede",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sweet-potatoes",
+      "name": "sweet potatoes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "sweet potato"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tomatoes",
+      "name": "tomatoes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "tomato",
+        "large tomatoes"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cherry-tomatoes",
+      "name": "cherry tomatoes",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "turnip",
+      "name": "turnip",
+      "category": "Fruit & Veg",
+      "categoryOrder": 1,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "basil",
+      "name": "basil",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "coriander",
+      "name": "coriander",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "dill",
+      "name": "dill",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mint",
+      "name": "mint",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "parsley",
+      "name": "parsley",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "rosemary",
+      "name": "rosemary",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sage",
+      "name": "sage",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "thyme",
+      "name": "thyme",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cumin",
+      "name": "cumin",
+      "category": "Herbs",
+      "categoryOrder": 2,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "butter",
+      "name": "butter",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [
+        "unsalted butter"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "burrata",
+      "name": "burrata",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cheddar",
+      "name": "cheddar",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cottage-cheese",
+      "name": "cottage cheese",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cream",
+      "name": "cream",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "eggs",
+      "name": "eggs",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "egg"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "feta",
+      "name": "feta",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "goat-s-cheese",
+      "name": "goat's cheese",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "halloumi",
+      "name": "halloumi",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mascarpone",
+      "name": "mascarpone",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "milk",
+      "name": "milk",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mozzarella",
+      "name": "mozzarella",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "parmesan",
+      "name": "parmesan",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "red-leicester",
+      "name": "red leicester",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "ricotta",
+      "name": "ricotta",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "soft-cheese",
+      "name": "soft cheese",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "yoghurt",
+      "name": "yoghurt",
+      "category": "Dairy",
+      "categoryOrder": 3,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "bacon",
+      "name": "bacon",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "beef",
+      "name": "beef",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "beef-mince",
+      "name": "beef mince",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "burgers",
+      "name": "burgers",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "chicken",
+      "name": "chicken",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "chicken (leftover)",
+        "chicken (whole)"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "chorizo",
+      "name": "chorizo",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "ham",
+      "name": "ham",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "lamb-breast",
+      "name": "lamb breast",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "lamb-mince",
+      "name": "lamb mince",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "lardons",
+      "name": "lardons",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "vegan lardons"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "meatballs",
+      "name": "meatballs",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "meat-alternative",
+      "name": "meat alternative",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pepperoni",
+      "name": "pepperoni",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sausages",
+      "name": "sausages",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "sausage"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tempeh",
+      "name": "tempeh",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tofu",
+      "name": "tofu",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tuna",
+      "name": "tuna",
+      "category": "Meat",
+      "categoryOrder": 4,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "chapatti",
+      "name": "chapatti",
+      "category": "Bakery",
+      "categoryOrder": 5,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "gnocchi",
+      "name": "gnocchi",
+      "category": "Bakery",
+      "categoryOrder": 5,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pita",
+      "name": "pita",
+      "category": "Bakery",
+      "categoryOrder": 5,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "rolls",
+      "name": "rolls",
+      "category": "Bakery",
+      "categoryOrder": 5,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "roll"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tortelloni",
+      "name": "tortelloni",
+      "category": "Bakery",
+      "categoryOrder": 5,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tortillas",
+      "name": "tortillas",
+      "category": "Bakery",
+      "categoryOrder": 5,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "tortilla"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "fake-pasta",
+      "name": "fake pasta",
+      "category": "Bakery",
+      "categoryOrder": 5,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "dried-cannelloni-tubes",
+      "name": "dried cannelloni tubes",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "orzo",
+      "name": "orzo",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "paella-rice",
+      "name": "paella rice",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pasta",
+      "name": "pasta",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pearl-barley",
+      "name": "pearl barley",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "polenta",
+      "name": "polenta",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "quinoa",
+      "name": "quinoa",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "rice",
+      "name": "rice",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "rice-noodles",
+      "name": "rice noodles",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "risotto-rice",
+      "name": "risotto rice",
+      "category": "Cereal",
+      "categoryOrder": 7,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "almonds",
+      "name": "almonds",
+      "category": "Nuts & Seeds",
+      "categoryOrder": 8,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "hazelnuts",
+      "name": "hazelnuts",
+      "category": "Nuts & Seeds",
+      "categoryOrder": 8,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pine-nuts",
+      "name": "pine nuts",
+      "category": "Nuts & Seeds",
+      "categoryOrder": 8,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pumpkin-seeds",
+      "name": "pumpkin seeds",
+      "category": "Nuts & Seeds",
+      "categoryOrder": 8,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sunflower-seeds",
+      "name": "sunflower seeds",
+      "category": "Nuts & Seeds",
+      "categoryOrder": 8,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sesame-seeds",
+      "name": "sesame seeds",
+      "category": "Nuts & Seeds",
+      "categoryOrder": 8,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "fajita-spice-mix",
+      "name": "fajita spice mix",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [
+        "fajita spice",
+        "fajita"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "gochujang-paste",
+      "name": "gochujang paste",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "green-curry-paste",
+      "name": "green curry paste",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [
+        "thai green curry paste"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "harissa-paste",
+      "name": "harissa paste",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "korma-paste",
+      "name": "korma paste",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "massaman-paste",
+      "name": "massaman paste",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "miso",
+      "name": "miso",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "red-curry-paste",
+      "name": "red curry paste",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tikka-curry-paste",
+      "name": "tikka curry paste",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sweet-chilli-sauce",
+      "name": "sweet chilli sauce",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pomegranate-molasses",
+      "name": "pomegranate molasses",
+      "category": "World Foods",
+      "categoryOrder": 9,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "almond-butter",
+      "name": "almond butter",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "artichokes",
+      "name": "artichokes",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "baked-beans",
+      "name": "baked beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "black-beans",
+      "name": "black beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "black-olives",
+      "name": "black olives",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "borlotti-beans",
+      "name": "borlotti beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "broad-beans",
+      "name": "broad beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "butter-beans",
+      "name": "butter beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [
+        "butterbeans"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cannellini-beans",
+      "name": "cannellini beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "capers",
+      "name": "capers",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "chestnuts",
+      "name": "chestnuts",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "chickpeas",
+      "name": "chickpeas",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "chopped-tomatoes",
+      "name": "chopped tomatoes",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "coconut-milk",
+      "name": "coconut milk",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "english-mustard",
+      "name": "english mustard",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "green-olives",
+      "name": "green olives",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "green-pesto",
+      "name": "green pesto",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [
+        "pesto"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "red-pesto",
+      "name": "red pesto",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "haricot-beans",
+      "name": "haricot beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "jackfruit",
+      "name": "jackfruit",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "kidney-beans",
+      "name": "kidney beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "lemon-juice",
+      "name": "lemon juice",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "lentils",
+      "name": "lentils",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mayonnaise",
+      "name": "mayonnaise",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pasta-sauce",
+      "name": "pasta sauce",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pinto-beans",
+      "name": "pinto beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "ratatouille",
+      "name": "ratatouille",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "refried-beans",
+      "name": "refried beans",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "roasted-red-peppers",
+      "name": "roasted red peppers",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "salsa",
+      "name": "salsa",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sun-dried-tomatoes",
+      "name": "sun dried tomatoes",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sun-dried-tomato-paste",
+      "name": "sun dried tomato paste",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sweetcorn",
+      "name": "sweetcorn",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tinned-new-potatoes",
+      "name": "tinned new potatoes",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "tomato-pur-e",
+      "name": "tomato purée",
+      "category": "Tinned",
+      "categoryOrder": 10,
+      "frozen": false,
+      "pantryStaple": true,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "spinach-frozen",
+      "name": "spinach",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "frozen spinach"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "peas-frozen",
+      "name": "peas",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "frozen peas",
+        "peas"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mushroom-medley-frozen",
+      "name": "mushroom medley",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "frozen mushroom medley"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "mashed-potato-frozen",
+      "name": "mashed potato",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "frozen mash",
+        "mashed potato"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "sweet-potato-mash-frozen",
+      "name": "sweet potato mash",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "sweet potato mash"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "cauliflower-rice-frozen",
+      "name": "cauliflower rice",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "cauliflower rice"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "roast-veg-frozen",
+      "name": "roast veg",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "roast veg"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "bean-burgers-frozen",
+      "name": "bean burgers",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "bean burgers"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "veggie-fingers-frozen",
+      "name": "veggie fingers",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "veggie fingers"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "veggie-sausages-frozen",
+      "name": "veggie sausages",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "veggie sausage",
+        "veggie sausages"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "vegetarian-meatballs-frozen",
+      "name": "vegetarian meatballs",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "vegetarian meatballs"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "fish-cakes-frozen",
+      "name": "fish cakes",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "fish cakes"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "falafel-frozen",
+      "name": "falafel",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "falafel"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "dim-sum-frozen",
+      "name": "dim sum",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "dim sum"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "pizza-frozen",
+      "name": "pizza",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": true,
+      "pantryStaple": false,
+      "aliases": [
+        "pizza"
+      ],
+      "packSize": null,
+      "packUnit": null
+    },
+    {
+      "slug": "jelly-pack",
+      "name": "jelly pack",
+      "category": "Frozen",
+      "categoryOrder": 11,
+      "frozen": false,
+      "pantryStaple": false,
+      "aliases": [],
+      "packSize": null,
+      "packUnit": null
+    }
+  ]
+}

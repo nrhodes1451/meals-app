@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/tokens/colors.css">
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/tokens/typography.css">
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/tokens/borders.css">
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/tokens/motion.css">
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/tokens/base.css">
+<link rel="stylesheet" href="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/styles.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="_ds/penrose-design-system-22c3d7d1-6a41-441d-b779-bd884eb12152/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; background: #FFFFFF; }
+  a { color: var(--pen-primary); }
+  a:hover { color: var(--pen-primary-lift); }
+  input, select, textarea, button { font-family: inherit; }
+  ::selection { background: #FFCCE9; }
+</style>
+</helmet>
+
+<div style="display:flex; align-items:stretch; min-height:100vh; background:#FFFFFF; color:#2F3D32; font-family:var(--font-body); font-size:16px">
+
+  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.NavRail" title="Penrose" items="{{ navItems }}" value="{{ screen }}" onChange="{{ goScreen }}" style="{{ navStyle }}" hint-size="232px,100%"></x-import>
+
+  <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow-x:auto">
+
+    <sc-if value="{{ isPlanner }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:32px 32px 48px; display:flex; flex-direction:column; gap:24px; min-width:1000px">
+
+        <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.SectionHeader" level="1" meta="{{ weekRange }}" hint-size="100%,56px">WEEK PLANNER</x-import>
+
+        <div style="display:flex; flex-wrap:wrap; align-items:flex-end; gap:32px; row-gap:8px; padding-bottom:16px; border-bottom:1px solid #2F3D32">
+          <div style="display:flex; flex-direction:column; gap:0">
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Vegetarian only</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Switch" checked="{{ fVeg }}" onChange="{{ setVeg }}" label="{{ fVegLabel }}" hint-size="160px,48px"></x-import>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0; width:180px">
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Max cook time</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ timeOptions }}" value="{{ fTime }}" onChange="{{ setTime }}" hint-size="180px,48px"></x-import>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0; width:230px">
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Not eaten in the last</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ weekOptions }}" value="{{ fExcl }}" onChange="{{ setExcl }}" hint-size="230px,48px"></x-import>
+          </div>
+          <div style="flex:1; min-width:24px"></div>
+          <div style="display:flex; align-items:center; gap:8px">
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:300; font-size:13px; color:#2F3D32; padding-right:8px">{{ poolLabel }}</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="quiet" onClick="{{ unlockAll }}" hint-size="auto,48px">UNLOCK ALL</x-import>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="primary" size="lg" onClick="{{ rollWeek }}" hint-size="auto,56px">ROLL THE WEEK</x-import>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:minmax(560px,1fr) 340px; gap:40px; align-items:start">
+
+          <div style="min-width:0">
+            <div style="display:grid; grid-template-columns:4px 60px minmax(200px,1fr) 92px 78px 62px 104px; align-items:center; gap:14px; padding-bottom:6px; border-bottom:1px solid #2F3D32">
+              <span></span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#2F3D32">Day</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#2F3D32">Meal</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#2F3D32">Diet</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#2F3D32; text-align:right">Time</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#2F3D32; text-align:right">Serves</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#2F3D32; text-align:right">Lock / roll</span>
+            </div>
+
+            <sc-for list="{{ days }}" as="d" hint-placeholder-count="7">
+              <div style="display:grid; grid-template-columns:4px 60px minmax(200px,1fr) 92px 78px 62px 104px; align-items:center; gap:14px; min-height:66px; border-bottom:1px solid rgba(47,61,50,0.25)">
+                <span style="{{ d.barStyle }}"></span>
+                <span style="{{ d.dayStyle }}">{{ d.day }}</span>
+                <button onClick="{{ d.onPick }}" style="text-align:left; background:transparent; border:0; padding:0; cursor:pointer; min-height:48px; display:flex; flex-direction:column; justify-content:center; gap:2px" style-hover="color:#C23585">
+                  <span style="{{ d.nameStyle }}">{{ d.name }}</span>
+                  <span style="font-size:13px; color:rgba(47,61,50,0.7); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%">{{ d.summary }}</span>
+                </button>
+                <span style="{{ d.dietStyle }}">{{ d.diet }}</span>
+                <span style="font-family:var(--font-display); font-weight:700; font-size:16px; font-variant-numeric:tabular-nums; text-align:right; color:#2F3D32">{{ d.time }}</span>
+                <span style="font-family:var(--font-display); font-weight:400; font-size:16px; font-variant-numeric:tabular-nums; text-align:right; color:#2F3D32">{{ d.serves }}</span>
+                <span style="display:flex; gap:8px; justify-content:flex-end">
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="{{ d.lockLabel }}" variant="{{ d.lockVariant }}" onClick="{{ d.onLock }}" hint-size="48px,48px">
+                    <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="{{ d.lockIcon }}" size="20" hint-size="20px,20px"></x-import>
+                  </x-import>
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="{{ d.rollLabel }}" variant="quiet" disabled="{{ d.locked }}" onClick="{{ d.onRoll }}" hint-size="48px,48px">
+                    <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="dices" size="20" hint-size="20px,20px"></x-import>
+                  </x-import>
+                </span>
+              </div>
+            </sc-for>
+
+            <p style="margin:16px 0 0; font-size:13px; color:rgba(47,61,50,0.7)">Keys: 1–7 lock a day, shift + 1–7 re-roll it, R rolls the week. Locked days are never re-rolled.</p>
+          </div>
+
+          <aside style="background:#FFFFFF; border-top:3px solid #2F3D32; padding-top:16px">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:8px">
+              <h2 style="margin:0; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.09em; font-weight:900; font-size:19px; color:#2F3D32">Shopping list</h2>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#7A104E">Live</span>
+            </div>
+            <div style="display:flex; align-items:baseline; gap:8px; margin-top:12px">
+              <span style="font-family:var(--font-display); font-weight:900; font-size:40px; line-height:1; font-variant-numeric:tabular-nums; color:#7A104E">{{ listCount }}</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">items · {{ sectionCount }} sections</span>
+            </div>
+            <div style="height:0; border-top:1px solid #E9CB4F; margin:16px 0"></div>
+            <sc-for list="{{ railSections }}" as="s" hint-placeholder-count="8">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:38px; border-bottom:1px solid rgba(47,61,50,0.25)">
+                <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">{{ s.name }}</span>
+                <span style="font-family:var(--font-display); font-weight:900; font-size:15px; font-variant-numeric:tabular-nums; color:#2F3D32">{{ s.count }}</span>
+              </div>
+            </sc-for>
+            <p style="margin:16px 0; font-size:13px; color:rgba(47,61,50,0.7)">{{ suppressedLine }}</p>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="primary" block="{{ true }}" onClick="{{ goList }}" hint-size="100%,48px">OPEN SHOPPING LIST</x-import>
+          </aside>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isWeek }}">
+      <div style="{{ weekPageStyle }}">
+        <sc-if value="{{ narrow }}">
+          <button onClick="{{ goPlanner }}" style="align-self:flex-start; background:transparent; border:0; padding:8px 0; margin:0; cursor:pointer; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#7A104E">← WEEK PLANNER</button>
+        </sc-if>
+        <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.SectionHeader" level="1" meta="{{ eatenMeta }}" hint-size="100%,56px">THIS WEEK’S MEALS</x-import>
+        <div>
+          <sc-for list="{{ weekMeals }}" as="m" hint-placeholder-count="7">
+            <div style="display:flex; align-items:center; gap:14px; min-height:76px; padding:8px 2px; border-bottom:1px solid rgba(47,61,50,0.25)">
+              <span onClick="{{ m.onToggle }}" role="button" aria-label="{{ m.toggleLabel }}" style="{{ m.boxStyle }}">
+                <span style="{{ m.tickStyle }}"></span>
+              </span>
+              <span style="{{ m.dayStyle }}">{{ m.day }}</span>
+              <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:2px">
+                <button onClick="{{ m.onOpen }}" style="{{ m.nameStyle }}">{{ m.name }}</button>
+                <span style="{{ m.subStyle }}">{{ m.sub }}</span>
+              </span>
+              <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Open recipe" variant="quiet" onClick="{{ m.onOpen }}" hint-size="48px,48px">
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="chevron-right" size="20" hint-size="20px,20px"></x-import>
+              </x-import>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:8px">
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="quiet" onClick="{{ resetEaten }}" hint-size="auto,48px">CLEAR ALL</x-import>
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="quiet" onClick="{{ goPlanner }}" hint-size="auto,48px">BACK TO PLANNER</x-import>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isList }}">
+      <div style="width:100%; max-width:640px; margin:0 auto; padding:0 16px 64px">
+
+        <div style="position:sticky; top:0; z-index:20; background:#FFFFFF; padding:16px 0 12px; border-bottom:1px solid #2F3D32">
+          <sc-if value="{{ navHidden }}">
+            <button onClick="{{ goPlanner }}" style="background:transparent; border:0; padding:0 0 8px; margin:0; cursor:pointer; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#7A104E">← WEEK PLANNER</button>
+          </sc-if>
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px">
+            <h1 style="margin:0; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.09em; font-weight:900; font-size:26px; color:#2F3D32">Shopping list</h1>
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:14px; font-variant-numeric:tabular-nums; color:#7A104E">{{ leftLabel }}</span>
+          </div>
+          <div style="height:6px; background:rgba(47,61,50,0.15); margin-top:12px">
+            <div style="{{ progressStyle }}"></div>
+          </div>
+        </div>
+
+        <sc-for list="{{ listSections }}" as="s" hint-placeholder-count="8">
+          <section>
+            <div style="position:sticky; top:86px; z-index:10; background:#FFFFFF; display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:24px 0 6px; border-bottom:1px solid #2F3D32">
+              <h2 style="margin:0; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.09em; font-weight:900; font-size:17px; color:#2F3D32">{{ s.name }}</h2>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; font-variant-numeric:tabular-nums; color:#7A104E">{{ s.remaining }}</span>
+            </div>
+            <sc-for list="{{ s.items }}" as="i" hint-placeholder-count="4">
+              <div onClick="{{ i.onToggle }}" role="button" style="display:flex; align-items:center; gap:16px; min-height:68px; padding:10px 4px; border-bottom:1px solid rgba(47,61,50,0.25); cursor:pointer; user-select:none" style-hover="background:#FFCCE9">
+                <span style="{{ i.boxStyle }}" aria-hidden="true">
+                  <span style="{{ i.tickStyle }}"></span>
+                </span>
+                <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:3px">
+                  <span style="{{ i.nameStyle }}">{{ i.name }}</span>
+                  <button onClick="{{ i.onTrace }}" style="align-self:flex-start; background:transparent; border:0; padding:4px 0; margin:0; cursor:pointer; text-align:left; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#7A104E" style-hover="color:#C23585">{{ i.usedIn }}</button>
+                </span>
+                <span style="display:flex; flex-direction:column; align-items:flex-end; gap:2px; text-align:right">
+                  <sc-for list="{{ i.qtyLines }}" as="q" hint-placeholder-count="1">
+                    <span style="{{ q.style }}">{{ q.text }}</span>
+                  </sc-for>
+                </span>
+              </div>
+            </sc-for>
+          </section>
+        </sc-for>
+
+        <section style="margin-top:40px">
+          <button onClick="{{ togglePantry }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:56px; background:#FEE5D5; border:0; padding:0 16px; cursor:pointer; text-align:left">
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:900; font-size:14px; color:#2F3D32">{{ pantryHeading }}</span>
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:#7A104E">{{ pantryToggleLabel }}</span>
+          </button>
+          <sc-if value="{{ pantryOpen }}">
+            <div>
+              <p style="margin:12px 4px; font-size:14px; color:rgba(47,61,50,0.75)">Suppressed because they are marked as pantry staples. Add one back for this week only.</p>
+              <sc-for list="{{ pantryItems }}" as="p" hint-placeholder-count="5">
+                <div style="display:flex; align-items:center; gap:16px; min-height:60px; padding:6px 4px; border-bottom:1px solid rgba(47,61,50,0.25)">
+                  <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:2px">
+                    <span style="font-size:17px; color:#2F3D32">{{ p.name }}</span>
+                    <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; color:rgba(47,61,50,0.7)">{{ p.usedIn }}</span>
+                  </span>
+                  <span style="font-family:var(--font-display); font-weight:700; font-size:15px; font-variant-numeric:tabular-nums; color:rgba(47,61,50,0.7)">{{ p.qty }}</span>
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="secondary" onClick="{{ p.onAdd }}" hint-size="96px,48px">{{ p.action }}</x-import>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </section>
+
+        <div style="display:flex; gap:8px; margin-top:32px">
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="quiet" onClick="{{ uncheckAll }}" hint-size="auto,48px">UNCHECK ALL</x-import>
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="quiet" onClick="{{ goPlanner }}" hint-size="auto,48px">BACK TO PLANNER</x-import>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isLibrary }}">
+      <div style="padding:32px 32px 64px; display:flex; flex-direction:column; gap:20px">
+        <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.SectionHeader" level="1" meta="{{ libMeta }}" hint-size="100%,56px">RECIPE LIBRARY</x-import>
+
+        <div style="display:flex; flex-wrap:wrap; align-items:flex-end; gap:24px; row-gap:8px; padding-bottom:12px; border-bottom:1px solid #2F3D32">
+          <div style="width:280px">
+            <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Search</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ query }}" onChange="{{ setQuery }}" placeholder="name" hint-size="280px,48px"></x-import>
+          </div>
+          <div style="width:180px">
+            <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Ingredient</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ ingOptions }}" value="{{ libIng }}" onChange="{{ setLibIng }}" hint-size="180px,48px"></x-import>
+          </div>
+          <div style="width:150px">
+            <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Diet</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ dietOptions }}" value="{{ libDiet }}" onChange="{{ setLibDiet }}" hint-size="150px,48px"></x-import>
+          </div>
+          <div style="width:150px">
+            <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Max time</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ timeOptions }}" value="{{ libTime }}" onChange="{{ setLibTime }}" hint-size="150px,48px"></x-import>
+          </div>
+          <div style="width:170px">
+            <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#2F3D32">Sort</span>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ sortOptions }}" value="{{ libSort }}" onChange="{{ setLibSort }}" hint-size="170px,48px"></x-import>
+          </div>
+          <div style="flex:1"></div>
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="secondary" onClick="{{ newRecipe }}" hint-size="auto,48px">NEW RECIPE</x-import>
+        </div>
+
+        <div>
+          <div style="display:grid; grid-template-columns:minmax(220px,1.1fr) 78px minmax(260px,1.7fr) 74px 66px 104px 108px; align-items:center; gap:14px; padding-bottom:6px; border-bottom:1px solid #2F3D32">
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Name</span>
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Diet</span>
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Ingredients</span>
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; text-align:right">Time</span>
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; text-align:right">Serves</span>
+            <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; text-align:right">Last eaten</span>
+            <span></span>
+          </div>
+          <sc-for list="{{ libRows }}" as="r" hint-placeholder-count="12">
+            <div style="display:grid; grid-template-columns:minmax(220px,1.1fr) 78px minmax(260px,1.7fr) 74px 66px 104px 108px; align-items:center; gap:14px; min-height:56px; border-bottom:1px solid rgba(47,61,50,0.25)" style-hover="background:#FFCCE9">
+              <button onClick="{{ r.onOpen }}" style="text-align:left; background:transparent; border:0; padding:0; cursor:pointer; font-family:var(--font-display); font-weight:700; font-size:17px; color:#2F3D32; min-height:44px" style-hover="color:#7A104E">{{ r.name }}</button>
+              <span style="{{ r.dietStyle }}">{{ r.diet }}</span>
+              <span style="font-size:13px; color:rgba(47,61,50,0.75); overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ r.ings }}</span>
+              <span style="font-family:var(--font-display); font-weight:700; font-size:15px; font-variant-numeric:tabular-nums; text-align:right">{{ r.time }}</span>
+              <span style="font-family:var(--font-display); font-size:15px; font-variant-numeric:tabular-nums; text-align:right">{{ r.serves }}</span>
+              <span style="{{ r.lastStyle }}">{{ r.last }}</span>
+              <span style="display:flex; justify-content:flex-end">
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="secondary" onClick="{{ r.onAdd }}" hint-size="100px,44px" style="{{ r.addStyle }}">ADD</x-import>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDetail }}">
+      <div style="padding:32px 32px 64px; max-width:1180px; display:flex; flex-direction:column; gap:24px">
+        <div style="display:flex; align-items:center; gap:16px">
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="quiet" onClick="{{ goLibrary }}" hint-size="auto,48px">← LIBRARY</x-import>
+          <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:300; font-size:13px; color:rgba(47,61,50,0.75)">{{ detailMeta }}</span>
+          <div style="flex:1"></div>
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="secondary" onClick="{{ addDetailToWeek }}" hint-size="auto,48px">ADD TO WEEK</x-import>
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="primary" onClick="{{ saveDetail }}" hint-size="auto,48px">{{ saveLabel }}</x-import>
+        </div>
+
+        <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:48px; align-items:start">
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div>
+              <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px">Name</span>
+              <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ dName }}" onChange="{{ setDName }}" style="{{ bigInputStyle }}" hint-size="100%,56px"></x-import>
+            </div>
+            <div style="display:grid; grid-template-columns:110px 150px minmax(0,1fr); gap:24px; align-items:end">
+              <div>
+                <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px">Servings</span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ dServes }}" onChange="{{ setDServes }}" tabular="{{ true }}" hint-size="110px,48px"></x-import>
+              </div>
+              <div>
+                <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px">Cook time (min)</span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ dTime }}" onChange="{{ setDTime }}" tabular="{{ true }}" hint-size="150px,48px"></x-import>
+              </div>
+              <div>
+                <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px">Vegetarian</span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Switch" checked="{{ dVeg }}" onChange="{{ setDVeg }}" label="{{ dVegLabel }}" hint-size="180px,48px"></x-import>
+              </div>
+            </div>
+            <div>
+              <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; margin-bottom:8px">Method</span>
+              <div style="display:flex; gap:8px; margin-bottom:8px">
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="{{ methodTextVariant }}" onClick="{{ useMethodText }}" hint-size="auto,44px">FREE TEXT</x-import>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="{{ methodLinkVariant }}" onClick="{{ useMethodLink }}" hint-size="auto,44px">EXTERNAL LINK</x-import>
+              </div>
+              <sc-if value="{{ methodIsLink }}">
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ dLink }}" onChange="{{ setDLink }}" placeholder="https://" hint-size="100%,48px"></x-import>
+              </sc-if>
+              <sc-if value="{{ methodIsText }}">
+                <textarea value="{{ dMethod }}" onChange="{{ setDMethod }}" rows="9" style="width:100%; box-sizing:border-box; font-family:var(--font-body); font-size:16px; line-height:1.5; color:#2F3D32; background:#FFFFFF; border:0; border-bottom:1px solid #2F3D32; border-radius:0; padding:8px; resize:vertical"></textarea>
+              </sc-if>
+            </div>
+          </div>
+
+          <div>
+            <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.SectionHeader" meta="{{ ingCountLabel }}" hint-size="100%,44px">INGREDIENTS</x-import>
+            <div style="display:grid; grid-template-columns:80px 108px minmax(0,1fr) 152px; gap:10px; padding-bottom:4px; border-bottom:1px solid #2F3D32">
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Amount</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Unit</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Ingredient</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; text-align:right">Order</span>
+            </div>
+            <sc-for list="{{ dIngs }}" as="g" hint-placeholder-count="6">
+              <div style="display:grid; grid-template-columns:80px 108px minmax(0,1fr) 152px; gap:10px; align-items:center; border-bottom:1px solid rgba(47,61,50,0.25)">
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ g.amt }}" onChange="{{ g.onAmt }}" onKeyDown="{{ g.onKey }}" tabular="{{ true }}" placeholder="—" hint-size="80px,48px"></x-import>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ unitOptions }}" value="{{ g.unit }}" onChange="{{ g.onUnit }}" hint-size="108px,48px"></x-import>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ g.name }}" onChange="{{ g.onName }}" onKeyDown="{{ g.onKey }}" list="canon-ings" hint-size="100%,48px"></x-import>
+                <span style="display:flex; gap:4px; justify-content:flex-end">
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Move up" variant="quiet" onClick="{{ g.onUp }}" hint-size="44px,44px" style="{{ smallBtnStyle }}">
+                    <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="chevron-up" size="18" hint-size="18px,18px"></x-import>
+                  </x-import>
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Move down" variant="quiet" onClick="{{ g.onDown }}" hint-size="44px,44px" style="{{ smallBtnStyle }}">
+                    <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="chevron-down" size="18" hint-size="18px,18px"></x-import>
+                  </x-import>
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Remove" variant="quiet" onClick="{{ g.onRemove }}" hint-size="44px,44px" style="{{ smallBtnStyle }}">
+                    <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="trash-2" size="18" hint-size="18px,18px"></x-import>
+                  </x-import>
+                </span>
+              </div>
+            </sc-for>
+            <div style="display:flex; align-items:center; gap:16px; margin-top:12px">
+              <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="secondary" onClick="{{ addIngRow }}" hint-size="auto,48px">ADD INGREDIENT</x-import>
+              <span style="font-size:13px; color:rgba(47,61,50,0.7)">Enter adds a row below. Amount and unit may both be blank, meaning “some”.</span>
+            </div>
+            <datalist id="canon-ings">
+              <sc-for list="{{ canonNames }}" as="c" hint-placeholder-count="0">
+                <option value="{{ c.name }}"></option>
+              </sc-for>
+            </datalist>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isAdmin }}">
+      <div style="padding:32px 32px 64px; display:flex; flex-direction:column; gap:20px">
+        <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.SectionHeader" level="1" meta="{{ adminMeta }}" hint-size="100%,56px">INGREDIENTS ADMIN</x-import>
+
+        <div style="display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:40px; align-items:start">
+          <div>
+            <div style="display:flex; align-items:flex-end; gap:24px; padding-bottom:12px; border-bottom:1px solid #2F3D32">
+              <div style="width:260px">
+                <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px">Filter</span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ adminQuery }}" onChange="{{ setAdminQuery }}" placeholder="name or alias" hint-size="260px,48px"></x-import>
+              </div>
+              <div style="width:200px">
+                <span style="display:block; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px">Bulk: set category</span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ bulkCatOptions }}" value="{{ bulkCat }}" onChange="{{ applyBulkCat }}" disabled="{{ noSelection }}" hint-size="200px,48px"></x-import>
+              </div>
+              <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="secondary" disabled="{{ noSelection }}" onClick="{{ bulkPantry }}" hint-size="auto,48px">TOGGLE PANTRY</x-import>
+              <div style="flex:1"></div>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px; color:#7A104E; padding-bottom:14px">{{ selectionLabel }}</span>
+            </div>
+
+            <div style="display:grid; grid-template-columns:40px minmax(0,1.05fr) minmax(0,1.1fr) 150px 84px 110px; gap:10px; align-items:center; padding:6px 0; border-bottom:1px solid #2F3D32">
+              <span></span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Canonical name</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Aliases</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Store category</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px; text-align:center">Pantry</span>
+              <span style="font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:12px">Pack size</span>
+            </div>
+            <sc-for list="{{ adminRows }}" as="a" hint-placeholder-count="14">
+              <div style="display:grid; grid-template-columns:40px minmax(0,1.05fr) minmax(0,1.1fr) 150px 84px 110px; gap:10px; align-items:center; border-bottom:1px solid rgba(47,61,50,0.25)">
+                <span onClick="{{ a.onSelect }}" role="button" style="{{ a.selectStyle }}"></span>
+                <span style="font-size:15px; color:#2F3D32; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ a.name }}</span>
+                <span style="font-size:13px; color:rgba(47,61,50,0.75); overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ a.aliases }}</span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Select" options="{{ catOptions }}" value="{{ a.cat }}" onChange="{{ a.onCat }}" style="{{ denseFieldStyle }}" hint-size="150px,40px"></x-import>
+                <span style="display:flex; justify-content:center">
+                  <span onClick="{{ a.onPantry }}" role="button" style="{{ a.pantryStyle }}">{{ a.pantryMark }}</span>
+                </span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ a.pack }}" onChange="{{ a.onPack }}" style="{{ denseFieldStyle }}" hint-size="110px,40px"></x-import>
+              </div>
+            </sc-for>
+          </div>
+
+          <aside style="border-top:3px solid #2F3D32; padding-top:16px">
+            <h2 style="margin:0 0 4px; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.09em; font-weight:900; font-size:19px">Aisle order</h2>
+            <p style="margin:0 0 12px; font-size:13px; color:rgba(47,61,50,0.75)">Sets the section order of the shopping list.</p>
+            <sc-for list="{{ catOrderRows }}" as="c" hint-placeholder-count="8">
+              <div style="display:flex; align-items:center; gap:8px; min-height:52px; border-bottom:1px solid rgba(47,61,50,0.25)">
+                <span style="width:24px; font-family:var(--font-display); font-weight:900; font-size:14px; font-variant-numeric:tabular-nums; color:#7A104E">{{ c.n }}</span>
+                <span style="flex:1; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; font-size:13px">{{ c.name }}</span>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Move up" variant="quiet" onClick="{{ c.onUp }}" hint-size="44px,44px" style="{{ smallBtnStyle }}">
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="chevron-up" size="18" hint-size="18px,18px"></x-import>
+                </x-import>
+                <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Move down" variant="quiet" onClick="{{ c.onDown }}" hint-size="44px,44px" style="{{ smallBtnStyle }}">
+                  <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Icon" name="chevron-down" size="18" hint-size="18px,18px"></x-import>
+                </x-import>
+              </div>
+            </sc-for>
+          </aside>
+        </div>
+      </div>
+    </sc-if>
+
+  </main>
+
+  <sc-if value="{{ pickerOpen }}">
+    <div role="dialog" aria-modal="true" style="position:fixed; inset:0; background:rgba(47,61,50,0.7); display:grid; place-items:center; padding:24px; z-index:100">
+      <div style="background:#FFFFFF; width:min(680px,100%); max-height:82vh; display:flex; flex-direction:column; padding:24px">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px">
+          <h2 style="margin:0; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.09em; font-weight:900; font-size:26px">{{ pickerTitle }}</h2>
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Close" variant="quiet" onClick="{{ closePicker }}" hint-size="48px,48px">
+            <span style="font-size:26px; line-height:1">×</span>
+          </x-import>
+        </div>
+        <div style="height:0; border-top:1px solid rgba(47,61,50,0.25); margin:8px 0 16px"></div>
+        <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Input" value="{{ pickerQuery }}" onChange="{{ setPickerQuery }}" placeholder="search 184 recipes" autoFocus="{{ true }}" hint-size="100%,48px"></x-import>
+        <div style="overflow:auto; margin-top:8px">
+          <sc-for list="{{ pickerRows }}" as="p" hint-placeholder-count="8">
+            <button onClick="{{ p.onPick }}" style="width:100%; display:grid; grid-template-columns:minmax(0,1fr) 70px 66px 96px; align-items:center; gap:12px; min-height:56px; background:transparent; border:0; border-bottom:1px solid rgba(47,61,50,0.25); cursor:pointer; text-align:left; padding:0 4px" style-hover="background:#FFCCE9">
+              <span style="font-family:var(--font-display); font-weight:700; font-size:17px; color:#2F3D32; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ p.name }}</span>
+              <span style="{{ p.dietStyle }}">{{ p.diet }}</span>
+              <span style="font-family:var(--font-display); font-weight:700; font-size:15px; font-variant-numeric:tabular-nums; text-align:right">{{ p.time }}</span>
+              <span style="{{ p.lastStyle }}">{{ p.last }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ traceOpen }}">
+    <div role="dialog" aria-modal="true" style="position:fixed; inset:0; background:rgba(47,61,50,0.7); display:grid; place-items:center; padding:24px; z-index:100">
+      <div style="background:#FFFFFF; width:min(520px,100%); padding:24px">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px">
+          <h2 style="margin:0; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.09em; font-weight:900; font-size:26px">{{ traceTitle }}</h2>
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.IconButton" label="Close" variant="quiet" onClick="{{ closeTrace }}" hint-size="48px,48px">
+            <span style="font-size:26px; line-height:1">×</span>
+          </x-import>
+        </div>
+        <div style="height:0; border-top:1px solid rgba(47,61,50,0.25); margin:8px 0 8px"></div>
+        <p style="margin:0 0 8px; font-size:14px; color:rgba(47,61,50,0.75)">{{ traceSub }}</p>
+        <sc-for list="{{ traceRows }}" as="t" hint-placeholder-count="2">
+          <div style="display:flex; align-items:center; gap:16px; min-height:60px; border-bottom:1px solid rgba(47,61,50,0.25)">
+            <span style="width:52px; font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; font-weight:900; font-size:13px; color:#7A104E">{{ t.day }}</span>
+            <span style="flex:1; min-width:0; font-size:16px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ t.recipe }}</span>
+            <span style="font-family:var(--font-display); font-weight:700; font-size:16px; font-variant-numeric:tabular-nums">{{ t.qty }}</span>
+          </div>
+        </sc-for>
+        <div style="display:flex; justify-content:flex-end; margin-top:20px">
+          <x-import component-from-global-scope="PenroseDesignSystem_22c3d7.Button" variant="primary" onClick="{{ closeTrace }}" hint-size="auto,48px">DONE</x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showUsedIn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Shopping list&quot;},&quot;defaultExcludeWeeks&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:0,&quot;max&quot;:12,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Planner&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;planner&quot;,&quot;list&quot;,&quot;library&quot;,&quot;detail&quot;,&quot;admin&quot;],&quot;default&quot;:&quot;planner&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Planner&quot;}}">
+class Component extends DCLogic {
+  cats = ["Fruit & Veg", "Dairy", "Meat", "Bakery", "Cereal", "World Foods", "Tinned", "Frozen"];
+  units = ["", "g", "ml", "item", "tin", "bag", "pack", "punnet", "bunch", "stalk", "rasher", "tbsp", "tsp"];
+  ing = {
+    "onion": [0, 0, "onions", ""],
+    "red onion": [0, 0, "", ""],
+    "garlic": [0, 1, "garlic clove, cloves", "1 bulb"],
+    "carrot": [0, 0, "carrots", ""],
+    "potato": [0, 0, "potatoes", "1kg bag"],
+    "new potato": [0, 0, "new potatoes", "750g bag"],
+    "sweet potato": [0, 0, "sweet potatoes", ""],
+    "broccoli": [0, 0, "broccol, tenderstem", ""],
+    "cherry tomato": [0, 0, "cherry toms, cherry tomatoes", "250g punnet"],
+    "spinach": [0, 0, "baby spinach", "200g bag"],
+    "courgette": [0, 0, "courgettes", ""],
+    "red pepper": [0, 0, "red peppers", ""],
+    "lemon": [0, 0, "lemons", ""],
+    "lime": [0, 0, "limes", ""],
+    "ginger": [0, 0, "root ginger", ""],
+    "mushroom": [0, 0, "mushrooms", "250g pack"],
+    "spring onion": [0, 0, "spring onions", "1 bunch"],
+    "coriander": [0, 0, "fresh coriander", "30g pack"],
+    "parsley": [0, 0, "flat leaf parsley", "30g pack"],
+    "red chilli": [0, 0, "chilli, chillies", ""],
+    "leek": [0, 0, "leeks", ""],
+    "cabbage": [0, 0, "savoy cabbage", ""],
+    "cauliflower": [0, 0, "", ""],
+    "milk": [1, 0, "", "2L"],
+    "butter": [1, 1, "", "250g"],
+    "cheddar": [1, 0, "cheddar cheese", "200g"],
+    "feta": [1, 0, "", "200g block"],
+    "parmesan": [1, 0, "parmigiano", "100g"],
+    "halloumi": [1, 0, "", "225g block"],
+    "greek yoghurt": [1, 0, "greek yogurt", "500g"],
+    "double cream": [1, 0, "", "300ml"],
+    "egg": [1, 0, "eggs", "6 box"],
+    "chicken thigh": [2, 0, "chicken thighs", "6 pack"],
+    "chicken breast": [2, 0, "chicken breasts", "2 pack"],
+    "beef mince": [2, 0, "minced beef", "500g"],
+    "pork mince": [2, 0, "minced pork", "500g"],
+    "lamb mince": [2, 0, "minced lamb", "500g"],
+    "sausage": [2, 0, "sausages", "6 pack"],
+    "bacon": [2, 0, "streaky bacon", "8 rashers"],
+    "salmon fillet": [2, 0, "salmon", "2 pack"],
+    "white fish": [2, 0, "cod, haddock", ""],
+    "tortilla": [3, 0, "tortillas, wraps", "8 pack"],
+    "flatbread": [3, 0, "flatbreads", "4 pack"],
+    "sourdough": [3, 0, "bread", "1 loaf"],
+    "spaghetti": [4, 0, "", "500g"],
+    "penne": [4, 0, "pasta", "500g"],
+    "basmati rice": [4, 0, "rice", "1kg"],
+    "risotto rice": [4, 0, "arborio", "500g"],
+    "couscous": [4, 0, "", "500g"],
+    "egg noodles": [4, 0, "noodles", "4 nests"],
+    "flour": [4, 1, "plain flour", "1.5kg"],
+    "olive oil": [5, 1, "", "1L"],
+    "sesame oil": [5, 1, "", "250ml"],
+    "soy sauce": [5, 1, "", "250ml"],
+    "fish sauce": [5, 1, "", "200ml"],
+    "coconut milk": [5, 0, "", "400ml tin"],
+    "green curry paste": [5, 0, "thai green curry paste", "180g jar"],
+    "harissa": [5, 0, "rose harissa", "90g jar"],
+    "gochujang": [5, 0, "", "200g tub"],
+    "miso paste": [5, 0, "white miso", "300g tub"],
+    "peanut butter": [5, 1, "", "340g jar"],
+    "cumin": [5, 1, "ground cumin", "45g"],
+    "smoked paprika": [5, 1, "paprika", "45g"],
+    "chopped tomatoes": [6, 0, "tinned tomatoes", "400g tin"],
+    "chickpeas": [6, 0, "chick peas", "400g tin"],
+    "cannellini beans": [6, 0, "", "400g tin"],
+    "black beans": [6, 0, "", "400g tin"],
+    "kidney beans": [6, 0, "red kidney beans", "400g tin"],
+    "tuna": [6, 0, "tinned tuna", "145g tin"],
+    "anchovy": [6, 0, "anchovies", "50g tin"],
+    "olives": [6, 0, "black olives", "200g jar"],
+    "stock cube": [6, 1, "stock cubes", "10 pack"],
+    "tomato puree": [6, 1, "tomato purée", "200g"],
+    "red lentils": [6, 0, "lentils", "500g"],
+    "peas": [7, 0, "frozen peas", "1kg bag"],
+    "sweetcorn": [7, 0, "frozen sweetcorn", "1kg bag"],
+    "puff pastry": [7, 0, "", "375g sheet"],
+    "prawns": [7, 0, "king prawns", "250g bag"]
+  };
+  recipes = [
+    { id: 1, n: "Chickpea & spinach curry", v: 1, t: 30, s: 2, w: 2, m: "Fry onion and garlic, add cumin, tomatoes and chickpeas, simmer 15 min, wilt spinach through.", i: [[1, "item", "onion"], [3, "item", "garlic"], [2, "tin", "chickpeas"], [200, "g", "spinach"], [1, "tin", "chopped tomatoes"], [2, "tsp", "cumin"], [null, null, "coriander"]] },
+    { id: 2, n: "Sausage & fennel ragù", v: 0, t: 45, s: 2, w: 5, m: "Brown the sausage meat hard before adding anything wet.", i: [[6, "item", "sausage"], [1, "item", "onion"], [1, "tin", "chopped tomatoes"], [200, "g", "penne"], [40, "g", "parmesan"], [2, "tbsp", "olive oil"]] },
+    { id: 3, n: "Miso salmon with rice & greens", v: 0, t: 25, s: 2, w: 1, l: "https://example.com/miso-salmon", i: [[2, "item", "salmon fillet"], [2, "tbsp", "miso paste"], [150, "g", "basmati rice"], [200, "g", "broccoli"], [1, "tbsp", "sesame oil"], [2, "item", "spring onion"]] },
+    { id: 4, n: "Halloumi & harissa traybake", v: 1, t: 40, s: 2, w: 7, m: "Everything on one tray at 200C. Halloumi in for the last 12 minutes only.", i: [[1, "pack", "halloumi"], [2, "tbsp", "harissa"], [2, "item", "courgette"], [1, "item", "red pepper"], [1, "tin", "chickpeas"], [3, "tbsp", "olive oil"]] },
+    { id: 5, n: "Chicken thigh puttanesca", v: 0, t: 35, s: 2, w: 3, m: "Skin side down, undisturbed, until it releases.", i: [[6, "item", "chicken thigh"], [1, "tin", "chopped tomatoes"], [80, "g", "olives"], [4, "item", "anchovy"], [3, "item", "garlic"], [null, null, "parsley"]] },
+    { id: 6, n: "Dal with charred onions", v: 1, t: 40, s: 4, w: 6, m: "Lentils on low. The onions want to be nearly burnt.", i: [[300, "g", "red lentils"], [2, "item", "onion"], [1, "item", "ginger"], [2, "tsp", "cumin"], [50, "g", "butter"], [null, null, "coriander"]] },
+    { id: 7, n: "Prawn & lime noodles", v: 0, t: 20, s: 2, w: 4, m: "Sauce in the pan first, noodles last, off the heat.", i: [[250, "g", "prawns"], [4, "item", "egg noodles"], [2, "item", "lime"], [2, "tbsp", "fish sauce"], [1, "item", "red chilli"], [3, "item", "spring onion"]] },
+    { id: 8, n: "Cauliflower cheese pasta bake", v: 1, t: 50, s: 4, w: 9, m: "Roast the cauliflower first or it waters the sauce down.", i: [[1, "item", "cauliflower"], [400, "g", "penne"], [200, "g", "cheddar"], [500, "ml", "milk"], [50, "g", "butter"], [50, "g", "flour"]] },
+    { id: 9, n: "Beef chilli", v: 0, t: 60, s: 4, w: 8, m: "Long and low. Better the next day.", i: [[500, "g", "beef mince"], [2, "tin", "kidney beans"], [2, "tin", "chopped tomatoes"], [2, "item", "onion"], [2, "tsp", "smoked paprika"], [1, "item", "red pepper"]] },
+    { id: 10, n: "Leek & potato soup", v: 1, t: 35, s: 2, w: 12, m: "Sweat the leeks in butter for a full ten minutes.", i: [[3, "item", "leek"], [500, "g", "potato"], [1, "item", "stock cube"], [50, "g", "butter"], [100, "ml", "double cream"]] },
+    { id: 11, n: "Gochujang pork noodles", v: 0, t: 25, s: 2, w: 2, i: [[400, "g", "pork mince"], [2, "tbsp", "gochujang"], [4, "item", "egg noodles"], [1, "item", "cabbage"], [2, "tbsp", "soy sauce"], [3, "item", "spring onion"]] },
+    { id: 12, n: "Mushroom risotto", v: 1, t: 40, s: 2, w: 5, m: "Stock hot, stir often, finish with butter off the heat.", i: [[300, "g", "mushroom"], [200, "g", "risotto rice"], [1, "item", "onion"], [40, "g", "parmesan"], [50, "g", "butter"], [1, "item", "stock cube"]] },
+    { id: 13, n: "Fish pie", v: 0, t: 55, s: 4, w: 14, i: [[500, "g", "white fish"], [800, "g", "potato"], [300, "ml", "milk"], [200, "g", "peas"], [50, "g", "butter"], [40, "g", "flour"]] },
+    { id: 14, n: "Feta & cherry tomato penne", v: 1, t: 20, s: 2, w: 1, m: "Feta in the middle of the tray, tomatoes around it, 200C, then stir it into the pasta.", i: [[1, "pack", "feta"], [1, "punnet", "cherry tomato"], [200, "g", "penne"], [3, "item", "garlic"], [3, "tbsp", "olive oil"]] },
+    { id: 15, n: "Lamb kofte with flatbreads", v: 0, t: 35, s: 2, w: 11, i: [[400, "g", "lamb mince"], [4, "item", "flatbread"], [200, "g", "greek yoghurt"], [1, "item", "red onion"], [2, "tsp", "cumin"], [null, null, "parsley"]] },
+    { id: 16, n: "Sweet potato & peanut stew", v: 1, t: 45, s: 4, w: 6, i: [[3, "item", "sweet potato"], [3, "tbsp", "peanut butter"], [1, "tin", "chopped tomatoes"], [200, "g", "spinach"], [1, "item", "onion"], [1, "item", "stock cube"]] },
+    { id: 17, n: "Bacon & pea carbonara", v: 0, t: 20, s: 2, w: 3, m: "Off the heat before the eggs go in. Always.", i: [[6, "rasher", "bacon"], [200, "g", "spaghetti"], [3, "item", "egg"], [150, "g", "peas"], [50, "g", "parmesan"]] },
+    { id: 18, n: "Roast veg couscous", v: 1, t: 30, s: 2, w: 9, i: [[2, "item", "courgette"], [1, "item", "red pepper"], [1, "item", "red onion"], [150, "g", "couscous"], [1, "item", "lemon"], [2, "tbsp", "olive oil"]] },
+    { id: 19, n: "Thai green chicken curry", v: 0, t: 30, s: 2, w: 4, i: [[2, "item", "chicken breast"], [3, "tbsp", "green curry paste"], [1, "tin", "coconut milk"], [200, "g", "broccoli"], [150, "g", "basmati rice"], [1, "tbsp", "fish sauce"]] },
+    { id: 20, n: "Shakshuka", v: 1, t: 25, s: 2, w: 2, m: "Lid on for the eggs. Whites set, yolks not.", i: [[4, "item", "egg"], [1, "tin", "chopped tomatoes"], [1, "item", "red pepper"], [1, "item", "onion"], [2, "tsp", "smoked paprika"], [1, "item", "sourdough"]] },
+    { id: 21, n: "Tuna & cannellini salad", v: 0, t: 15, s: 2, w: 7, i: [[2, "tin", "tuna"], [1, "tin", "cannellini beans"], [1, "item", "red onion"], [1, "item", "lemon"], [250, "g", "cherry tomato"], [null, null, "parsley"]] },
+    { id: 22, n: "Chicken & leek pie", v: 0, t: 60, s: 4, w: 16, i: [[4, "item", "chicken thigh"], [3, "item", "leek"], [1, "pack", "puff pastry"], [200, "ml", "double cream"], [1, "item", "stock cube"], [1, "item", "egg"]] },
+    { id: 23, n: "Black bean tacos", v: 1, t: 25, s: 2, w: 3, i: [[2, "tin", "black beans"], [8, "item", "tortilla"], [1, "item", "lime"], [1, "item", "red onion"], [100, "g", "cheddar"], [null, null, "coriander"]] },
+    { id: 24, n: "Sesame greens & egg fried rice", v: 1, t: 20, s: 2, w: 5, i: [[200, "g", "basmati rice"], [3, "item", "egg"], [200, "g", "broccoli"], [2, "tbsp", "soy sauce"], [1, "tbsp", "sesame oil"], [150, "g", "peas"]] },
+    { id: 25, n: "Spaghetti with garlic & chilli", v: 1, t: 15, s: 2, w: 6, m: "Six minutes of work. Keep a mug of pasta water back.", i: [[200, "g", "spaghetti"], [5, "item", "garlic"], [2, "item", "red chilli"], [4, "tbsp", "olive oil"], [null, null, "parsley"]] },
+    { id: 26, n: "Salmon traybake with new potatoes", v: 0, t: 35, s: 2, w: 10, i: [[2, "item", "salmon fillet"], [600, "g", "new potato"], [1, "item", "lemon"], [200, "g", "broccoli"], [2, "tbsp", "olive oil"]] }
+  ];
+  dayNames = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+  state = {
+    screen: "planner",
+    fVeg: false,
+    fTime: 0,
+    fExcl: 3,
+    week: [
+      { id: 14, locked: false }, { id: 5, locked: false }, { id: 6, locked: true },
+      { id: 17, locked: false }, { id: 19, locked: false }, { id: 9, locked: false }, { id: 24, locked: false }
+    ],
+    flash: -1,
+    checked: {},
+    pantryOverride: {},
+    pantryOpen: false,
+    catOrder: [0, 1, 2, 3, 4, 5, 6, 7],
+    query: "", libDiet: "all", libTime: 0, libIng: "", libSort: "name",
+    adminQuery: "", adminSel: {}, bulkCat: "",
+    ingEdits: {},
+    detailId: 14, detail: null, saved: false,
+    pickerFor: -1, pickerQuery: "",
+    traceKey: null
+  };
+
+  componentDidMount() {
+    this.state.fExcl = this.props.defaultExcludeWeeks ?? 3;
+    if (this.props.startScreen) this.setState({ screen: this.props.startScreen });
+    this.onKey = (e) => {
+      const t = e.target;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
+      if (this.state.screen !== "planner") return;
+      if (e.key === "r" || e.key === "R") { this.rollWeek(); return; }
+      const n = parseInt(e.key, 10);
+      if (n >= 1 && n <= 7) {
+        if (e.shiftKey) this.rollSlot(n - 1); else this.toggleLock(n - 1);
+      }
+    };
+    window.addEventListener("keydown", this.onKey);
+    this.onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener("resize", this.onResize);
+    this.onResize();
+  }
+  componentWillUnmount() { window.removeEventListener("keydown", this.onKey); window.removeEventListener("resize", this.onResize); }
+
+  // --- data helpers -------------------------------------------------
+  meta(name) {
+    const e = this.state.ingEdits[name];
+    const b = this.ing[name] || [0, 0, "", ""];
+    return { cat: e && e.cat != null ? e.cat : b[0], pantry: e && e.pantry != null ? e.pantry : b[1], aliases: b[2], pack: e && e.pack != null ? e.pack : b[3] };
+  }
+  recipe(id) { return this.recipes.find((r) => r.id === id); }
+  lastLabel(w) { return w == null ? "never" : w === 1 ? "1 wk ago" : w + " wks ago"; }
+  qtyText(amt, unit) {
+    if (amt == null) return "some";
+    if (unit === "item" || !unit) return "×" + amt;
+    return amt + " " + unit;
+  }
+  pool(slotIdx) {
+    const s = this.state;
+    const used = s.week.map((x, i) => (i === slotIdx ? -1 : x.id));
+    return this.recipes.filter((r) => {
+      if (used.indexOf(r.id) >= 0) return false;
+      if (s.fVeg && !r.v) return false;
+      if (s.fTime && r.t > s.fTime) return false;
+      if (s.fExcl && r.w != null && r.w < s.fExcl) return false;
+      return true;
+    });
+  }
+  rollSlot(i) {
+    const p = this.pool(i);
+    if (!p.length) return;
+    const pick = p[Math.floor(Math.random() * p.length)];
+    const week = this.state.week.slice();
+    week[i] = { id: pick.id, locked: week[i].locked };
+    this.setState({ week, flash: i });
+    clearTimeout(this._ft);
+    this._ft = setTimeout(() => this.setState({ flash: -1 }), 700);
+  }
+  rollWeek() {
+    const week = this.state.week.slice();
+    const s = this.state;
+    const taken = week.filter((x) => x.locked).map((x) => x.id);
+    for (let i = 0; i < 7; i++) {
+      if (week[i].locked) continue;
+      const p = this.recipes.filter((r) => {
+        if (taken.indexOf(r.id) >= 0) return false;
+        if (s.fVeg && !r.v) return false;
+        if (s.fTime && r.t > s.fTime) return false;
+        if (s.fExcl && r.w != null && r.w < s.fExcl) return false;
+        return true;
+      });
+      if (!p.length) continue;
+      const pick = p[Math.floor(Math.random() * p.length)];
+      taken.push(pick.id);
+      week[i] = { id: pick.id, locked: false };
+    }
+    this.setState({ week, flash: -2 });
+    clearTimeout(this._ft);
+    this._ft = setTimeout(() => this.setState({ flash: -1 }), 700);
+  }
+  toggleLock(i) {
+    const week = this.state.week.slice();
+    week[i] = { id: week[i].id, locked: !week[i].locked };
+    this.setState({ week });
+  }
+  assignFirstFree(id) {
+    const week = this.state.week.slice();
+    let i = week.findIndex((x) => !x.locked);
+    if (i < 0) i = 0;
+    week[i] = { id, locked: false };
+    this.setState({ week, screen: "planner", flash: i });
+    clearTimeout(this._ft);
+    this._ft = setTimeout(() => this.setState({ flash: -1 }), 900);
+  }
+
+  buildList() {
+    const map = {};
+    this.state.week.forEach((slot, di) => {
+      const r = this.recipe(slot.id);
+      if (!r) return;
+      r.i.forEach((row) => {
+        const name = row[2];
+        if (!map[name]) map[name] = { name: name, parts: {}, some: false, uses: [] };
+        const m = map[name];
+        if (row[0] == null) m.some = true;
+        else { const u = row[1] || "item"; m.parts[u] = (m.parts[u] || 0) + row[0]; }
+        m.uses.push({ day: this.dayNames[di], recipe: r.n, qty: this.qtyText(row[0], row[1]) });
+      });
+    });
+    return map;
+  }
+
+  // --- render -------------------------------------------------------
+  renderVals() {
+    const s = this.state;
+    const showUsedIn = this.props.showUsedIn ?? true;
+    const v = {};
+
+    v.navItems = [
+      { value: "planner", label: "Week planner" },
+      { value: "week", label: "This week" },
+      { value: "list", label: "Shopping list" },
+      { value: "library", label: "Recipe library" },
+      { value: "detail", label: "Recipe" },
+      { value: "admin", label: "Ingredients" }
+    ];
+    const narrow = (s.vw || 1440) < 900;
+    const navHidden = (s.screen === "list" || s.screen === "week") && narrow;
+    v.narrow = narrow;
+    v.weekPageStyle = narrow
+      ? { width: "100%", maxWidth: 640, margin: "0 auto", padding: "16px 16px 64px", display: "flex", flexDirection: "column", gap: 16 }
+      : { width: "100%", maxWidth: 760, padding: "32px 32px 64px", display: "flex", flexDirection: "column", gap: 20 };
+    v.navHidden = navHidden;
+    v.navStyle = navHidden
+      ? { display: "none" }
+      : { position: "sticky", top: 0, height: "100vh", flex: "0 0 232px" };
+    v.screen = s.screen;
+    v.goScreen = (x) => this.setState({ screen: x });
+    v.goList = () => this.setState({ screen: "list" });
+    v.goPlanner = () => this.setState({ screen: "planner" });
+    v.goLibrary = () => this.setState({ screen: "library" });
+    v.isPlanner = s.screen === "planner";
+    v.isWeek = s.screen === "week";
+    v.isList = s.screen === "list";
+    v.isLibrary = s.screen === "library";
+    v.isDetail = s.screen === "detail";
+    v.isAdmin = s.screen === "admin";
+    v.smallBtnStyle = { width: 40, height: 40 };
+    v.denseFieldStyle = { minHeight: 40, fontSize: 14 };
+    v.bigInputStyle = { fontSize: 22, fontFamily: "var(--font-display)", fontWeight: 700, minHeight: 56 };
+
+    // filters
+    v.weekRange = "MON 3 – SUN 9 AUG";
+    v.fVeg = s.fVeg;
+    v.fVegLabel = s.fVeg ? "On" : "Off";
+    v.setVeg = (x) => this.setState({ fVeg: x });
+    v.fTime = s.fTime;
+    v.setTime = (e) => this.setState({ fTime: parseInt(e.target.value, 10) });
+    v.timeOptions = [{ value: 0, label: "Any" }, { value: 20, label: "20 min" }, { value: 30, label: "30 min" }, { value: 40, label: "40 min" }, { value: 60, label: "60 min" }];
+    v.fExcl = s.fExcl;
+    v.setExcl = (e) => this.setState({ fExcl: parseInt(e.target.value, 10) });
+    v.weekOptions = [{ value: 0, label: "No restriction" }, { value: 2, label: "2 weeks" }, { value: 3, label: "3 weeks" }, { value: 4, label: "4 weeks" }, { value: 6, label: "6 weeks" }, { value: 8, label: "8 weeks" }];
+    v.rollWeek = () => this.rollWeek();
+    v.unlockAll = () => this.setState({ week: s.week.map((x) => ({ id: x.id, locked: false })) });
+
+    const poolSize = this.recipes.filter((r) => (!s.fVeg || r.v) && (!s.fTime || r.t <= s.fTime) && (!s.fExcl || r.w == null || r.w >= s.fExcl)).length;
+    v.poolLabel = poolSize + " of 184 in pool";
+
+    // week rows
+    v.days = s.week.map((slot, i) => {
+      const r = this.recipe(slot.id);
+      const flashed = s.flash === i || (s.flash === -2 && !slot.locked);
+      return {
+        day: this.dayNames[i],
+        locked: slot.locked,
+        barStyle: { display: "block", width: 4, height: 44, background: slot.locked ? "#7A104E" : "transparent" },
+        dayStyle: { fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: slot.locked ? 900 : 400, fontSize: 14, color: slot.locked ? "#7A104E" : "#2F3D32" },
+        name: r ? r.n : "—",
+        nameStyle: { fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 19, color: "#2F3D32", background: flashed ? "#FFCCE9" : "transparent", transition: "background-color 200ms cubic-bezier(0.2,0,0,1)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%", display: "block", textAlign: "left" },
+        summary: r ? r.i.map((x) => x[2]).slice(0, 5).join(", ") : "",
+        diet: r ? (r.v ? "VEG" : "MEAT / FISH") : "",
+        dietStyle: r && r.v
+          ? { justifySelf: "start", background: "#FFCCE9", color: "#2F3D32", padding: "3px 8px", fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, fontSize: 12 }
+          : { justifySelf: "start", padding: "3px 0", fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 400, fontSize: 12, color: "rgba(47,61,50,0.7)" },
+        time: r ? r.t + " min" : "",
+        serves: r ? "×" + r.s : "",
+        lockIcon: slot.locked ? "lock" : "unlock",
+        lockVariant: slot.locked ? "primary" : "quiet",
+        lockLabel: (slot.locked ? "Unlock " : "Lock ") + this.dayNames[i],
+        rollLabel: "Re-roll " + this.dayNames[i],
+        onLock: () => this.toggleLock(i),
+        onRoll: () => this.rollSlot(i),
+        onPick: () => this.setState({ pickerFor: i, pickerQuery: "" })
+      };
+    });
+
+    // this week's meals
+    const eaten = s.eaten || {};
+    const eatenCount = s.week.filter((x, i) => eaten[i]).length;
+    v.eatenMeta = eatenCount + " OF 7 EATEN";
+    v.weekMeals = s.week.map((slot, i) => {
+      const r = this.recipe(slot.id);
+      const done = !!eaten[i];
+      return {
+        day: this.dayNames[i],
+        dayStyle: { width: 44, flex: "0 0 auto", fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 900, fontSize: 14, color: done ? "rgba(47,61,50,0.42)" : "#7A104E" },
+        name: r ? r.n : "—",
+        nameStyle: { fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 19, lineHeight: 1.15, textAlign: "left", color: done ? "rgba(47,61,50,0.42)" : "#2F3D32", textDecoration: done ? "line-through" : "none", background: "transparent", border: 0, padding: 0, cursor: "pointer", minHeight: 44, display: "block", width: "100%" },
+        sub: r ? (r.v ? "Veg" : "Meat / fish") + " · " + r.t + " min · serves " + r.s : "",
+        subStyle: { fontSize: 13, color: done ? "rgba(47,61,50,0.42)" : "rgba(47,61,50,0.7)" },
+        boxStyle: { width: 44, height: 44, flex: "0 0 auto", display: "grid", placeItems: "center", cursor: "pointer", background: done ? "#7A104E" : "#FEE5D5", transition: "background-color 120ms cubic-bezier(0.2,0,0,1)" },
+        tickStyle: { width: 16, height: 16, background: done ? "#FFFFFF" : "transparent", clipPath: "polygon(50% 0,100% 50%,50% 100%,0 50%)" },
+        toggleLabel: (done ? "Mark " + this.dayNames[i] + " not eaten" : "Mark " + this.dayNames[i] + " eaten"),
+        onToggle: () => this.setState({ eaten: Object.assign({}, eaten, { [i]: !done }) }),
+        onOpen: () => this.setState({ screen: "detail", detailId: slot.id, detail: null, saved: false })
+      };
+    });
+    v.resetEaten = () => this.setState({ eaten: {} });
+    v.goWeek = () => this.setState({ screen: "week" });
+
+    // shopping list
+    const map = this.buildList();
+    const all = Object.keys(map).map((k) => {
+      const m = map[k];
+      const md = this.meta(k);
+      const parts = Object.keys(m.parts).map((u) => ({ amt: m.parts[u], unit: u }));
+      const lines = parts.map((p) => this.qtyText(p.amt, p.unit));
+      if (m.some) lines.push("some");
+      return { key: k, name: k, cat: md.cat, pantry: md.pantry, lines: lines, uses: m.uses };
+    });
+    const included = all.filter((x) => !x.pantry || s.pantryOverride[x.key]);
+    const suppressed = all.filter((x) => x.pantry && !s.pantryOverride[x.key]);
+
+    const bySection = s.catOrder.map((ci) => {
+      const items = included.filter((x) => x.cat === ci).sort((a, b) => a.name.localeCompare(b.name));
+      return { ci: ci, name: this.cats[ci], items: items };
+    }).filter((sec) => sec.items.length);
+
+    v.listCount = included.length;
+    v.sectionCount = bySection.length;
+    v.railSections = bySection.map((sec) => ({ name: sec.name, count: sec.items.length }));
+    v.suppressedLine = suppressed.length + " pantry staples suppressed. Shown at the foot of the list.";
+
+    const checkedCount = included.filter((x) => s.checked[x.key]).length;
+    v.leftLabel = (included.length - checkedCount) + " of " + included.length + " left";
+    v.progressStyle = { height: "100%", width: (included.length ? (checkedCount / included.length) * 100 : 0) + "%", background: "#7A104E", transition: "width 160ms cubic-bezier(0.2,0,0,1)" };
+
+    const toggle = (k) => this.setState({ checked: Object.assign({}, s.checked, { [k]: !s.checked[k] }) });
+
+    v.listSections = bySection.map((sec) => ({
+      name: sec.name,
+      remaining: sec.items.filter((x) => !s.checked[x.key]).length + " left",
+      items: sec.items.map((it) => {
+        const done = !!s.checked[it.key];
+        return {
+          name: it.name,
+          nameStyle: { fontSize: 18, color: done ? "rgba(47,61,50,0.42)" : "#2F3D32", textDecoration: done ? "line-through" : "none" },
+          usedIn: showUsedIn ? (it.uses.length === 1 ? it.uses[0].day + " · " + it.uses[0].recipe : "USED IN " + it.uses.length + " MEALS") : "",
+          boxStyle: { width: 44, height: 44, flex: "0 0 auto", display: "grid", placeItems: "center", background: done ? "#7A104E" : "#FEE5D5", transition: "background-color 120ms cubic-bezier(0.2,0,0,1)" },
+          tickStyle: { width: 16, height: 16, background: done ? "#FFFFFF" : "transparent", clipPath: "polygon(50% 0,100% 50%,50% 100%,0 50%)" },
+          qtyLines: it.lines.map((t, li) => ({
+            text: li === 0 ? t : "+ " + t,
+            style: { fontFamily: "var(--font-display)", fontWeight: li === 0 ? 700 : 400, fontSize: li === 0 ? 18 : 15, fontVariantNumeric: "tabular-nums", color: done ? "rgba(47,61,50,0.42)" : li === 0 ? "#2F3D32" : "#7A104E", whiteSpace: "nowrap" }
+          })),
+          onToggle: () => toggle(it.key),
+          onTrace: (e) => { e.stopPropagation(); this.setState({ traceKey: it.key }); }
+        };
+      })
+    }));
+
+    v.pantryOpen = s.pantryOpen;
+    v.togglePantry = () => this.setState({ pantryOpen: !s.pantryOpen });
+    v.pantryHeading = "SUPPRESSED — PANTRY STAPLES (" + suppressed.length + ")";
+    v.pantryToggleLabel = s.pantryOpen ? "HIDE" : "SHOW";
+    v.pantryItems = all.filter((x) => x.pantry).map((it) => ({
+      name: it.name,
+      usedIn: it.uses.length + (it.uses.length === 1 ? " meal" : " meals"),
+      qty: it.lines.join(" + "),
+      action: s.pantryOverride[it.key] ? "REMOVE" : "ADD",
+      onAdd: () => this.setState({ pantryOverride: Object.assign({}, s.pantryOverride, { [it.key]: !s.pantryOverride[it.key] }) })
+    }));
+    v.uncheckAll = () => this.setState({ checked: {} });
+
+    // trace dialog
+    v.traceOpen = !!s.traceKey;
+    if (s.traceKey && map[s.traceKey]) {
+      v.traceTitle = s.traceKey;
+      const md = this.meta(s.traceKey);
+      const totals = all.find((x) => x.key === s.traceKey);
+      v.traceSub = totals.lines.length > 1
+        ? "Two recipes measure this differently. Both are shown on the list rather than converted."
+        : "Aggregated from " + map[s.traceKey].uses.length + " meals this week." + (md.pack ? " Usual pack: " + md.pack + "." : "");
+      v.traceRows = map[s.traceKey].uses;
+    } else { v.traceRows = []; v.traceTitle = ""; v.traceSub = ""; }
+    v.closeTrace = () => this.setState({ traceKey: null });
+
+    // picker
+    v.pickerOpen = s.pickerFor >= 0;
+    v.pickerTitle = s.pickerFor >= 0 ? "PICK FOR " + this.dayNames[s.pickerFor] : "";
+    v.pickerQuery = s.pickerQuery;
+    v.setPickerQuery = (e) => this.setState({ pickerQuery: e.target.value });
+    v.closePicker = () => this.setState({ pickerFor: -1 });
+    const pq = s.pickerQuery.toLowerCase();
+    v.pickerRows = this.recipes
+      .filter((r) => !pq || r.n.toLowerCase().indexOf(pq) >= 0 || r.i.some((x) => x[2].indexOf(pq) >= 0))
+      .sort((a, b) => a.n.localeCompare(b.n))
+      .map((r) => ({
+        name: r.n,
+        diet: r.v ? "VEG" : "—",
+        dietStyle: { fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, fontSize: 12, color: r.v ? "#7A104E" : "rgba(47,61,50,0.6)" },
+        time: r.t + "m",
+        last: this.lastLabel(r.w),
+        lastStyle: { fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 400, fontSize: 12, textAlign: "right", color: r.w != null && r.w < 3 ? "#C01B2F" : "rgba(47,61,50,0.75)" },
+        onPick: () => {
+          const week = s.week.slice();
+          week[s.pickerFor] = { id: r.id, locked: week[s.pickerFor].locked };
+          this.setState({ week: week, pickerFor: -1, flash: s.pickerFor });
+        }
+      }));
+
+    // library
+    const q = s.query.toLowerCase();
+    let rows = this.recipes.filter((r) => {
+      if (q && r.n.toLowerCase().indexOf(q) < 0) return false;
+      if (s.libDiet === "veg" && !r.v) return false;
+      if (s.libDiet === "meat" && r.v) return false;
+      if (s.libTime && r.t > s.libTime) return false;
+      if (s.libIng && !r.i.some((x) => x[2] === s.libIng)) return false;
+      return true;
+    });
+    rows = rows.sort((a, b) => s.libSort === "time" ? a.t - b.t : s.libSort === "last" ? (b.w == null ? 999 : b.w) - (a.w == null ? 999 : a.w) : a.n.localeCompare(b.n));
+    v.libMeta = rows.length + " OF 184 SHOWN";
+    v.query = s.query;
+    v.setQuery = (e) => this.setState({ query: e.target.value });
+    v.libDiet = s.libDiet;
+    v.setLibDiet = (e) => this.setState({ libDiet: e.target.value });
+    v.dietOptions = [{ value: "all", label: "All" }, { value: "veg", label: "Vegetarian" }, { value: "meat", label: "Meat / fish" }];
+    v.libTime = s.libTime;
+    v.setLibTime = (e) => this.setState({ libTime: parseInt(e.target.value, 10) });
+    v.libIng = s.libIng;
+    v.setLibIng = (e) => this.setState({ libIng: e.target.value });
+    v.ingOptions = [{ value: "", label: "Any" }].concat(Object.keys(this.ing).sort().map((k) => ({ value: k, label: k })));
+    v.libSort = s.libSort;
+    v.setLibSort = (e) => this.setState({ libSort: e.target.value });
+    v.sortOptions = [{ value: "name", label: "Name" }, { value: "time", label: "Cook time" }, { value: "last", label: "Last eaten" }];
+    v.newRecipe = () => this.setState({ screen: "detail", detailId: 0, detail: { n: "", v: false, t: 30, s: 2, m: "", l: "", i: [[null, "", ""]] }, saved: false });
+    v.libRows = rows.map((r) => ({
+      name: r.n,
+      diet: r.v ? "VEG" : "—",
+      dietStyle: { fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, fontSize: 12, color: r.v ? "#7A104E" : "rgba(47,61,50,0.6)" },
+      ings: r.i.map((x) => x[2]).join(", "),
+      time: r.t + " min",
+      serves: "×" + r.s,
+      last: this.lastLabel(r.w),
+      lastStyle: { fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 400, fontSize: 12, textAlign: "right", color: r.w != null && r.w < 3 ? "#C01B2F" : "rgba(47,61,50,0.75)" },
+      addStyle: { minHeight: 40 },
+      onOpen: () => this.setState({ screen: "detail", detailId: r.id, detail: null, saved: false }),
+      onAdd: () => this.assignFirstFree(r.id)
+    }));
+
+    // detail
+    const base = s.detail || (() => { const r = this.recipe(s.detailId); return r ? { n: r.n, v: !!r.v, t: r.t, s: r.s, m: r.m || "", l: r.l || "", i: r.i.map((x) => x.slice()) } : { n: "", v: false, t: 30, s: 2, m: "", l: "", i: [] }; })();
+    const patch = (o) => this.setState({ detail: Object.assign({}, base, o), saved: false });
+    v.detailMeta = s.detailId ? "RECIPE " + s.detailId + " · LAST EATEN " + this.lastLabel((this.recipe(s.detailId) || {}).w).toUpperCase() : "NEW RECIPE";
+    v.dName = base.n;
+    v.setDName = (e) => patch({ n: e.target.value });
+    v.dServes = String(base.s);
+    v.setDServes = (e) => patch({ s: e.target.value });
+    v.dTime = String(base.t);
+    v.setDTime = (e) => patch({ t: e.target.value });
+    v.dVeg = base.v;
+    v.dVegLabel = base.v ? "Yes" : "No";
+    v.setDVeg = (x) => patch({ v: x });
+    v.methodIsLink = !!base.l;
+    v.methodIsText = !base.l;
+    v.methodTextVariant = base.l ? "quiet" : "secondary";
+    v.methodLinkVariant = base.l ? "secondary" : "quiet";
+    v.useMethodText = () => patch({ l: "" });
+    v.useMethodLink = () => patch({ l: base.l || "https://" });
+    v.dLink = base.l;
+    v.setDLink = (e) => patch({ l: e.target.value });
+    v.dMethod = base.m;
+    v.setDMethod = (e) => patch({ m: e.target.value });
+    v.saveLabel = s.saved ? "SAVED" : "SAVE RECIPE";
+    v.saveDetail = () => this.setState({ saved: true });
+    v.addDetailToWeek = () => { if (s.detailId) this.assignFirstFree(s.detailId); };
+    v.ingCountLabel = base.i.length + " LINES";
+    v.unitOptions = this.units.map((u) => ({ value: u, label: u || "—" }));
+    v.canonNames = Object.keys(this.ing).sort().map((k) => ({ name: k }));
+    const setIng = (arr) => patch({ i: arr });
+    v.dIngs = base.i.map((row, ri) => ({
+      amt: row[0] == null ? "" : String(row[0]),
+      unit: row[1] || "",
+      name: row[2] || "",
+      onAmt: (e) => { const a = base.i.map((x) => x.slice()); a[ri][0] = e.target.value === "" ? null : Number(e.target.value); setIng(a); },
+      onUnit: (e) => { const a = base.i.map((x) => x.slice()); a[ri][1] = e.target.value; setIng(a); },
+      onName: (e) => { const a = base.i.map((x) => x.slice()); a[ri][2] = e.target.value; setIng(a); },
+      onKey: (e) => { if (e.key === "Enter") { const a = base.i.map((x) => x.slice()); a.splice(ri + 1, 0, [null, "", ""]); setIng(a); } },
+      onUp: () => { if (!ri) return; const a = base.i.map((x) => x.slice()); const t = a[ri - 1]; a[ri - 1] = a[ri]; a[ri] = t; setIng(a); },
+      onDown: () => { if (ri === base.i.length - 1) return; const a = base.i.map((x) => x.slice()); const t = a[ri + 1]; a[ri + 1] = a[ri]; a[ri] = t; setIng(a); },
+      onRemove: () => { const a = base.i.map((x) => x.slice()); a.splice(ri, 1); setIng(a); }
+    }));
+    v.addIngRow = () => setIng(base.i.map((x) => x.slice()).concat([[null, "", ""]]));
+
+    // admin
+    const aq = s.adminQuery.toLowerCase();
+    const names = Object.keys(this.ing).filter((k) => !aq || k.indexOf(aq) >= 0 || (this.ing[k][2] || "").indexOf(aq) >= 0).sort();
+    const selCount = Object.keys(s.adminSel).filter((k) => s.adminSel[k]).length;
+    v.adminMeta = names.length + " OF 204 CANONICAL ITEMS";
+    v.adminQuery = s.adminQuery;
+    v.setAdminQuery = (e) => this.setState({ adminQuery: e.target.value });
+    v.noSelection = selCount === 0;
+    v.selectionLabel = selCount ? selCount + " selected" : "";
+    v.bulkCat = s.bulkCat;
+    v.bulkCatOptions = [{ value: "", label: "—" }].concat(this.cats.map((c, i) => ({ value: String(i), label: c })));
+    v.catOptions = this.cats.map((c, i) => ({ value: String(i), label: c }));
+    v.applyBulkCat = (e) => {
+      const ci = parseInt(e.target.value, 10);
+      if (isNaN(ci)) return;
+      const edits = Object.assign({}, s.ingEdits);
+      Object.keys(s.adminSel).forEach((k) => { if (s.adminSel[k]) edits[k] = Object.assign({}, edits[k], { cat: ci }); });
+      this.setState({ ingEdits: edits, bulkCat: "", adminSel: {} });
+    };
+    v.bulkPantry = () => {
+      const edits = Object.assign({}, s.ingEdits);
+      Object.keys(s.adminSel).forEach((k) => { if (s.adminSel[k]) { const m = this.meta(k); edits[k] = Object.assign({}, edits[k], { pantry: m.pantry ? 0 : 1 }); } });
+      this.setState({ ingEdits: edits, adminSel: {} });
+    };
+    v.adminRows = names.map((k) => {
+      const m = this.meta(k);
+      const sel = !!s.adminSel[k];
+      const edit = (o) => this.setState({ ingEdits: Object.assign({}, s.ingEdits, { [k]: Object.assign({}, s.ingEdits[k], o) }) });
+      return {
+        name: k,
+        aliases: m.aliases || "—",
+        cat: String(m.cat),
+        pack: m.pack,
+        pantryMark: m.pantry ? "✓" : "",
+        selectStyle: { width: 24, height: 24, justifySelf: "center", cursor: "pointer", background: sel ? "#7A104E" : "#FEE5D5", display: "block" },
+        pantryStyle: { width: 30, height: 30, display: "grid", placeItems: "center", cursor: "pointer", background: m.pantry ? "#FFCCE9" : "transparent", color: "#7A104E", fontFamily: "var(--font-display)", fontWeight: 900, fontSize: 15, border: m.pantry ? "0" : "1px solid rgba(47,61,50,0.25)" },
+        onSelect: () => this.setState({ adminSel: Object.assign({}, s.adminSel, { [k]: !sel }) }),
+        onCat: (e) => edit({ cat: parseInt(e.target.value, 10) }),
+        onPantry: () => edit({ pantry: m.pantry ? 0 : 1 }),
+        onPack: (e) => edit({ pack: e.target.value })
+      };
+    });
+    v.catOrderRows = s.catOrder.map((ci, i) => ({
+      n: String(i + 1),
+      name: this.cats[ci],
+      onUp: () => { if (!i) return; const a = s.catOrder.slice(); const t = a[i - 1]; a[i - 1] = a[i]; a[i] = t; this.setState({ catOrder: a }); },
+      onDown: () => { if (i === s.catOrder.length - 1) return; const a = s.catOrder.slice(); const t = a[i + 1]; a[i + 1] = a[i]; a[i] = t; this.setState({ catOrder: a }); }
+    }));
+
+    return v;
+  }
+}
+</script>
+</body>
+</html>

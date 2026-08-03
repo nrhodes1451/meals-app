@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Penrose design tokens
+   Modern art deco. Geometric, symmetrical, high contrast, unfussy.
+
+   Rules that are not expressible as tokens:
+     - One screen uses ground + paper + ink + ONE accent family. Never all 13.
+     - Gold is the only colour permitted alongside another accent, and only
+       as hairline rules.
+     - The warm ramp (hot/accent/soft/gold) never carries text on a light
+       background. Fills only.
+     - There is no blue in this system. Do not add one.
+     - No gradients, no shadows, no blur. Depth comes from a hard keyline.
+   ========================================================================== */
+
+:root {
+  /* --- Ground and ink ---------------------------------------------------- */
+  --pen-ground:        #FEE5D5;  /* default page canvas - warm cream, not white */
+  --pen-paper:         #FFFFFF;  /* cards, panels, list surfaces */
+  --pen-ink:           #2F3D32;  /* body text - near-black green */
+  --pen-hard-black:    #000000;  /* rules, keylines, linework. Not body text */
+
+  /* --- Primary: magenta ramp -------------------------------------------- */
+  --pen-primary:       #7A104E;  /* buttons, active state, links, primary geometry */
+  --pen-primary-lift:  #C23585;  /* hover, secondary emphasis, mid-tone geometry */
+  --pen-primary-tint:  #FFCCE9;  /* selected rows, badges, soft fills */
+
+  /* --- Accent: warm ramp. Fills and geometry only ----------------------- */
+  --pen-accent-hot:    #EB4414;
+  --pen-accent:        #F99B1D;
+  --pen-accent-soft:   #FBAE42;
+  --pen-accent-gold:   #E9CB4F;  /* the deco "metallic" - hairline rules only */
+
+  /* --- Semantic ---------------------------------------------------------- */
+  --pen-success:       #446048;
+  --pen-warning:       #F99B1D;
+  --pen-danger:        #C01B2F;
+
+  /* --- Text roles. Only these three carry body copy --------------------- */
+  --pen-text:          var(--pen-ink);
+  --pen-text-muted:    #5C6B5F;   /* ink lightened; still 4.5:1 on ground */
+  --pen-text-accent:   var(--pen-primary);
+  --pen-text-on-fill:  var(--pen-ink);   /* text sitting on any warm fill */
+  --pen-text-inverse:  var(--pen-paper); /* text on ink or primary */
+
+  /* --- Surfaces ---------------------------------------------------------- */
+  --pen-surface:            var(--pen-paper);
+  --pen-surface-sunk:       var(--pen-ground);
+  --pen-surface-selected:   var(--pen-primary-tint);
+  --pen-surface-inverse:    var(--pen-ink);
+
+  /* --- Lines. The system divides with rules, not shadows or whitespace --- */
+  --pen-rule:          1px solid var(--pen-hard-black);
+  --pen-rule-hair:     1px solid var(--pen-accent-gold);
+  --pen-rule-heavy:    2px solid var(--pen-hard-black);
+  --pen-rule-double:   3px double var(--pen-hard-black);  /* under section heads */
+
+  /* --- Radius. This system is not rounded -------------------------------- */
+  --pen-radius-none:   0px;
+  --pen-radius:        2px;
+  --pen-radius-max:    2px;   /* hard ceiling. Chamfer instead of curving */
+
+  /* --- Type -------------------------------------------------------------- */
+  --pen-font-display:  'Roboto Condensed', 'Roboto', system-ui, sans-serif;
+  --pen-font-body:     'Roboto', system-ui, sans-serif;
+  --pen-font-mono:     'Roboto Mono', ui-monospace, monospace;
+
+  --pen-tracking-display: 0.10em;  /* uppercase headings. Range 0.08-0.12em */
+  --pen-tracking-body:    0em;
+
+  /* Hard weight contrast only. Pair thin with black; avoid the middle. */
+  --pen-weight-thin:   300;
+  --pen-weight-body:   400;
+  --pen-weight-bold:   700;
+  --pen-weight-black:  900;
+
+  --pen-text-xs:       0.75rem;   /* 12px - captions, counts */
+  --pen-text-sm:       0.875rem;  /* 14px - dense table rows */
+  --pen-text-base:     1rem;      /* 16px - body */
+  --pen-text-lg:       1.25rem;   /* 20px - list items on the shopping list */
+  --pen-text-xl:       1.5rem;    /* 24px - section heads */
+  --pen-text-2xl:      2rem;      /* 32px - screen titles */
+  --pen-text-3xl:      3rem;      /* 48px - display */
+
+  --pen-leading-tight: 1.2;
+  --pen-leading-body:  1.5;
+
+  /* --- Space. 8px scale --------------------------------------------------- */
+  --pen-space-1:  0.25rem;   /*  4px */
+  --pen-space-2:  0.5rem;    /*  8px */
+  --pen-space-3:  0.75rem;   /* 12px */
+  --pen-space-4:  1rem;      /* 16px */
+  --pen-space-6:  1.5rem;    /* 24px */
+  --pen-space-8:  2rem;      /* 32px */
+  --pen-space-12: 3rem;      /* 48px */
+  --pen-space-16: 4rem;      /* 64px */
+
+  /* --- Interaction. Hard constraints, not preferences -------------------- */
+  --pen-touch-min:     44px;
+  --pen-touch:         48px;   /* preferred. Shopping list rows use this */
+  --pen-focus-ring:    2px solid var(--pen-hard-black);
+  --pen-focus-offset:  2px;
+}
+
+/* Visible keyboard focus everywhere. Do not remove. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--pen-focus-ring);
+  outline-offset: var(--pen-focus-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

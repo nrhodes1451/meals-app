@@ -1,0 +1,14 @@
+:root{
+--radius-none:0px;
+--radius-soft:2px;
+--border-hair:1px;
+--border-heavy:2px;
+--border-block:4px;
+
+--keyline:1px solid var(--pen-ink);
+--keyline-heavy:2px solid var(--pen-ink);
+--keyline-metallic:1px solid var(--pen-accent-gold);
+
+--focus-outline:2px solid var(--pen-hard-black);
+--focus-offset:2px;
+}

@@ -1,0 +1,54 @@
+:root{
+/* --- ink and ground. Page is white; cream is the softest step of the warm ramp, not a canvas. --- */
+--pen-ink:#2F3D32;
+--pen-hard-black:#000000;
+--pen-paper:#FFFFFF;
+--pen-ground:#FFFFFF; /* page + text on dark fills */
+--pen-accent-tint:#FEE5D5; /* softest warm-ramp fill */
+/* --- primary (magenta ramp) --- */
+--pen-primary:#7A104E;
+--pen-primary-lift:#C23585;
+--pen-primary-tint:#FFCCE9;
+/* --- accent (warm ramp) fills + geometry only, never text on light --- */
+--pen-accent-hot:#EB4414;
+--pen-accent-blush:#FEE5D5;
+--pen-accent:#F99B1D;
+--pen-accent-soft:#FBAE42;
+--pen-accent-gold:#E9CB4F;
+/* --- semantic --- */
+--pen-success:#446048;
+--pen-warning:#F99B1D;
+--pen-danger:#C01B2F;
+
+/* --- semantic aliases: use these in components --- */
+--text-body:var(--pen-ink);
+--text-strong:var(--pen-primary);
+--text-link:var(--pen-primary);
+--text-large:var(--pen-primary-lift);
+--text-inverse:var(--pen-ground);
+--text-on-fill:var(--pen-ink);
+
+--surface-page:var(--pen-paper);
+--surface-blush:var(--pen-accent-blush);
+--surface-card:var(--pen-paper);
+--surface-dark:var(--pen-ink);
+--surface-selected:var(--pen-primary-tint);
+--surface-fill-hot:var(--pen-accent-hot);
+--surface-fill:var(--pen-accent);
+--surface-fill-soft:var(--pen-accent-soft);
+--surface-accent-tint:var(--pen-accent-tint);
+--surface-fill-blush:var(--pen-accent-blush);
+
+--rule:var(--pen-ink);
+--rule-strong:var(--pen-hard-black);
+--rule-metallic:var(--pen-accent-gold);
+
+--action:var(--pen-primary);
+--action-hover:var(--pen-primary-lift);
+--action-quiet-bg:var(--pen-primary-tint);
+
+--focus-ring:var(--pen-hard-black);
+--status-ok:var(--pen-success);
+--status-warn:var(--pen-warning);
+--status-bad:var(--pen-danger);
+}
