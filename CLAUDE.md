@@ -3,9 +3,10 @@
 A private meal planning and shopping list app for a household of two. Replaces a Google
 Sheet used weekly since 2014.
 
-Each week the household picks 7 evening meals from a library of ~170 recipes. The app
-generates a consolidated shopping list ordered by supermarket aisle. Planning happens on
-a laptop or iPad at home; the list is used on a phone, in the shop.
+Each week the household picks evening meals from a library of ~170 recipes. A week
+defaults to 7 meals and can be grown or shrunk (1-14). Slots are numbered, not tied to
+weekdays. The app generates a consolidated shopping list ordered by supermarket aisle.
+Planning happens on a laptop or iPad at home; the list is used on a phone, in the shop.
 
 This is a private tool, not a product. There is no signup, no onboarding, no marketing
 copy, no illustrated empty states, no feature discovery. Two users, both of whom know
@@ -15,7 +16,9 @@ exactly what it does. Optimise for the speed of a ritual performed every week.
 
 - Next.js (App Router), TypeScript, React Server Components
 - Tailwind + shadcn/ui
-- Postgres via Neon, Drizzle ORM
+- Postgres via Neon, Drizzle ORM. Local development runs the same schema on PGlite
+  (Postgres in-process) so the app needs no infrastructure to run; set `DATABASE_URL` to
+  use Neon instead.
 - Deployed to Cloud Run
 - Auth is Identity-Aware Proxy at the infrastructure layer, restricted to two Google
   accounts
@@ -59,13 +62,16 @@ Bind to the CSS custom properties. Do not hardcode hex values in components.
 Rules the tokens cannot express:
 
 - One screen uses ground + paper + ink + ONE accent family. Never all 13 colours.
-- The warm ramp (`--pen-accent-hot`, `--pen-accent`, `--pen-accent-soft`,
-  `--pen-accent-gold`) never carries text on a light background. Fills only.
+- The page canvas is plain white. `--pen-accent-blush` is the softest step of the warm
+  ramp - a tinted fill, never a background.
+- The warm ramp (`--pen-accent-blush`, `--pen-accent-hot`, `--pen-accent`,
+  `--pen-accent-soft`, `--pen-accent-gold`) never carries text on a light background.
+  Fills only.
 - Gold is the deco metallic: hairline rules and fine linework only.
 - There is no blue in this palette. Do not invent one. For informational states use ink
   on `--pen-primary-tint`.
-- No gradients, no drop shadows, no blur, no glassmorphism. Depth is a 1px hard-black
-  keyline.
+- No gradients, no drop shadows, no blur, no glassmorphism. Depth is a 1px ink rule:
+  solid ink for structure, ink at 25% between rows. Hard black is for focus rings only.
 - Border radius 0 to 2px. Chamfer or step corners rather than curving them.
 - Headings uppercase, Roboto Condensed, tracking 0.08-0.12em, weight 700-900.
 - Divide with rules, not cards and not whitespace.
@@ -92,6 +98,9 @@ See `db/schema.ts`. Key points:
 - **Shopping list quantities are derived on read, not stored.** The
   `shopping_list_items` table holds only per-shop state: checked, manually added,
   staple overrides.
+- **`plan_slots.eaten`** tracks meals ticked off as they are cooked. This is the one
+  column added to the handed-over schema. "Last eaten" is derived from plan history, not
+  stored on the recipe.
 
 ## Quantity aggregation - the rule
 
@@ -127,7 +136,8 @@ in the pool.
 
 Individual slots must be independently re-rollable and lockable. Locking a slot then
 re-rolling the rest is the core interaction. There is also a "roll the whole week"
-action that respects locks.
+action that respects locks. Slots can be added and removed; positions stay contiguous
+and are shown as 1, 2, 3, ... not as weekdays.
 
 Do not build a constrained optimiser. It is deliberately deferred until pack size data
 has accumulated.
@@ -153,3 +163,13 @@ the application. `seed/review.md` lists the judgement calls made during migratio
 - Active voice on controls. The button that says "Roll week" produces "Week rolled".
 - Sentence case in body copy. Uppercase only for display headings.
 - Errors state what went wrong and how to fix it. They do not apologise.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

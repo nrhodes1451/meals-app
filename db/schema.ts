@@ -126,11 +126,13 @@ export const planSlots = pgTable('plan_slots', {
   id: serial('id').primaryKey(),
   planId: integer('plan_id').notNull()
     .references(() => plans.id, { onDelete: 'cascade' }),
-  /** 0-6. Not tied to a weekday - meals are cooked in whatever order suits. */
+  /** Contiguous from 0. Number of slots varies by week; not a weekday. */
   position: integer('position').notNull(),
   recipeId: integer('recipe_id').references(() => recipes.id),
   /** Held fixed when re-rolling the rest of the week. */
   locked: boolean('locked').notNull().default(false),
+  /** Ticked off as the meal is cooked. Also the basis of "last eaten". */
+  eaten: boolean('eaten').notNull().default(false),
 }, (t) => ({
   planPositionIdx: uniqueIndex('plan_slots_plan_position_idx').on(t.planId, t.position),
 }));
