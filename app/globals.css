@@ -1,0 +1,139 @@
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+
+/*
+  The Penrose tokens are the only palette, type ramp and spacing scale reachable from
+  utilities. Tailwind's own defaults are wiped rather than extended: this system has no
+  blue, no shadows, no blur and no radius above 2px, and the cheapest way to keep it that
+  way is to make the off-system values impossible to write.
+*/
+@theme inline {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-ground: var(--pen-ground);
+  --color-paper: var(--pen-paper);
+  --color-ink: var(--pen-ink);
+  --color-ink-15: var(--pen-ink-15);
+  --color-ink-25: var(--pen-ink-25);
+  --color-ink-70: var(--pen-ink-70);
+  --color-scrim: var(--pen-scrim);
+  --color-focus: var(--pen-hard-black);
+
+  --color-primary: var(--pen-primary);
+  --color-primary-lift: var(--pen-primary-lift);
+  --color-primary-tint: var(--pen-primary-tint);
+  --color-primary-tint-lift: var(--pen-primary-tint-lift);
+  --color-danger-deep: var(--pen-danger-deep);
+
+  --color-blush: var(--pen-accent-blush);
+  --color-accent-hot: var(--pen-accent-hot);
+  --color-accent: var(--pen-accent);
+  --color-accent-soft: var(--pen-accent-soft);
+  --color-gold: var(--pen-accent-gold);
+
+  --color-success: var(--pen-success);
+  --color-warning: var(--pen-warning);
+  --color-danger: var(--pen-danger);
+
+  --color-muted: var(--pen-text-muted);
+  --color-inverse: var(--pen-text-inverse);
+  --color-large: var(--pen-text-large);
+
+  --font-*: initial;
+  --font-body: var(--pen-font-body);
+  --font-display: var(--pen-font-display);
+
+  --text-*: initial;
+  --text-xs: var(--pen-text-xs);
+  --text-sm: var(--pen-text-sm);
+  --text-sm-plus: var(--pen-text-sm-plus);
+  --text-base: var(--pen-text-base);
+  --text-md: var(--pen-text-md);
+  --text-lg: var(--pen-text-lg);
+  --text-xl: var(--pen-text-xl);
+  --text-2xl: var(--pen-text-2xl);
+  --text-3xl: var(--pen-text-3xl);
+  --text-figure: var(--pen-figure);
+
+  --font-weight-*: initial;
+  --font-weight-thin: var(--pen-weight-thin);
+  --font-weight-normal: var(--pen-weight-body);
+  --font-weight-bold: var(--pen-weight-bold);
+  --font-weight-black: var(--pen-weight-black);
+
+  --tracking-*: initial;
+  --tracking-display: var(--pen-tracking-display);
+  --tracking-label: var(--pen-tracking-label);
+  --tracking-body: var(--pen-tracking-body);
+
+  --leading-*: initial;
+  --leading-tight: var(--pen-leading-tight);
+  --leading-body: var(--pen-leading-body);
+
+  --radius-*: initial;
+  --radius-pen: var(--pen-radius);
+
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --blur-*: initial;
+  --text-shadow-*: initial;
+
+  --ease-*: initial;
+  --ease-pen: var(--pen-ease);
+
+  --spacing-1: var(--pen-space-1);
+  --spacing-2: var(--pen-space-2);
+  --spacing-3: var(--pen-space-3);
+  --spacing-4: var(--pen-space-4);
+  --spacing-6: var(--pen-space-6);
+  --spacing-8: var(--pen-space-8);
+  --spacing-10: var(--pen-space-10);
+  --spacing-12: var(--pen-space-12);
+  --spacing-16: var(--pen-space-16);
+  --spacing-touch-min: var(--pen-touch-min);
+  --spacing-touch: var(--pen-touch);
+  --spacing-touch-lg: var(--pen-touch-lg);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--pen-ground);
+    color: var(--pen-text);
+    font-family: var(--pen-font-body);
+    font-size: var(--pen-text-base);
+    font-weight: var(--pen-weight-body);
+    line-height: var(--pen-leading-body);
+  }
+
+  /* Two casing registers, no third. Display roles are uppercase and tracked. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--pen-font-display);
+    font-weight: var(--pen-weight-black);
+    letter-spacing: var(--pen-tracking-display);
+    line-height: var(--pen-leading-tight);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  a {
+    color: var(--pen-text-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Figures are the content on most of these screens. */
+  .pen-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
