@@ -1,10 +1,55 @@
 # Meal planner
 
-Private meal planning and shopping list app for a household of two. See
-[CLAUDE.md](CLAUDE.md) for the product and design rules, and [PLAN.md](PLAN.md) for the
-build plan and the open questions.
+A private meal planning and shopping list app for a household of two. Each week we pick
+evening meals from a library of ~170 recipes; the app builds a consolidated shopping list
+ordered by supermarket aisle. Planning happens at home on a laptop or iPad; the list is
+used one-handed on a phone in the shop.
 
-## Running it
+It replaces a Google Sheet we have used weekly since 2014.
+
+**Live:** [meals.penrose.tools](https://meals.penrose.tools) (household access only)
+
+## What it does
+
+- **Week planner** — roll a variable-length week (1–14 meals) from a filtered pool.
+  Lock the meals you want to keep, re-roll the rest. Filters cover vegetarian, cook time,
+  and how recently a recipe was last cooked.
+- **Live shopping list** — quantities are derived on read from the planned recipes, never
+  stored as a snapshot. Items group by aisle; pantry staples are suppressed by default and
+  can be restored without leaving the list.
+- **This week** — tick meals off as they are cooked.
+- **Recipe library** — search and filter ~170 recipes, including structured ingredients
+  with canonical names and aliases (so `carrot` / `carrots` collapse to one thing you buy).
+- **Ingredients admin** — fix data quality in place: aliases, aisle order, pantry flags.
+
+Accessibility is a hard constraint: one of us has limited fine motor control on bad days.
+Touch targets are at least 44×44px, every reorder has a button alternative, and nothing
+depends on precision gestures.
+
+## Stack
+
+- **Next.js** (App Router) and TypeScript, React Server Components
+- **Postgres** via Neon in production; **PGlite** locally so the app runs with no
+  infrastructure
+- **Drizzle ORM**, server actions for mutations (no separate API layer)
+- **Tailwind** with a custom Penrose design system (modern art deco: geometric, high
+  contrast, flat)
+- **Cloud Run**, scaled to zero when idle
+- **Identity-Aware Proxy** at the infrastructure layer — two Google accounts, no
+  app-level auth
+
+## Design highlights
+
+Quantity aggregation is the interesting bit. Recipe lines use structured amounts and
+units across dimensions (mass, volume, count). The shopping list sums within a dimension
+(converting kg→g, l→ml) and keeps incompatible buckets separate, so an ingredient can
+correctly render as `onions: 1, 2 bags, 3 tins, 300g` rather than forcing a false
+conversion.
+
+Seed data is the normalised output of a one-off migration from the original sheet:
+170 recipes, 179 canonical ingredients, 11 store categories.
+
+## Running locally
 
 ```bash
 npm install
@@ -12,49 +57,41 @@ npm run db:reset   # migrate, seed, verify
 npm run dev
 ```
 
-There is no database to install. With `DATABASE_URL` unset the app runs the schema on
-PGlite, a real Postgres compiled to wasm, storing data in `.pglite/`. Set `DATABASE_URL`
-to a Neon connection string for deployed environments; the schema and migrations are the
-same either way.
+With `DATABASE_URL` unset, the schema runs on PGlite (Postgres in-process) and stores
+data under `.pglite/`. Point `DATABASE_URL` at Neon for a remote database; migrations are
+the same either way.
 
-PGlite is single-process, so stop the dev server before running `npm run seed` or
-`npm run db:reset`.
+PGlite is single-process — stop the dev server before `npm run seed` or `npm run db:reset`.
 
-## Scripts
+### Useful scripts
 
-- `npm run dev` / `build` / `start` - Next.js
-- `npm run lint` - ESLint, including the Penrose rule that bans raw hex colours in
-  components
-- `npm run typecheck` - `tsc --noEmit`
-- `npm test` - vitest, covering quantity aggregation
-- `npm run db:generate` - regenerate SQL migrations from `db/schema.ts`
-- `npm run db:migrate` - apply migrations (`-- --fresh` wipes the local PGlite directory)
-- `npm run seed` - load `seed/*.json`
-- `npm run verify:seed` - assert the seeded counts
-- `npm run db:reset` - fresh migrate, seed and verify in one go
-- `npm run check:contrast` - assert the token colour pairs meet 4.5:1
+| Script | Purpose |
+| --- | --- |
+| `npm run dev` / `build` / `start` | Next.js |
+| `npm run lint` / `typecheck` / `test` | Checks |
+| `npm run db:reset` | Fresh migrate, seed, and verify |
+| `npm run db:generate` / `db:migrate` | Schema → SQL → apply |
+| `npm run seed` / `verify:seed` | Load and assert seed data |
 
-## Deploying
+## Deploy
 
-Cloud Run (`meals-492311`, `us-east4`) scaled to zero, Neon in `us-east-2`, hostname
-`meals.penrose.tools`, and Identity-Aware Proxy on the Cloud Run service - no load balancer.
-There is no application-level auth. See [docs/deploy.md](docs/deploy.md).
+Deployed to Cloud Run (scale-to-zero) with Neon Postgres and IAP. Custom domain, no load
+balancer. See [docs/deploy.md](docs/deploy.md) for the full setup and release steps.
+
+```bash
+npm run lint && npm run typecheck && npm test
+gcloud run deploy meal-planner --source . --region us-east4
+```
 
 ## Layout
 
 ```
-app/         screens, one directory per route
-components/  penrose/ primitives, then one directory per screen
-db/          schema, client, migrations
-lib/         quantity, aggregation, rolling, history
-seed/        the migrated source data, its loader, and the migration script that made it
-styles/      tokens.css - the only palette, type ramp and spacing scale
-docs/design/ the design handoff, for reference. Not built or linted
+app/           screens (one directory per route)
+components/    shared UI and per-screen components
+db/            schema, client, migrations
+lib/           quantity math, aggregation, rolling, history
+seed/          migrated recipe and ingredient data
+styles/        design tokens
+docs/          design handoff and deploy notes
 tests/
 ```
-
-## Conventions
-
-British English, hyphens rather than em dashes, sentence case in body copy and uppercase
-only for display headings. Bind to the tokens in `styles/tokens.css`; never hardcode a
-colour.
