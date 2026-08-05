@@ -36,8 +36,9 @@ PGlite is single-process, so stop the dev server before running `npm run seed` o
 
 ## Deploying
 
-Cloud Run, Neon, and Identity-Aware Proxy in front restricted to two Google accounts. There is
-no application-level auth and there must not be any. See [docs/deploy.md](docs/deploy.md).
+Cloud Run (`meals-492311`, `us-east4`) scaled to zero, Neon in `us-east-2`, hostname
+`meals.penrose.tools`, and Identity-Aware Proxy on the Cloud Run service - no load balancer.
+There is no application-level auth. See [docs/deploy.md](docs/deploy.md).
 
 ## Layout
 

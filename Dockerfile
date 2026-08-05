@@ -4,7 +4,9 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# npm ci on alpine has been rejecting this lockfile's optional @esbuild platform entries.
+# install is reproducible enough here: the lockfile is still the resolution source.
+RUN npm install --no-audit --no-fund
 
 FROM node:22-alpine AS build
 WORKDIR /app

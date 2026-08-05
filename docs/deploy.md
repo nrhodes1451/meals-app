@@ -1,109 +1,180 @@
 # Deploying
 
-Cloud Run, with Neon for Postgres and Identity-Aware Proxy in front for auth. Two users, both
-named Google accounts.
+Cloud Run in `us-east4` (Northern Virginia), Neon Postgres in AWS `us-east-2`, Identity-Aware
+Proxy enabled **directly on the Cloud Run service**. No load balancer. Custom hostname
+`meals.penrose.tools`.
 
-There is no application-level auth and there must not be any. No NextAuth, no Clerk, no Auth.js,
-no login screen, no session handling in the app. If IAP is misconfigured the app is open, so IAP
-is the thing to get right.
+Two users, both personal Google accounts. There is no application-level auth and there must
+not be any. IAP is the gate; if it is misconfigured the app is open.
+
+IAP on Cloud Run no longer needs an HTTPS load balancer. Google documents that path as the
+recommended one, and it avoids the fixed monthly cost of a balancer. See
+[Configure IAP for Cloud Run](https://cloud.google.com/run/docs/securing/identity-aware-proxy-cloud-run).
+
+## Shape
+
+- Cloud Run service `meal-planner` in **`us-east4`**: `min-instances=0`, `max-instances=1`,
+  `512Mi`, CPU only while serving. Scales to zero when idle.
+- Neon free tier in AWS **`us-east-2`**. Compute suspends when idle.
+- Custom domain `meals.penrose.tools` via Cloud Run domain mapping (supported in `us-east4`).
+- `DATABASE_URL` in Secret Manager. The app uses Neon over a WebSocket (not `neon-http`) so
+  transactions work - see `db/index.ts`.
+- Auth: `--no-allow-unauthenticated` plus IAP on the service. Grant
+  `roles/iap.httpsResourceAccessor` to the two Gmail accounts.
+
+Cost when idle is near zero: no always-on instance, no load balancer, Neon free compute
+suspended. You pay for request time, Cloud Build minutes, and Neon storage on the free plan.
+
+`us-east4` is used rather than `europe-west2` because: (1) Neon is in `us-east-2`, and
+(2) Cloud Run domain mapping is not available in London.
 
 ## One-off setup
 
+Project: `meals-492311`. Region: `us-east4`.
+
 ### 1. Neon
 
-Create a project and take the pooled connection string. Keep two branches: `main` for production
-and one for anything you want to try against real data.
+1. Sign up at [neon.tech](https://neon.tech).
+2. Create a project named `meal-planner`, region **AWS us-east-2**, Postgres 16.
+3. Copy the **pooled** connection string. The host contains `-pooler`. Do not commit it.
+
+### 2. APIs and service account
 
 ```bash
+gcloud config set project meals-492311
+
+gcloud services enable \
+  run.googleapis.com \
+  secretmanager.googleapis.com \
+  cloudbuild.googleapis.com \
+  artifactregistry.googleapis.com \
+  iam.googleapis.com \
+  iap.googleapis.com
+
+gcloud iam service-accounts create meal-planner \
+  --display-name="Meal planner Cloud Run"
+
 gcloud secrets create meal-planner-database-url --replication-policy=automatic
-printf '%s' 'postgres://...@...neon.tech/neondb?sslmode=require' \
+
+printf '%s' 'postgres://...' \
   | gcloud secrets versions add meal-planner-database-url --data-file=-
-```
 
-The app opens Neon over a WebSocket rather than `neon-http`, because the HTTP driver cannot open
-a transaction and rewriting a recipe's ingredient lines has to be atomic. Nothing to configure -
-`db/index.ts` picks the driver from whether `DATABASE_URL` is set.
-
-### 2. Service account
-
-```bash
-gcloud iam service-accounts create meal-planner
 gcloud secrets add-iam-policy-binding meal-planner-database-url \
-  --member=serviceAccount:meal-planner@PROJECT.iam.gserviceaccount.com \
+  --member=serviceAccount:meal-planner@meals-492311.iam.gserviceaccount.com \
   --role=roles/secretmanager.secretAccessor
 ```
 
-### 3. First deploy
+### 3. Migrate and seed (once, from a laptop)
+
+The seed truncates and reinserts. Point it only at an empty Neon database.
+
+```bash
+export DATABASE_URL='postgres://...pooler...'
+npm run db:migrate
+npm run seed
+npm run verify:seed
+```
+
+Migrations are not run on container boot.
+
+### 4. Deploy
 
 ```bash
 gcloud run deploy meal-planner \
   --source . \
-  --region europe-west2 \
-  --service-account meal-planner@PROJECT.iam.gserviceaccount.com \
+  --region us-east4 \
+  --service-account meal-planner@meals-492311.iam.gserviceaccount.com \
   --set-secrets DATABASE_URL=meal-planner-database-url:latest \
   --min-instances 0 \
-  --max-instances 2 \
+  --max-instances 1 \
+  --memory 512Mi \
+  --cpu 1 \
+  --cpu-throttling \
   --no-allow-unauthenticated
 ```
 
-`--no-allow-unauthenticated` matters: it is what stops the service being reachable without going
-through the load balancer and IAP.
+Until IAP is enabled, unauthenticated browser hits get 403. That is expected.
 
-### 4. IAP
+### 5. Custom domain `meals.penrose.tools`
 
-Cloud Run behind IAP needs an external HTTPS load balancer with a serverless network endpoint
-group pointing at the service.
+Verify the base domain once (Search Console owns this):
 
-1. Create the serverless NEG, backend service, URL map, certificate and forwarding rule.
-2. Turn IAP on for the backend service.
-3. Grant exactly the two accounts, and nobody else:
+```bash
+gcloud domains verify penrose.tools
+```
+
+Complete verification in Search Console (usually a TXT record on Squarespace DNS for
+`penrose.tools`). Then:
+
+```bash
+gcloud beta run domain-mappings create \
+  --service=meal-planner \
+  --domain=meals.penrose.tools \
+  --region=us-east4
+
+gcloud beta run domain-mappings describe \
+  --domain=meals.penrose.tools \
+  --region=us-east4
+```
+
+Add the DNS records it prints at Squarespace (**Domains → penrose.tools → DNS settings**).
+For a subdomain this is typically:
+
+| Type | Host | Data |
+| --- | --- | --- |
+| CNAME | `meals` | `ghs.googlehosted.com` |
+
+Leave the apex and `www` on Squarespace for the main site. SSL usually takes ~15 minutes after
+DNS propagates, sometimes longer.
+
+### 6. Enable IAP (console)
+
+Personal Gmail / no-organisation projects usually need the console the first time, so Google
+can create the OAuth client.
+
+1. Cloud Run → `meal-planner` (`us-east4`) → Security.
+2. Require authentication → **Identity-Aware Proxy**.
+3. Save. The console grants `roles/run.invoker` to the IAP service agent.
+4. Grant access to both household accounts:
 
 ```bash
 gcloud iap web add-iam-policy-binding \
-  --resource-type=backend-services --service=meal-planner-backend \
-  --member=user:one@example.com --role=roles/iap.httpsResourceAccessor
+  --region=us-east4 \
+  --resource-type=cloud-run \
+  --service=meal-planner \
+  --member=user:one@gmail.com \
+  --role=roles/iap.httpsResourceAccessor
+
 gcloud iap web add-iam-policy-binding \
-  --resource-type=backend-services --service=meal-planner-backend \
-  --member=user:two@example.com --role=roles/iap.httpsResourceAccessor
+  --region=us-east4 \
+  --resource-type=cloud-run \
+  --service=meal-planner \
+  --member=user:two@gmail.com \
+  --role=roles/iap.httpsResourceAccessor
 ```
 
-Check the members list afterwards. An inherited project-level grant will silently widen access
-beyond the two accounts.
+5. Open `https://meals.penrose.tools`, sign in, confirm the planner and shopping list.
 
-### 5. Seed, once
-
-The seed is the migrated source sheet and is meant to run once, on an empty database. It
-truncates and reinserts, so do not point it at a database that has been used.
-
-```bash
-DATABASE_URL=... npm run db:migrate
-DATABASE_URL=... npm run seed
-DATABASE_URL=... npm run verify:seed
-```
-
-`verify:seed` asserts the counts from `seed/review.md` - 11 categories, 179 ingredients, 170
-recipes, 875 ingredient lines - so a partial load fails loudly rather than leaving a half-built
-library.
+Do not put a load balancer in front unless you later need features domain mapping cannot
+provide. You cannot enable IAP on both the load balancer and the Cloud Run service.
 
 ## Releasing
 
 ```bash
 npm run lint && npm run typecheck && npm test
-DATABASE_URL=... npm run db:migrate    # only when db/migrations has changed
-gcloud run deploy meal-planner --source . --region europe-west2
+DATABASE_URL=... npm run db:migrate    # only when db/migrations changed
+gcloud run deploy meal-planner --source . --region us-east4
 ```
-
-Migrations run before the deploy, as their own step, so a cold start cannot race a schema change.
-Every migration so far is additive, so the old revision keeps working while the new one rolls
-out.
 
 ## Notes
 
-- `output: 'standalone'` in `next.config.ts` is what makes the image small. The `Dockerfile` is
-  there for building outside Cloud Build; `--source .` uses buildpacks and ignores it.
-- No page is prerendered with data at build time, so the image needs no database to build.
-- PGlite stays in the dependency tree because the code imports it lazily when `DATABASE_URL` is
-  unset. It is never loaded in production.
-- Cloud Run scales to zero. The first request after an idle period pays a cold start plus a Neon
-  connection, a second or two. For a tool used a few times a week that is the right trade against
-  paying for an idle instance.
+- `output: 'standalone'` in `next.config.ts` keeps the image small.
+- An empty `public/` directory exists so the Dockerfile `COPY` succeeds.
+- The image build uses `npm install` rather than `npm ci`: alpine's npm was rejecting
+  this lockfile's optional `@esbuild` platform entries under `ci`.
+- PGlite stays in the dependency tree for local use when `DATABASE_URL` is unset. Production
+  always sets the secret, so PGlite is never loaded there.
+- First request after an idle period pays a Cloud Run cold start plus Neon wake-up, a second
+  or two. Fine for a tool used a few times a week.
+- Cloud Run domain mapping is preview and Google notes latency caveats; for this household
+  tool it is the cheap path that avoids a load balancer.
