@@ -38,7 +38,7 @@ export default async function IngredientsPage() {
         Ingredients
       </SectionHeader>
 
-      <div className="grid grid-cols-1 gap-10 min-[1100px]:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="grid grid-cols-1 gap-10 min-[1240px]:grid-cols-[minmax(0,1fr)_300px]">
         <div className="min-w-0">
           <IngredientsTable
             rows={rows}

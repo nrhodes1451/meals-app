@@ -117,10 +117,10 @@ describe('formatters', () => {
   });
 
   it('labels slots by number, not by weekday', () => {
-    expect(slotLabel(0)).toBe('1');
-    expect(slotLabel(6)).toBe('7');
-    expect(slotRef(0)).toBe('meal 1');
-    expect(slotRef(7)).toBe('meal 8');
+    expect(slotLabel(0)).toBe('#1');
+    expect(slotLabel(6)).toBe('#7');
+    expect(slotRef(0)).toBe('#1');
+    expect(slotRef(7)).toBe('#8');
   });
 
   it('labels a week across a month boundary', () => {

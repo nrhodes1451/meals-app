@@ -134,8 +134,11 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
 
   return (
     <>
-      {/* Sticky, because the count and the progress are the only orientation you get mid-shop. */}
-      <div className="sticky top-0 z-20 bg-paper pt-4">
+      {/*
+        Sticky under the tab strip on phone (strip is 48px + 1px rule → top 49px) and at the
+        viewport top when the rail is present. Section headers sit below this block.
+      */}
+      <div className="sticky top-[49px] z-20 bg-paper pt-4 min-[900px]:top-0">
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="font-display text-3xl font-black uppercase tracking-display">
             Shopping list
@@ -164,7 +167,7 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
 
       {list.sections.map((section) => (
         <section key={section.categoryId} className="mt-6">
-          <div className="sticky top-[86px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1">
+          <div className="sticky top-[135px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
             <h2 className="font-display text-md font-black uppercase tracking-display">
               {section.name}
             </h2>
@@ -190,7 +193,7 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
 
       {/* Anything with no ingredient record: batteries, a card. Schema calls these manual. */}
       <section className="mt-6">
-        <div className="sticky top-[86px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1">
+        <div className="sticky top-[135px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
           <h2 className="font-display text-md font-black uppercase tracking-display">Also</h2>
         </div>
 

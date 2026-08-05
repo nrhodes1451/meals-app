@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
-import type { Route } from 'next';
 import { getDb } from '@/db';
-import { PhoneShell } from '@/components/shell';
+import { AppShell } from '@/components/shell';
 import { ShoppingListView } from '@/components/list/shopping-list';
 import { loadWeekList } from '@/lib/shopping';
 import { isValidWeekStarting } from '@/lib/week';
@@ -20,13 +19,8 @@ export default async function ShoppingListPage({
   const { list } = await loadWeekList(db, week);
 
   return (
-    <PhoneShell
-      week={week}
-      current={`/plan/${week}/list`}
-      backTo={`/plan/${week}` as Route}
-      backLabel="Week planner"
-    >
+    <AppShell week={week} current={`/plan/${week}/list`} phone>
       <ShoppingListView week={week} list={list} />
-    </PhoneShell>
+    </AppShell>
   );
 }

@@ -40,15 +40,16 @@ export function packLabel(packSize: number | null, packUnit: Unit | null): strin
 
 /**
  * Slots are numbered, never named. A slot is not a weekday: meals are cooked in whatever order
- * suits, and a week does not have to hold seven of them. Position is 0-based, the label is 1-based.
+ * suits, and a week does not have to hold seven of them. Position is 0-based, the label is 1-based
+ * with a leading hash so it reads as a meal number on every screen.
  */
 export function slotLabel(position: number): string {
-  return String(position + 1);
+  return `#${position + 1}`;
 }
 
-/** For labels and prose where a bare figure would not read on its own. */
+/** Same figure as slotLabel; kept as a named helper where prose previously said "meal N". */
 export function slotRef(position: number): string {
-  return `meal ${position + 1}`;
+  return `#${position + 1}`;
 }
 
 /** "MON 3 - SUN 9 AUG" for a week starting on the given Monday. */

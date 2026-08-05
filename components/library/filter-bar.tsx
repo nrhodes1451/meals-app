@@ -45,7 +45,7 @@ export function LibraryFilterBar({
 
   return (
     <div className="flex flex-wrap items-end gap-4 border-0 border-b border-ink pb-4">
-      <Field label="Search" htmlFor="lib-search" className="w-[280px]">
+      <Field label="Search" htmlFor="lib-search" className="w-[280px] max-[1239px]:w-full">
         <Input
           id="lib-search"
           value={query}
@@ -54,7 +54,7 @@ export function LibraryFilterBar({
         />
       </Field>
 
-      <Field label="Ingredient" htmlFor="lib-ingredient" className="w-[220px]">
+      <Field label="Ingredient" htmlFor="lib-ingredient" className="w-[220px] max-[1239px]:w-full">
         <Select
           id="lib-ingredient"
           value={filters.ingredientId === null ? '' : String(filters.ingredientId)}
@@ -69,7 +69,7 @@ export function LibraryFilterBar({
         </Select>
       </Field>
 
-      <Field label="Diet" htmlFor="lib-diet" className="w-[170px]">
+      <Field label="Diet" htmlFor="lib-diet" className="w-[170px] max-[1239px]:w-full">
         <Select
           id="lib-diet"
           value={filters.diet}
@@ -81,7 +81,7 @@ export function LibraryFilterBar({
         </Select>
       </Field>
 
-      <Field label="Max time" htmlFor="lib-time" className="w-[140px]">
+      <Field label="Max time" htmlFor="lib-time" className="w-[140px] max-[1239px]:w-full">
         <Select
           id="lib-time"
           value={filters.maxMinutes === null ? '' : String(filters.maxMinutes)}
@@ -95,7 +95,7 @@ export function LibraryFilterBar({
         </Select>
       </Field>
 
-      <Field label="Sort" htmlFor="lib-sort" className="w-[160px]">
+      <Field label="Sort" htmlFor="lib-sort" className="w-[160px] max-[1239px]:w-full">
         <Select
           id="lib-sort"
           value={filters.sort}
@@ -129,7 +129,7 @@ export function LibraryFilterBar({
         />
       </Field>
 
-      {action ? <div className="ml-auto pb-1">{action}</div> : null}
+      {action ? <div className="ml-auto pb-1 max-[1239px]:ml-0">{action}</div> : null}
     </div>
   );
 }

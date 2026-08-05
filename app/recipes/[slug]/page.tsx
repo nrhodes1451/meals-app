@@ -1,13 +1,9 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { eq } from 'drizzle-orm';
-import { ArrowLeft } from 'lucide-react';
 import { getDb } from '@/db';
 import { recipes, unitEnum } from '@/db/schema';
 import { AppShell } from '@/components/shell';
 import { RecipeEditor } from '@/components/library/recipe-editor';
-import { SectionHeader } from '@/components/penrose';
-import { cookTime, lastEaten } from '@/lib/format';
 import { loadIngredientOptions, loadRecipes, minutesOf } from '@/lib/recipes';
 import { currentWeekStarting } from '@/lib/week';
 
@@ -18,9 +14,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: record?.name ?? 'Recipe' };
 }
 
-export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function RecipePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { slug } = await params;
+  const query = await searchParams;
+  const startEditing = query.edit === '1';
   const db = await getDb();
+  const week = currentWeekStarting();
 
   const record = await db.query.recipes.findFirst({ where: eq(recipes.slug, slug) });
   if (!record) notFound();
@@ -33,24 +38,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
   if (!recipe) notFound();
 
   return (
-    <AppShell week={currentWeekStarting()} current="/recipes">
-      <Link
-        href="/recipes"
-        className="inline-flex min-h-touch items-center gap-2 font-display text-sm font-bold uppercase tracking-label text-primary no-underline"
-      >
-        <ArrowLeft size={16} aria-hidden />
-        Recipe library
-      </Link>
-
-      <SectionHeader
-        level={1}
-        size="page"
-        className="mt-2"
-        meta={`${cookTime(recipe.timeHours)} · serves ${recipe.servings} · last eaten ${lastEaten(recipe.lastEaten)}`}
-      >
-        {recipe.name}
-      </SectionHeader>
-
+    <AppShell week={week} current="/recipes">
       <RecipeEditor
         recipe={{
           id: recipe.id,
@@ -62,14 +50,18 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
           archived: recipe.archived,
           sourceUrl: recipe.sourceUrl,
           method: recipe.method,
+          lastEaten: recipe.lastEaten,
           lines: recipe.lines.map((line) => ({
             ingredientId: line.ingredientId,
+            name: line.name,
             amount: line.amount,
             unit: line.unit,
           })),
         }}
         ingredientOptions={ingredientOptions}
         units={[...unitEnum.enumValues]}
+        week={week}
+        startEditing={startEditing}
       />
     </AppShell>
   );

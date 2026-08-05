@@ -8,3 +8,4 @@ export { Badge, Divider, SectionHeader, StatFigure } from './surfaces';
 export { GridCell, GridColumnHeader, GridHeaderRow, GridRow, GridTable } from './table';
 export { Dialog } from './dialog';
 export { NavRail, type NavItem } from './nav-rail';
+export { NavTabStrip } from './nav-tab-strip';

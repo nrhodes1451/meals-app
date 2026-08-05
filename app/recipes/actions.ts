@@ -147,7 +147,7 @@ export async function createRecipe() {
   await db.insert(recipes).values({ slug, name: 'New recipe', servings: 2 });
 
   revalidatePath('/recipes');
-  redirect(`/recipes/${slug}`);
+  redirect(`/recipes/${slug}?edit=1`);
 }
 
 /**

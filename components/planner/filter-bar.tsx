@@ -44,7 +44,7 @@ export function PlannerFilterBar({
 
   return (
     <div className="flex flex-wrap items-end gap-6 border-b border-ink pb-4">
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 max-[899px]:w-full">
         <span className="font-display text-label font-bold uppercase tracking-label">
           Vegetarian only
         </span>
@@ -55,12 +55,12 @@ export function PlannerFilterBar({
         />
       </div>
 
-      <label className="flex flex-col gap-1">
+      <label className="flex flex-col gap-1 max-[899px]:w-full">
         <span className="font-display text-label font-bold uppercase tracking-label">
           Max cook time
         </span>
         <Select
-          className="w-[120px]"
+          className="w-[120px] max-[899px]:w-full"
           value={filters.maxMinutes ?? ''}
           onChange={(event) => set('time', event.target.value || null)}
         >
@@ -73,12 +73,12 @@ export function PlannerFilterBar({
         </Select>
       </label>
 
-      <label className="flex flex-col gap-1">
+      <label className="flex flex-col gap-1 max-[899px]:w-full">
         <span className="font-display text-label font-bold uppercase tracking-label">
           Not eaten in the last
         </span>
         <Select
-          className="w-[160px]"
+          className="w-[160px] max-[899px]:w-full"
           value={filters.excludeWeeks ?? ''}
           onChange={(event) => set('excl', event.target.value || null)}
         >
@@ -91,7 +91,7 @@ export function PlannerFilterBar({
         </Select>
       </label>
 
-      <div className="ml-auto flex items-end gap-4">
+      <div className="ml-auto flex flex-wrap items-end gap-4 max-[899px]:ml-0 max-[899px]:w-full">
         <span className="pen-tabular font-display text-sm font-thin text-ink">
           {poolSize} of {poolTotal} in pool
         </span>

@@ -139,7 +139,7 @@ export async function rollTheWeek(week: string, filters: RollFilters): Promise<A
   return { ok: true };
 }
 
-/** The library's ADD button drops a recipe into the first unlocked, empty day. */
+/** The library's ADD button drops a recipe into the first unlocked, empty meal. */
 export async function addToWeek(week: string, recipeId: number): Promise<ActionResult> {
   const invalid = guard(week);
   if (invalid) return invalid;
@@ -166,22 +166,24 @@ export async function addToWeek(week: string, recipeId: number): Promise<ActionR
 
 /**
  * Weeks are not seven meals long. Six one week, eight the next - the slot count is whatever this
- * particular week needs, so it can be grown and shrunk here.
+ * particular week needs. A new meal is rolled from the current pool; left empty only when the pool
+ * has nothing left to pick.
  */
-export async function addSlot(week: string): Promise<ActionResult> {
+export async function addSlot(week: string, filters: RollFilters): Promise<ActionResult> {
   const invalid = guard(week);
   if (invalid) return invalid;
 
   const db = await getDb();
-  const plan = await getOrCreatePlan(db, week);
-  const slots = await loadSlots(db, plan.id);
+  const { plan, slots, recipes } = await loadPlan(db, week);
 
   if (slots.length >= MAX_SLOT_COUNT) {
     return { ok: false, error: `A week holds at most ${MAX_SLOT_COUNT} meals.` };
   }
 
-  // Positions are contiguous, so the next one is the count.
-  await db.insert(planSlots).values({ planId: plan.id, position: slots.length });
+  const position = slots.length;
+  const recipeId = rollOne(recipes, [...slots, { position, recipeId: null, locked: false }], position, filters);
+
+  await db.insert(planSlots).values({ planId: plan.id, position, recipeId });
 
   revalidateWeek(week);
   return { ok: true };

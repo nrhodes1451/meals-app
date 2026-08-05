@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
-import type { Route } from 'next';
 import { getDb } from '@/db';
-import { PhoneShell } from '@/components/shell';
+import { AppShell } from '@/components/shell';
 import { SectionHeader } from '@/components/penrose';
 import { CookedList } from '@/components/cooked/meal-list';
 import { weekLabel } from '@/lib/format';
@@ -21,12 +20,7 @@ export default async function CookedPage({ params }: { params: Promise<{ week: s
   const eaten = filled.filter((slot) => slot.eaten).length;
 
   return (
-    <PhoneShell
-      week={week}
-      current={`/plan/${week}/cooked`}
-      backTo={`/plan/${week}` as Route}
-      backLabel="Week planner"
-    >
+    <AppShell week={week} current={`/plan/${week}/cooked`} phone>
       <SectionHeader
         level={1}
         size="page"
@@ -39,6 +33,6 @@ export default async function CookedPage({ params }: { params: Promise<{ week: s
       <p className="mb-6 text-sm text-ink-70">{weekLabel(fromIsoDate(week))}</p>
 
       <CookedList week={week} slots={slots} />
-    </PhoneShell>
+    </AppShell>
   );
 }

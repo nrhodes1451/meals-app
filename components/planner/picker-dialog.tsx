@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { Dialog, Input } from '@/components/penrose';
-import { cookTime, lastEaten, slotRef } from '@/lib/format';
+import { cookTime, lastEaten } from '@/lib/format';
 
 type PickerRecipe = {
   id: number;
@@ -53,7 +53,7 @@ export function PickerDialog({
         }
       }}
       width={680}
-      title={position === null ? 'Pick a meal' : `Pick for ${slotRef(position)}`}
+      title={position === null ? 'Pick a meal' : `Pick for meal ${position + 1}`}
     >
       <Input
         autoFocus
@@ -90,7 +90,7 @@ export function PickerDialog({
                 {cookTime(recipe.timeHours)}
               </span>
               <span
-                className={`pen-tabular w-[100px] shrink-0 text-right text-sm ${
+                className={`pen-tabular hidden w-[100px] shrink-0 text-right text-sm min-[900px]:block ${
                   tooRecent ? 'font-bold text-danger' : 'text-ink-70'
                 }`}
               >

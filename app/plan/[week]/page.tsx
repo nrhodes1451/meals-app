@@ -50,33 +50,34 @@ export default async function PlannerPage({
 
   return (
     <AppShell week={week} current={`/plan/${week}`}>
-      {/* The planner keeps its width rather than collapsing: it is a desktop and tablet screen. */}
-      <div className="min-w-[1000px]">
-        <SectionHeader level={1} size="page" meta={weekLabel(fromIsoDate(week))}>
-          Week planner
-        </SectionHeader>
+      <SectionHeader level={1} size="page" meta={weekLabel(fromIsoDate(week))}>
+        Week planner
+      </SectionHeader>
 
-        <div className="grid grid-cols-[minmax(560px,1fr)_340px] gap-10">
-          <div className="min-w-0">
-            <WeekTable
-              week={week}
-              slots={slots}
-              filters={filters}
-              poolSize={poolSize(recipes, filters)}
-              poolTotal={unarchived}
-              pickerRecipes={recipes.map((recipe) => ({
-                id: recipe.id,
-                name: recipe.name,
-                vegetarian: recipe.vegetarian,
-                timeHours: recipe.timeHours,
-                lastEaten: recipe.lastEaten,
-                archived: recipe.archived,
-              }))}
-            />
-          </div>
-
-          <LiveRail week={week} summary={summariseShoppingList(list)} />
+      {/*
+        Two columns on wide screens; under 1240 the live rail stacks beneath the table. The
+        table itself never reflows - it scrolls horizontally inside WeekTable.
+      */}
+      <div className="grid grid-cols-1 gap-10 min-[1240px]:grid-cols-[minmax(700px,1fr)_340px]">
+        <div className="min-w-0">
+          <WeekTable
+            week={week}
+            slots={slots}
+            filters={filters}
+            poolSize={poolSize(recipes, filters)}
+            poolTotal={unarchived}
+            pickerRecipes={recipes.map((recipe) => ({
+              id: recipe.id,
+              name: recipe.name,
+              vegetarian: recipe.vegetarian,
+              timeHours: recipe.timeHours,
+              lastEaten: recipe.lastEaten,
+              archived: recipe.archived,
+            }))}
+          />
         </div>
+
+        <LiveRail week={week} summary={summariseShoppingList(list)} />
       </div>
     </AppShell>
   );

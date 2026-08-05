@@ -76,7 +76,7 @@ export function IngredientsTable({
   return (
     <section aria-label="Ingredients">
       <div className="mb-4 flex flex-wrap items-end gap-4">
-        <label className="flex min-w-[280px] flex-col gap-1">
+        <label className="flex min-w-[280px] flex-col gap-1 max-[899px]:w-full max-[899px]:min-w-0">
           <span className="font-display text-label font-bold uppercase tracking-label">
             Filter
           </span>
@@ -87,12 +87,12 @@ export function IngredientsTable({
           />
         </label>
 
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1 max-[899px]:w-full">
           <span className="font-display text-label font-bold uppercase tracking-label">
             Set category
           </span>
           <Select
-            className="w-[170px]"
+            className="w-[170px] max-[899px]:w-full"
             value=""
             disabled={!ids.length || pending}
             onChange={(event) => {
@@ -117,7 +117,7 @@ export function IngredientsTable({
           Toggle pantry
         </Button>
 
-        <span className="ml-auto font-display text-sm font-bold uppercase tracking-label text-primary">
+        <span className="ml-auto font-display text-sm font-bold uppercase tracking-label text-primary max-[899px]:ml-0">
           {ids.length} selected
         </span>
       </div>
@@ -128,150 +128,276 @@ export function IngredientsTable({
         </p>
       ) : null}
 
-      <GridTable label="Ingredients">
-        <GridHeaderRow columns={COLUMNS}>
-          <GridColumnHeader />
-          <GridColumnHeader>Name</GridColumnHeader>
-          <GridColumnHeader>Aliases</GridColumnHeader>
-          <GridColumnHeader>Category</GridColumnHeader>
-          <GridColumnHeader align="center">Frozen</GridColumnHeader>
-          <GridColumnHeader align="center">Pantry</GridColumnHeader>
-          <GridColumnHeader>Pack</GridColumnHeader>
-          <GridColumnHeader />
-        </GridHeaderRow>
+      <div className="hidden min-[1240px]:block">
+        <GridTable label="Ingredients">
+          <GridHeaderRow columns={COLUMNS}>
+            <GridColumnHeader />
+            <GridColumnHeader>Name</GridColumnHeader>
+            <GridColumnHeader>Aliases</GridColumnHeader>
+            <GridColumnHeader>Category</GridColumnHeader>
+            <GridColumnHeader align="center">Frozen</GridColumnHeader>
+            <GridColumnHeader align="center">Pantry</GridColumnHeader>
+            <GridColumnHeader>Pack</GridColumnHeader>
+            <GridColumnHeader />
+          </GridHeaderRow>
 
+          {shown.map((row) => (
+            <GridRow key={row.id} columns={COLUMNS} className="min-h-touch py-1">
+              <GridCell>
+                <SelectButton
+                  name={row.name}
+                  selected={selected.has(row.id)}
+                  onToggle={() => toggleSelected(row.id)}
+                />
+              </GridCell>
+              <GridCell>
+                <NameField row={row} run={run} />
+              </GridCell>
+              <GridCell>
+                <AliasesField row={row} run={run} />
+              </GridCell>
+              <GridCell>
+                <CategoryField row={row} categories={categories} pending={pending} run={run} />
+              </GridCell>
+              <GridCell align="center">
+                <Flag
+                  label={`Frozen: ${row.name}`}
+                  on={row.frozen}
+                  disabled={pending}
+                  onToggle={() => run(() => setFrozen(row.id, !row.frozen))}
+                />
+              </GridCell>
+              <GridCell align="center">
+                <Flag
+                  label={`Pantry staple: ${row.name}`}
+                  on={row.pantryStaple}
+                  disabled={pending}
+                  onToggle={() => run(() => setPantryStaple(row.id, !row.pantryStaple))}
+                />
+              </GridCell>
+              <GridCell>
+                <PackFields row={row} units={units} pending={pending} run={run} />
+              </GridCell>
+              <GridCell align="center">
+                <DeleteButton row={row} pending={pending} run={run} />
+              </GridCell>
+            </GridRow>
+          ))}
+        </GridTable>
+      </div>
+
+      {/*
+        Under 1240: select + name + pantry on line one; category + pack on line two; aliases on
+        line three. Nothing overlaps and nothing needs horizontal scrolling.
+      */}
+      <ul className="list-none p-0 min-[1240px]:hidden" aria-label="Ingredients">
         {shown.map((row) => (
-          <GridRow key={row.id} columns={COLUMNS} className="min-h-touch py-1">
-            <GridCell>
-              <button
-                type="button"
-                role="checkbox"
-                aria-checked={selected.has(row.id)}
-                aria-label={`Select ${row.name}`}
-                onClick={() => toggleSelected(row.id)}
-                className="flex size-touch-min cursor-pointer items-center justify-center border-0 bg-transparent p-0"
-              >
-                <SelectMark selected={selected.has(row.id)} />
-              </button>
-            </GridCell>
-
-            <GridCell>
-              <Input
-                key={row.name}
-                defaultValue={row.name}
-                aria-label={`Name of ${row.name}`}
-                onBlur={(event) => {
-                  const value = event.target.value;
-                  if (value.trim() !== row.name) run(() => renameIngredient(row.id, value));
-                }}
+          <li key={row.id} className="border-0 border-t border-ink-25 py-3 first:border-t-0">
+            <div className="flex items-center gap-3">
+              <SelectButton
+                name={row.name}
+                selected={selected.has(row.id)}
+                onToggle={() => toggleSelected(row.id)}
               />
-            </GridCell>
-
-            <GridCell>
-              <Input
-                defaultValue={row.aliases.join(', ')}
-                aria-label={`Aliases for ${row.name}`}
-                placeholder="-"
-                className="text-sm"
-                onBlur={(event) => {
-                  const value = event.target.value;
-                  if (value !== row.aliases.join(', ')) run(() => setAliases(row.id, value));
-                }}
-              />
-            </GridCell>
-
-            <GridCell>
-              <Select
-                value={row.categoryId}
-                aria-label={`Category for ${row.name}`}
-                className="text-sm"
-                disabled={pending}
-                onChange={(event) => run(() => setCategory(row.id, Number(event.target.value)))}
-              >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Select>
-            </GridCell>
-
-            <GridCell align="center">
-              <Flag
-                label={`Frozen: ${row.name}`}
-                on={row.frozen}
-                disabled={pending}
-                onToggle={() => run(() => setFrozen(row.id, !row.frozen))}
-              />
-            </GridCell>
-
-            <GridCell align="center">
+              <div className="min-w-0 flex-1">
+                <NameField row={row} run={run} />
+              </div>
               <Flag
                 label={`Pantry staple: ${row.name}`}
                 on={row.pantryStaple}
                 disabled={pending}
                 onToggle={() => run(() => setPantryStaple(row.id, !row.pantryStaple))}
               />
-            </GridCell>
-
-            <GridCell>
-              <div className="flex w-full items-center gap-1">
-                <Input
-                  defaultValue={row.packSize ?? ''}
-                  aria-label={`Pack size for ${row.name}`}
-                  placeholder="-"
-                  inputMode="decimal"
-                  tabular
-                  className="w-[64px] text-sm"
-                  onBlur={(event) => {
-                    const value = event.target.value;
-                    if (value !== String(row.packSize ?? '')) {
-                      run(() => setPack(row.id, value, row.packUnit ?? ''));
-                    }
-                  }}
-                />
-                <Select
-                  value={row.packUnit ?? ''}
-                  aria-label={`Pack unit for ${row.name}`}
-                  className="w-[76px] text-sm"
-                  disabled={pending}
-                  onChange={(event) =>
-                    run(() =>
-                      setPack(row.id, String(row.packSize ?? ''), event.target.value as Unit | ''),
-                    )
-                  }
-                >
-                  <option value="">-</option>
-                  {units.map((unit) => (
-                    <option key={unit} value={unit}>
-                      {unit}
-                    </option>
-                  ))}
-                </Select>
+              <DeleteButton row={row} pending={pending} run={run} />
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2 pl-[56px]">
+              <div className="min-w-0 flex-1">
+                <CategoryField row={row} categories={categories} pending={pending} run={run} />
               </div>
-            </GridCell>
-
-            <GridCell align="center">
-              <IconButton
-                label={`Delete ${row.name}`}
-                variant="quiet"
-                disabled={row.uses > 0 || pending}
-                title={
-                  row.uses > 0
-                    ? `${row.uses} recipes use this, so it cannot be deleted`
-                    : `Delete ${row.name}`
-                }
-                onClick={() => run(() => deleteIngredient(row.id))}
-              >
-                <Trash2 size={20} aria-hidden />
-              </IconButton>
-            </GridCell>
-          </GridRow>
+              <PackFields row={row} units={units} pending={pending} run={run} />
+              <Flag
+                label={`Frozen: ${row.name}`}
+                on={row.frozen}
+                disabled={pending}
+                onToggle={() => run(() => setFrozen(row.id, !row.frozen))}
+              />
+            </div>
+            <div className="mt-2 pl-[56px]">
+              <AliasesField row={row} run={run} className="text-xs" />
+            </div>
+          </li>
         ))}
-      </GridTable>
+      </ul>
 
       {shown.length === 0 ? <p className="mt-6 text-base">Nothing matches that.</p> : null}
     </section>
+  );
+}
+
+function SelectButton({
+  name,
+  selected,
+  onToggle,
+}: {
+  name: string;
+  selected: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={selected}
+      aria-label={`Select ${name}`}
+      onClick={onToggle}
+      className="flex size-touch-min cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+    >
+      <SelectMark selected={selected} />
+    </button>
+  );
+}
+
+function NameField({
+  row,
+  run,
+}: {
+  row: IngredientRow;
+  run: (action: () => Promise<ActionResult>) => void;
+}) {
+  return (
+    <Input
+      key={row.name}
+      defaultValue={row.name}
+      aria-label={`Name of ${row.name}`}
+      onBlur={(event) => {
+        const value = event.target.value;
+        if (value.trim() !== row.name) run(() => renameIngredient(row.id, value));
+      }}
+    />
+  );
+}
+
+function AliasesField({
+  row,
+  run,
+  className,
+}: {
+  row: IngredientRow;
+  run: (action: () => Promise<ActionResult>) => void;
+  className?: string;
+}) {
+  return (
+    <Input
+      defaultValue={row.aliases.join(', ')}
+      aria-label={`Aliases for ${row.name}`}
+      placeholder="-"
+      className={className ?? 'text-sm'}
+      onBlur={(event) => {
+        const value = event.target.value;
+        if (value !== row.aliases.join(', ')) run(() => setAliases(row.id, value));
+      }}
+    />
+  );
+}
+
+function CategoryField({
+  row,
+  categories,
+  pending,
+  run,
+}: {
+  row: IngredientRow;
+  categories: CategoryRow[];
+  pending: boolean;
+  run: (action: () => Promise<ActionResult>) => void;
+}) {
+  return (
+    <Select
+      value={row.categoryId}
+      aria-label={`Category for ${row.name}`}
+      className="text-sm"
+      disabled={pending}
+      onChange={(event) => run(() => setCategory(row.id, Number(event.target.value)))}
+    >
+      {categories.map((category) => (
+        <option key={category.id} value={category.id}>
+          {category.name}
+        </option>
+      ))}
+    </Select>
+  );
+}
+
+function PackFields({
+  row,
+  units,
+  pending,
+  run,
+}: {
+  row: IngredientRow;
+  units: Unit[];
+  pending: boolean;
+  run: (action: () => Promise<ActionResult>) => void;
+}) {
+  return (
+    <div className="flex w-[110px] items-center gap-1 min-[1240px]:w-full">
+      <Input
+        defaultValue={row.packSize ?? ''}
+        aria-label={`Pack size for ${row.name}`}
+        placeholder="-"
+        inputMode="decimal"
+        tabular
+        className="w-[64px] text-sm"
+        onBlur={(event) => {
+          const value = event.target.value;
+          if (value !== String(row.packSize ?? '')) {
+            run(() => setPack(row.id, value, row.packUnit ?? ''));
+          }
+        }}
+      />
+      <Select
+        value={row.packUnit ?? ''}
+        aria-label={`Pack unit for ${row.name}`}
+        className="w-[76px] text-sm"
+        disabled={pending}
+        onChange={(event) =>
+          run(() => setPack(row.id, String(row.packSize ?? ''), event.target.value as Unit | ''))
+        }
+      >
+        <option value="">-</option>
+        {units.map((unit) => (
+          <option key={unit} value={unit}>
+            {unit}
+          </option>
+        ))}
+      </Select>
+    </div>
+  );
+}
+
+function DeleteButton({
+  row,
+  pending,
+  run,
+}: {
+  row: IngredientRow;
+  pending: boolean;
+  run: (action: () => Promise<ActionResult>) => void;
+}) {
+  return (
+    <IconButton
+      label={`Delete ${row.name}`}
+      variant="quiet"
+      disabled={row.uses > 0 || pending}
+      title={
+        row.uses > 0
+          ? `${row.uses} recipes use this, so it cannot be deleted`
+          : `Delete ${row.name}`
+      }
+      onClick={() => run(() => deleteIngredient(row.id))}
+    >
+      <Trash2 size={20} aria-hidden />
+    </IconButton>
   );
 }
 

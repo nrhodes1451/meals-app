@@ -1,7 +1,5 @@
-import Link from 'next/link';
 import type { Route } from 'next';
-import { ArrowLeft } from 'lucide-react';
-import { NavRail, type NavItem } from '@/components/penrose';
+import { NavRail, NavTabStrip, type NavItem } from '@/components/penrose';
 import { cn } from '@/lib/cn';
 
 export function navItems(week: string): NavItem[] {
@@ -15,65 +13,69 @@ export function navItems(week: string): NavItem[] {
 }
 
 /**
- * Desktop and tablet screens: planner, library, recipe detail, ingredients admin. The rail is
- * always present and 1280px is assumed.
+ * Shared chrome for every screen. Above 900px: 232px NavRail. Below: sticky tab strip. Page
+ * padding is 32px desktop, 12px phone. Phone-first screens pass `phone` to centre a narrow column.
  */
 export function AppShell({
   week,
   current,
   children,
   className,
+  phone = false,
 }: {
   week: string;
   current: string;
   children: React.ReactNode;
   className?: string;
+  /** Centre a max-640/760 column (shopping list, This week). */
+  phone?: boolean;
 }) {
+  const items = navItems(week);
+
   return (
-    <div className="flex min-h-screen">
-      <NavRail items={navItems(week)} current={current} className="sticky top-0 h-screen" />
-      <main className={cn('min-w-0 flex-1 p-8', className)}>{children}</main>
+    <div className="flex min-h-screen flex-col min-[900px]:flex-row">
+      <NavRail
+        items={items}
+        current={current}
+        className="sticky top-0 hidden h-screen min-[900px]:flex"
+      />
+      <NavTabStrip items={items} current={current} className="min-[900px]:hidden" />
+      <main
+        className={cn(
+          'min-w-0 flex-1',
+          phone
+            ? 'px-3 py-0 min-[900px]:px-8'
+            : 'p-3 min-[900px]:p-8',
+          className,
+        )}
+      >
+        {phone ? (
+          <div className="mx-auto w-full max-w-[640px] min-[900px]:max-w-[760px]">{children}</div>
+        ) : (
+          children
+        )}
+      </main>
     </div>
   );
 }
 
 /**
- * Phone-first screens: the shopping list and This week. Under 900px the rail is gone entirely and
- * replaced by a text back link, because one hand in a supermarket is the case that matters. Above
- * 900px it is the same single column with the rail restored, not a different layout.
+ * @deprecated Prefer AppShell with phone. Kept as a thin alias so call sites can migrate.
  */
 export function PhoneShell({
   week,
   current,
-  backTo,
-  backLabel,
   children,
 }: {
   week: string;
   current: string;
-  backTo: Route;
-  backLabel: string;
+  backTo?: Route;
+  backLabel?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
-      <NavRail
-        items={navItems(week)}
-        current={current}
-        className="sticky top-0 hidden h-screen min-[900px]:flex"
-      />
-      <main className="min-w-0 flex-1">
-        <div className="mx-auto w-full max-w-[640px] px-4 min-[900px]:max-w-[760px] min-[900px]:px-8">
-          <Link
-            href={backTo}
-            className="inline-flex min-h-touch items-center gap-2 font-display text-sm font-bold uppercase tracking-label text-primary no-underline min-[900px]:hidden"
-          >
-            <ArrowLeft size={16} aria-hidden />
-            {backLabel}
-          </Link>
-          {children}
-        </div>
-      </main>
-    </div>
+    <AppShell week={week} current={current} phone>
+      {children}
+    </AppShell>
   );
 }
