@@ -112,7 +112,7 @@ export function buildShoppingList(
   type Accumulator = {
     meta: IngredientMeta;
     measured: Measured[];
-    hasUnmeasured: boolean;
+    unmeasuredCount: number;
     uses: Use[];
   };
 
@@ -125,12 +125,12 @@ export function buildShoppingList(
 
       let entry = grouped.get(line.ingredientId);
       if (!entry) {
-        entry = { meta, measured: [], hasUnmeasured: false, uses: [] };
+        entry = { meta, measured: [], unmeasuredCount: 0, uses: [] };
         grouped.set(line.ingredientId, entry);
       }
 
-      // A unit with no amount is still just "some": five lines in the source look like that.
-      if (line.amount === null) entry.hasUnmeasured = true;
+      // A unit with no amount is still just "some".
+      if (line.amount === null) entry.unmeasuredCount += 1;
       else entry.measured.push({ amount: line.amount, unit: line.unit });
 
       entry.uses.push({
@@ -143,7 +143,7 @@ export function buildShoppingList(
   }
 
   const items: ListItem[] = [...grouped.values()].map((entry) => {
-    const quantity = formatQuantity(entry.measured, entry.hasUnmeasured);
+    const quantity = formatQuantity(entry.measured, entry.unmeasuredCount);
     const uses = [...entry.uses].sort((a, b) => a.position - b.position);
     return {
       ingredientId: entry.meta.id,

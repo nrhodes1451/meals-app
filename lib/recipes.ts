@@ -32,7 +32,7 @@ export type RecipeRow = {
 };
 
 /**
- * The whole library is 170 recipes and 873 ingredient lines, so it is loaded in two queries and
+ * The whole library is 170 recipes and 872 ingredient lines, so it is loaded in two queries and
  * filtered in memory. That keeps the filter rules in one pure function that can be tested, rather
  * than spread across SQL predicates, and at this scale costs nothing.
  */

@@ -39,7 +39,7 @@ async function main() {
     },
     {
       label: 'ingredients pantry staple',
-      expected: 31,
+      expected: 0,
       actual: await scalar(
         db.select({ value: count() }).from(ingredients).where(eq(ingredients.pantryStaple, true)),
       ),
@@ -101,26 +101,26 @@ async function main() {
     },
     {
       label: 'recipe ingredient lines',
-      expected: 873,
+      expected: 872,
       actual: await scalar(db.select({ value: count() }).from(recipeIngredients)),
     },
     {
       label: 'lines with no amount ("some")',
-      expected: 294,
+      expected: 90,
       actual: await scalar(
         db.select({ value: count() }).from(recipeIngredients).where(isNull(recipeIngredients.amount)),
       ),
     },
     {
       label: 'lines with no unit (bare count or "some")',
-      expected: 501,
+      expected: 425,
       actual: await scalar(
         db.select({ value: count() }).from(recipeIngredients).where(isNull(recipeIngredients.unit)),
       ),
     },
     {
       label: 'lines that are a bare count (amount, no unit)',
-      expected: 212,
+      expected: 335,
       actual: await scalar(
         db
           .select({ value: count() })
@@ -129,10 +129,9 @@ async function main() {
       ),
     },
     {
-      // A unit with no amount still contributes only "some". Worth asserting because it is
-      // easy to assume amount and unit are null together.
+      // Harmonisation filled every unit-without-amount line. Keep the check so they cannot return.
       label: 'lines with a unit but no amount',
-      expected: 5,
+      expected: 0,
       actual: await scalar(
         db
           .select({ value: count() })

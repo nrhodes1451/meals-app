@@ -719,7 +719,7 @@
       "category": "Herbs",
       "categoryOrder": 2,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -730,7 +730,7 @@
       "category": "Herbs",
       "categoryOrder": 2,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -741,7 +741,7 @@
       "category": "Herbs",
       "categoryOrder": 2,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -752,7 +752,7 @@
       "category": "Herbs",
       "categoryOrder": 2,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -763,7 +763,7 @@
       "category": "Dairy",
       "categoryOrder": 3,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [
         "unsalted butter"
       ],
@@ -1372,7 +1372,7 @@
       "category": "Nuts & Seeds",
       "categoryOrder": 8,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1383,7 +1383,7 @@
       "category": "Nuts & Seeds",
       "categoryOrder": 8,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1394,7 +1394,7 @@
       "category": "Nuts & Seeds",
       "categoryOrder": 8,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1405,7 +1405,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [
         "fajita spice",
         "fajita"
@@ -1419,7 +1419,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1430,7 +1430,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [
         "thai green curry paste"
       ],
@@ -1443,7 +1443,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1454,7 +1454,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1465,7 +1465,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1476,7 +1476,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1487,7 +1487,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1498,7 +1498,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1509,7 +1509,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1520,7 +1520,7 @@
       "category": "World Foods",
       "categoryOrder": 9,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1531,7 +1531,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1575,7 +1575,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1632,7 +1632,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1687,7 +1687,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1698,7 +1698,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1709,7 +1709,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [
         "pesto"
       ],
@@ -1722,7 +1722,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1766,7 +1766,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1788,7 +1788,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1854,7 +1854,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1876,7 +1876,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null
@@ -1909,7 +1909,7 @@
       "category": "Tinned",
       "categoryOrder": 10,
       "frozen": false,
-      "pantryStaple": true,
+      "pantryStaple": false,
       "aliases": [],
       "packSize": null,
       "packUnit": null

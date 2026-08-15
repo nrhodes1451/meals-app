@@ -96,22 +96,12 @@ function Row({
         </div>
 
         {/*
-          Buckets that do not reconcile are stacked, never converted. The first is the headline
-          quantity; the rest read as additions to it.
+          Buckets that do not reconcile are joined, never converted. "some" is last when any
+          recipe left the amount blank, tallied as some*N when more than one did.
         */}
-        <div className="shrink-0 text-right">
-          {item.quantity.lines.map((line, index) => (
-            <span
-              key={line}
-              className={cn(
-                'pen-tabular block font-display font-bold',
-                index === 0 ? 'text-lg text-ink' : 'text-sm-plus text-primary',
-              )}
-            >
-              {index === 0 ? line : `+ ${line}`}
-            </span>
-          ))}
-        </div>
+        <span className="pen-tabular max-w-[40%] shrink-0 text-right font-display text-lg font-bold text-ink">
+          {item.quantity.lines.join(', ')}
+        </span>
       </div>
     </li>
   );

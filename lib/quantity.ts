@@ -4,8 +4,9 @@
  * A unit belongs to a dimension. Amounts sum only within a dimension, converting to the
  * dimension's canonical unit first. Count units never sum with each other: there is no sound
  * conversion from grams to punnets, so each count unit is its own bucket and a bare count
- * (unit = null) is a bucket too. An ingredient can therefore legitimately read
- * "1, 2 bags, 3 tins, 300g".
+ * (unit = null) is a bucket too. Unmeasured lines append "some" after the buckets, tallied
+ * when more than one recipe left the amount blank: "some*5". An ingredient can therefore
+ * legitimately read "1, 2 bags, 3 tins, 300g, some*2".
  */
 import type { unitEnum } from '@/db/schema';
 
@@ -66,7 +67,7 @@ export type Measured = { amount: number; unit: Unit | null };
 
 /**
  * Sums a set of lines into buckets. Lines with no amount are not measured quantities and are
- * excluded here; the caller tracks whether any were present.
+ * excluded here; the caller passes how many there were.
  */
 export function toBuckets(lines: Measured[]): Bucket[] {
   const buckets = new Map<string, Bucket>();
@@ -87,7 +88,8 @@ export function toBuckets(lines: Measured[]): Bucket[] {
 
 /**
  * Bare count first, then count units alphabetically, then mass, then volume. This reproduces
- * the order in CLAUDE.md's worked example, "onions: 1, 2 bags, 3 tins, 300g".
+ * the order in CLAUDE.md's worked example, "onions: 1, 2 bags, 3 tins, 300g". "some" is
+ * appended after these buckets by formatQuantity, not sorted here.
  */
 export function sortBuckets(buckets: Bucket[]): Bucket[] {
   const rank = (bucket: Bucket) => {
@@ -118,24 +120,37 @@ export function formatBucket(bucket: Bucket): string {
 }
 
 export type Quantity = {
-  /** One string per bucket. Empty only when nothing at all was measured and nothing implied. */
+  /** One string per bucket, then "some" or "some*N" last when any line was unmeasured. */
   lines: string[];
-  /** True when the whole quantity is unmeasured, so the list reads "some". */
+  /** True when the whole quantity is unmeasured, so the list reads "some" or "some*N". Mixed lists are false. */
   unmeasured: boolean;
   buckets: Bucket[];
 };
 
+/** One unspecified amount is "some"; five of them are "some*5". */
+export function formatSome(count: number): string | null {
+  if (count <= 0) return null;
+  if (count === 1) return 'some';
+  return `some*${count}`;
+}
+
 /**
- * "some" is absorbed when any measured quantity exists for the ingredient. A recipe that asks
- * for unspecified spinach alongside one that asks for 300g does not add a line: 300g is what
- * you buy.
+ * Unmeasured lines contribute "some", tallied. It is appended after any measured buckets
+ * rather than absorbed: a recipe that asks for unspecified spinach alongside one that asks
+ * for 300g reads "300g, some". Five such recipes read "300g, some*5".
  */
-export function formatQuantity(lines: Measured[], hasUnmeasured: boolean): Quantity {
+export function formatQuantity(lines: Measured[], unmeasuredCount: number): Quantity {
   const buckets = toBuckets(lines);
+  const some = formatSome(unmeasuredCount);
   if (buckets.length === 0) {
-    return { lines: hasUnmeasured ? ['some'] : [], unmeasured: true, buckets };
+    return { lines: some ? [some] : [], unmeasured: true, buckets };
   }
-  return { lines: buckets.map(formatBucket), unmeasured: false, buckets };
+  const formatted = buckets.map(formatBucket);
+  return {
+    lines: some ? [...formatted, some] : formatted,
+    unmeasured: false,
+    buckets,
+  };
 }
 
 /**

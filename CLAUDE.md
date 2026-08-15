@@ -120,13 +120,13 @@ To build the shopping list:
 2. Within a group, sum amounts that share a dimension. Convert within a dimension
    (kg to g, l to ml) before summing.
 3. Emit one quantity per bucket present, joined by commas.
-4. Lines with `amount = null` contribute "some", and are absorbed if any measured
-   quantity exists for that ingredient.
+4. Lines with `amount = null` contribute "some", appended last and tallied: one is
+   `some`, five are `some*5`. It is not absorbed when a measured quantity also exists.
 
 So an ingredient appearing across four recipes might render as
-`onions: 1, 2 bags, 3 tins, 300g`. This is correct and intended. Do not pick one bucket
-and discard the rest, and do not attempt to convert between dimensions - there is no
-sound conversion from grams to punnets. Show the shopper everything they need to buy.
+`onions: 1, 2 bags, 3 tins, 300g, some*2`. This is correct and intended. Do not pick one
+bucket and discard the rest, and do not attempt to convert between dimensions - there is
+no sound conversion from grams to punnets. Show the shopper everything they need to buy.
 
 ## Meal selection
 
@@ -152,7 +152,8 @@ the application. `seed/review.md` lists the judgement calls made during migratio
 - 57 recipes are archived: legacy keto and meat dishes from an earlier era. Kept for
   history, excluded from the random pool and from the library default view.
 - 73 recipes carry a `keto` flag, independent of `archived`
-- 31 ingredients are marked as pantry staples
+- 0 ingredients are marked as pantry staples. The suppress-and-restore path still
+  exists; nothing is flagged.
 - Recipe `method` is free text and may be instructions, or a book and page reference
   ("Page 60 Green roasting tin"). `sourceUrl` holds URLs separately.
 

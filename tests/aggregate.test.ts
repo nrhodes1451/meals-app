@@ -94,6 +94,39 @@ describe('grouping', () => {
     expect(list.sections[0].items[0].uses.map((use) => use.position)).toEqual([2, 4]);
     expect(list.sections[0].items[0].uses[0].recipeName).toBe('Wednesday thing');
   });
+
+  it('joins mixed measured buckets and some as a comma-separated list', () => {
+    const list = buildShoppingList(
+      [
+        meal(0, 'Salad', [{ ingredientId: 1, amount: 1, unit: null }]),
+        meal(1, 'Soup', [{ ingredientId: 1, amount: 300, unit: 'g' }]),
+        meal(2, 'Stew', [{ ingredientId: 1, amount: null, unit: null }]),
+      ],
+      ingredients,
+      categories,
+      emptyState,
+    );
+
+    expect(list.sections[0].items[0].quantity.lines.join(', ')).toBe('1, 300g, some');
+  });
+
+  it('tallies unmeasured lines as some*N', () => {
+    const list = buildShoppingList(
+      [
+        meal(0, 'A', [{ ingredientId: 2, amount: null, unit: null }]),
+        meal(1, 'B', [{ ingredientId: 2, amount: null, unit: null }]),
+        meal(2, 'C', [{ ingredientId: 2, amount: 100, unit: 'g' }]),
+        meal(3, 'D', [{ ingredientId: 2, amount: null, unit: null }]),
+        meal(4, 'E', [{ ingredientId: 2, amount: null, unit: null }]),
+        meal(5, 'F', [{ ingredientId: 2, amount: null, unit: null }]),
+      ],
+      ingredients,
+      categories,
+      emptyState,
+    );
+
+    expect(list.sections[0].items[0].quantity.lines.join(', ')).toBe('100g, some*5');
+  });
 });
 
 describe('sections', () => {

@@ -109,11 +109,10 @@ describe('a real week from the seed', () => {
     expect(list.sections.every((section) => section.items.length > 0)).toBe(true);
   });
 
-  it('holds every pantry staple back and lists nothing else', () => {
+  it('does not suppress any pantry staples, because none are flagged', () => {
     const onList = list.sections.flatMap((section) => section.items);
     expect(onList.some((item) => item.pantryStaple)).toBe(false);
-    expect(list.suppressed.every((item) => item.pantryStaple)).toBe(true);
-    expect(list.suppressed.length).toBeGreaterThan(0);
+    expect(list.suppressed).toEqual([]);
   });
 
   it('gives every item at least one quantity line and one use', () => {
@@ -123,10 +122,12 @@ describe('a real week from the seed', () => {
     }
   });
 
-  it('never emits a "some" line beside a measured one', () => {
+  it('puts "some" last when it appears beside a measured quantity', () => {
     for (const item of [...list.sections.flatMap((section) => section.items), ...list.suppressed]) {
-      const hasSome = item.quantity.lines.includes('some');
-      if (hasSome) expect(item.quantity.lines, item.name).toEqual(['some']);
+      const someAt = item.quantity.lines.findIndex((line) => line === 'some' || line.startsWith('some*'));
+      if (someAt >= 0) {
+        expect(someAt, item.name).toBe(item.quantity.lines.length - 1);
+      }
     }
   });
 
