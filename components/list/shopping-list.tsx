@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { Trash2 } from 'lucide-react';
 import { Button, IconButton, Input, ProgressBar, TickMark } from '@/components/penrose';
+import { WeekSwitcher } from '@/components/planner/week-switcher';
 import { TraceDialog } from './trace-dialog';
 import {
   addManualItem,
@@ -107,7 +108,15 @@ function Row({
   );
 }
 
-export function ShoppingListView({ week, list }: { week: string; list: ShoppingList }) {
+export function ShoppingListView({
+  week,
+  weeks,
+  list,
+}: {
+  week: string;
+  weeks: string[];
+  list: ShoppingList;
+}) {
   const [error, setError] = useState<string | null>(null);
   const [trace, setTrace] = useState<ListItem | null>(null);
   const [showStaples, setShowStaples] = useState(false);
@@ -127,7 +136,8 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
       {/*
         Sticky under the tab strip on phone. The strip is h-touch (48px) including its bottom
         rule, so this sits at top-touch, not 49px. A 1px paper overhang covers subpixel gaps
-        above the title and below the progress bar so rows cannot show through.
+        so rows cannot show through. Aisle headings sit at 190px on phone (48 nav + 142 header)
+        and 142px on desktop, which is the original 86px header plus the 56px week switcher row.
       */}
       <div className="relative sticky top-touch z-20 bg-paper pt-4 pb-6 min-[900px]:top-0 before:pointer-events-none before:absolute before:-top-px before:-bottom-px before:inset-x-0 before:bg-paper">
         <div className="relative flex items-baseline justify-between gap-4">
@@ -144,6 +154,7 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
           label="Shopping list progress"
           className="relative mt-2"
         />
+        <WeekSwitcher week={week} weeks={weeks} suffix="/list" className="relative mt-2" />
       </div>
 
       {error ? (
@@ -159,7 +170,7 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
       <div className="flex flex-col gap-6">
       {list.sections.map((section) => (
         <section key={section.categoryId}>
-          <div className="sticky top-[134px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
+          <div className="sticky top-[190px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[142px]">
             <h2 className="font-display text-md font-black uppercase tracking-display">
               {section.name}
             </h2>
@@ -185,7 +196,7 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
 
       {/* Anything with no ingredient record: batteries, a card. Schema calls these manual. */}
       <section>
-        <div className="sticky top-[134px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
+        <div className="sticky top-[190px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[142px]">
           <h2 className="font-display text-md font-black uppercase tracking-display">Also</h2>
         </div>
 

@@ -24,17 +24,32 @@ export function SectionHeader({
     list: 'text-md',
   } as const;
 
+  const metaIsControl = meta != null && typeof meta !== 'string';
+
   return (
     <div className={cn('mb-4', className)}>
-      <div className="flex items-baseline justify-between gap-4">
-        <Tag className={cn('font-display font-black uppercase tracking-display', sizes[size])}>
+      <div
+        className={cn(
+          'flex justify-between gap-4',
+          metaIsControl ? 'flex-wrap items-center' : 'items-baseline',
+        )}
+      >
+        <Tag
+          className={cn(
+            'font-display font-black uppercase tracking-display',
+            sizes[size],
+            metaIsControl && 'shrink-0',
+          )}
+        >
           {children}
         </Tag>
-        {meta ? (
+        {typeof meta === 'string' ? (
           <span className="font-display text-sm font-thin uppercase tracking-label text-ink">
             {meta}
           </span>
-        ) : null}
+        ) : (
+          meta
+        )}
       </div>
       <hr className="mt-1 border-0 border-t border-ink-25" />
     </div>

@@ -3,13 +3,13 @@ import { getDb } from '@/db';
 import { AppShell } from '@/components/shell';
 import { SectionHeader } from '@/components/penrose';
 import { LiveRail } from '@/components/planner/live-rail';
+import { WeekSwitcher } from '@/components/planner/week-switcher';
 import { WeekTable } from '@/components/planner/week-table';
 import { summariseShoppingList } from '@/lib/aggregate';
-import { weekLabel } from '@/lib/format';
 import { loadPlan } from '@/lib/plan';
 import { poolSize, type RollFilters } from '@/lib/roll';
 import { loadWeekList } from '@/lib/shopping';
-import { fromIsoDate, isValidWeekStarting } from '@/lib/week';
+import { isValidWeekStarting, listPlanWeeks } from '@/lib/week';
 
 export const metadata = { title: 'Week planner' };
 
@@ -43,14 +43,21 @@ export default async function PlannerPage({
   const filters = parseFilters(await searchParams);
   const db = await getDb();
 
-  const { slots, recipes } = await loadPlan(db, week);
-  const { list } = await loadWeekList(db, week);
+  const [{ slots, recipes }, { list }, weeks] = await Promise.all([
+    loadPlan(db, week),
+    loadWeekList(db, week),
+    listPlanWeeks(db),
+  ]);
 
   const unarchived = recipes.filter((recipe) => !recipe.archived).length;
 
   return (
     <AppShell week={week} current={`/plan/${week}`}>
-      <SectionHeader level={1} size="page" meta={weekLabel(fromIsoDate(week))}>
+      <SectionHeader
+        level={1}
+        size="page"
+        meta={<WeekSwitcher week={week} weeks={weeks} suffix="" className="w-full min-[640px]:w-[22rem]" />}
+      >
         Week planner
       </SectionHeader>
 

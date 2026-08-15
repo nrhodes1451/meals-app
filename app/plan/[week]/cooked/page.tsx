@@ -3,9 +3,9 @@ import { getDb } from '@/db';
 import { AppShell } from '@/components/shell';
 import { SectionHeader } from '@/components/penrose';
 import { CookedList } from '@/components/cooked/meal-list';
-import { weekLabel } from '@/lib/format';
+import { WeekSwitcher } from '@/components/planner/week-switcher';
 import { loadPlan } from '@/lib/plan';
-import { fromIsoDate, isValidWeekStarting } from '@/lib/week';
+import { isValidWeekStarting, listPlanWeeks } from '@/lib/week';
 
 export const metadata = { title: 'This week' };
 
@@ -14,7 +14,7 @@ export default async function CookedPage({ params }: { params: Promise<{ week: s
   if (!isValidWeekStarting(week)) notFound();
 
   const db = await getDb();
-  const { slots } = await loadPlan(db, week);
+  const [{ slots }, weeks] = await Promise.all([loadPlan(db, week), listPlanWeeks(db)]);
 
   const filled = slots.filter((slot) => slot.recipe !== null);
   const eaten = filled.filter((slot) => slot.eaten).length;
@@ -30,7 +30,7 @@ export default async function CookedPage({ params }: { params: Promise<{ week: s
         This week
       </SectionHeader>
 
-      <p className="mb-6 text-sm text-ink-70">{weekLabel(fromIsoDate(week))}</p>
+      <WeekSwitcher week={week} weeks={weeks} suffix="/cooked" className="mb-6" />
 
       <CookedList week={week} slots={slots} />
     </AppShell>

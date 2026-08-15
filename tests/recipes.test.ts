@@ -6,7 +6,14 @@ import {
   sortRecipes,
   type RecipeRow,
 } from '@/lib/recipes';
-import { currentWeekStarting, isValidWeekStarting, mondayOf, toIsoDate, weeksBetween } from '@/lib/week';
+import {
+  currentWeekStarting,
+  isValidWeekStarting,
+  mondayOf,
+  shiftWeek,
+  toIsoDate,
+  weeksBetween,
+} from '@/lib/week';
 
 function recipe(overrides: Partial<RecipeRow> & { id: number; name: string }): RecipeRow {
   return {
@@ -139,6 +146,13 @@ describe('weeks', () => {
   it('counts whole weeks between Mondays', () => {
     expect(weeksBetween('2026-08-03', '2026-07-27')).toBe(1);
     expect(weeksBetween('2026-08-03', '2026-06-01')).toBe(9);
+  });
+
+  it('shifts a Monday by whole weeks', () => {
+    expect(shiftWeek('2026-08-03', 1)).toBe('2026-08-10');
+    expect(shiftWeek('2026-08-03', -1)).toBe('2026-07-27');
+    expect(shiftWeek('2026-08-03', 0)).toBe('2026-08-03');
+    expect(shiftWeek('2025-12-29', 1)).toBe('2026-01-05');
   });
 
   it('accepts only Mondays as week identifiers', () => {

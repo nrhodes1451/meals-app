@@ -38,6 +38,13 @@ export function weeksBetween(from: string, to: string): number {
   return Math.round((fromIsoDate(from).getTime() - fromIsoDate(to).getTime()) / (7 * DAY_MS));
 }
 
+/** Monday `deltaWeeks` after (or before) a week-starting Monday. */
+export function shiftWeek(weekStarting: string, deltaWeeks: number): string {
+  const date = fromIsoDate(weekStarting);
+  date.setUTCDate(date.getUTCDate() + deltaWeeks * 7);
+  return toIsoDate(date);
+}
+
 export function isValidWeekStarting(iso: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return false;
   const date = fromIsoDate(iso);
