@@ -125,11 +125,12 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
   return (
     <>
       {/*
-        Sticky under the tab strip on phone (strip is 48px + 1px rule → top 49px) and at the
-        viewport top when the rail is present. Section headers sit below this block.
+        Sticky under the tab strip on phone. The strip is h-touch (48px) including its bottom
+        rule, so this sits at top-touch, not 49px. A 1px paper overhang covers subpixel gaps
+        above the title and below the progress bar so rows cannot show through.
       */}
-      <div className="sticky top-[49px] z-20 bg-paper pt-4 min-[900px]:top-0">
-        <div className="flex items-baseline justify-between gap-4">
+      <div className="relative sticky top-touch z-20 bg-paper pt-4 pb-6 min-[900px]:top-0 before:pointer-events-none before:absolute before:-top-px before:-bottom-px before:inset-x-0 before:bg-paper">
+        <div className="relative flex items-baseline justify-between gap-4">
           <h1 className="font-display text-3xl font-black uppercase tracking-display">
             Shopping list
           </h1>
@@ -141,7 +142,7 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
           value={list.checked}
           max={list.total}
           label="Shopping list progress"
-          className="mt-2"
+          className="relative mt-2"
         />
       </div>
 
@@ -155,9 +156,10 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
         <p className="mt-8 text-ink-70">Nothing on the list. Pick some meals for the week.</p>
       ) : null}
 
+      <div className="flex flex-col gap-6">
       {list.sections.map((section) => (
-        <section key={section.categoryId} className="mt-6">
-          <div className="sticky top-[135px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
+        <section key={section.categoryId}>
+          <div className="sticky top-[134px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
             <h2 className="font-display text-md font-black uppercase tracking-display">
               {section.name}
             </h2>
@@ -182,8 +184,8 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
       ))}
 
       {/* Anything with no ingredient record: batteries, a card. Schema calls these manual. */}
-      <section className="mt-6">
-        <div className="sticky top-[135px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
+      <section>
+        <div className="sticky top-[134px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[86px]">
           <h2 className="font-display text-md font-black uppercase tracking-display">Also</h2>
         </div>
 
@@ -245,6 +247,7 @@ export function ShoppingListView({ week, list }: { week: string; list: ShoppingL
           </Button>
         </form>
       </section>
+      </div>
 
       {list.suppressed.length ? (
         <section className="mt-8">
