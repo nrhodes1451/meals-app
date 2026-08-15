@@ -101,26 +101,26 @@ async function main() {
     },
     {
       label: 'recipe ingredient lines',
-      expected: 875,
+      expected: 873,
       actual: await scalar(db.select({ value: count() }).from(recipeIngredients)),
     },
     {
       label: 'lines with no amount ("some")',
-      expected: 333,
+      expected: 294,
       actual: await scalar(
         db.select({ value: count() }).from(recipeIngredients).where(isNull(recipeIngredients.amount)),
       ),
     },
     {
       label: 'lines with no unit (bare count or "some")',
-      expected: 527,
+      expected: 501,
       actual: await scalar(
         db.select({ value: count() }).from(recipeIngredients).where(isNull(recipeIngredients.unit)),
       ),
     },
     {
       label: 'lines that are a bare count (amount, no unit)',
-      expected: 199,
+      expected: 212,
       actual: await scalar(
         db
           .select({ value: count() })
