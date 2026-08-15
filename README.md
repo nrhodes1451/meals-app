@@ -13,7 +13,8 @@ It replaces a Google Sheet we have used weekly since 2014.
 
 - **Week planner** — roll a variable-length week (1–14 meals) from a filtered pool.
   Lock the meals you want to keep, re-roll the rest. Filters cover vegetarian, cook time,
-  and how recently a recipe was last cooked.
+  and how recently a recipe was last cooked. Switch to any week that already has a plan,
+  or open the next Monday. `/` still lands on the calendar week.
 - **Live shopping list** — quantities are derived on read from the planned recipes, never
   stored as a snapshot. Items group by aisle; pantry staples are suppressed by default and
   can be restored without leaving the list.

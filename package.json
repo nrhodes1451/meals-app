@@ -14,6 +14,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx db/migrate.ts",
     "seed": "tsx seed/seed.ts",
+    "seed:sync": "tsx seed/sync.ts",
     "verify:seed": "tsx seed/verify.ts",
     "db:reset": "tsx db/migrate.ts --fresh && tsx seed/seed.ts && tsx seed/verify.ts",
     "check:contrast": "tsx scripts/contrast.ts"

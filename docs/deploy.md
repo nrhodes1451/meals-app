@@ -66,13 +66,20 @@ gcloud secrets add-iam-policy-binding meal-planner-database-url \
 
 ### 3. Migrate and seed (once, from a laptop)
 
-The seed truncates and reinserts. Point it only at an empty Neon database.
+The seed truncates and reinserts. Point it only at an empty Neon database. Once the
+database has plans, never seed: that cascade-deletes `plan_slots` and rewrites historic
+meals. Push library changes with `seed:sync`, which upserts categories, ingredients, and
+recipes by slug and leaves plans untouched.
 
 ```bash
 export DATABASE_URL='postgres://...pooler...'
 npm run db:migrate
 npm run seed
 npm run verify:seed
+
+# Later, with weeks of history already on Neon:
+npm run seed:sync              # dry-run
+npm run seed:sync -- --apply
 ```
 
 Migrations are not run on container boot.
