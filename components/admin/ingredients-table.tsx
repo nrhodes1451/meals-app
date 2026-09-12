@@ -22,16 +22,72 @@ import {
   setAliases,
   setCategory,
   setFrozen,
+  setOcadoUrl,
   setPack,
   setPantryStaple,
   type ActionResult,
 } from '@/app/ingredients/actions';
 import { filterIngredients, type CategoryRow, type IngredientRow } from '@/lib/ingredients';
+import { cn } from '@/lib/cn';
 import type { Unit } from '@/lib/quantity';
 
-/** Select, name, aliases, category, frozen, pantry, pack, delete. */
-const COLUMNS =
-  '44px minmax(0,1.05fr) minmax(0,1.1fr) 170px 84px 84px 150px 48px';
+const OPTIONAL_FIELDS = ['aliases', 'category', 'frozen', 'pantry', 'pack', 'ocado'] as const;
+type OptionalField = (typeof OPTIONAL_FIELDS)[number];
+type VisibleFields = Record<OptionalField, boolean>;
+
+const DEFAULT_VISIBLE: VisibleFields = {
+  aliases: true,
+  category: true,
+  frozen: true,
+  pantry: true,
+  pack: true,
+  ocado: false,
+};
+
+const STORAGE_KEY = 'ingredients-fields';
+
+const FIELD_LABELS: Record<OptionalField, string> = {
+  aliases: 'Aliases',
+  category: 'Category',
+  frozen: 'Frozen',
+  pantry: 'Pantry',
+  pack: 'Pack',
+  ocado: 'Ocado',
+};
+
+const FIELD_WIDTHS: Record<OptionalField, string> = {
+  aliases: 'minmax(0,1.1fr)',
+  category: '170px',
+  frozen: '84px',
+  pantry: '84px',
+  pack: '150px',
+  ocado: 'minmax(12rem, 1.2fr)',
+};
+
+function readStoredFields(): VisibleFields {
+  if (typeof window === 'undefined') return DEFAULT_VISIBLE;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_VISIBLE;
+    const parsed = JSON.parse(raw) as Partial<Record<string, unknown>>;
+    const next = { ...DEFAULT_VISIBLE };
+    for (const field of OPTIONAL_FIELDS) {
+      if (typeof parsed[field] === 'boolean') next[field] = parsed[field];
+    }
+    return next;
+  } catch {
+    return DEFAULT_VISIBLE;
+  }
+}
+
+function columnTemplate(visible: VisibleFields): string {
+  const parts = ['44px', 'minmax(0,1.05fr)'];
+  for (const field of OPTIONAL_FIELDS) {
+    if (visible[field]) parts.push(FIELD_WIDTHS[field]);
+  }
+  parts.push('48px');
+  return parts.join(' ');
+}
 
 export function IngredientsTable({
   rows,
@@ -46,8 +102,23 @@ export function IngredientsTable({
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [visible, setVisible] = useState<VisibleFields>(readStoredFields);
 
   const shown = useMemo(() => filterIngredients(rows, query), [rows, query]);
+  const columns = columnTemplate(visible);
+  const showMeta = visible.category || visible.pack || visible.frozen || visible.pantry;
+
+  function toggleField(field: OptionalField) {
+    setVisible((current) => {
+      const next = { ...current, [field]: !current[field] };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // Private mode can refuse storage; the choice still applies this session.
+      }
+      return next;
+    });
+  }
 
   /**
    * Every edit here saves as it is made - the design says there is no save button - so a failure
@@ -122,6 +193,31 @@ export function IngredientsTable({
         </span>
       </div>
 
+      <fieldset className="mb-4 min-w-0 border-0 p-0">
+        <legend className="font-display text-xs font-bold uppercase tracking-label text-ink-70">
+          Fields
+        </legend>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {OPTIONAL_FIELDS.map((field) => {
+            const on = visible[field];
+            return (
+              <button
+                key={field}
+                type="button"
+                aria-pressed={on}
+                onClick={() => toggleField(field)}
+                className={cn(
+                  'min-h-touch min-w-touch cursor-pointer border-0 px-3 font-display text-xs font-bold uppercase tracking-label transition-colors duration-[120ms] ease-pen',
+                  on ? 'bg-primary-tint text-ink' : 'bg-blush text-ink-70',
+                )}
+              >
+                {FIELD_LABELS[field]}
+              </button>
+            );
+          })}
+        </div>
+      </fieldset>
+
       {error ? (
         <p role="alert" className="mb-4 text-sm text-danger">
           {error}
@@ -130,19 +226,24 @@ export function IngredientsTable({
 
       <div className="hidden min-[1240px]:block">
         <GridTable label="Ingredients">
-          <GridHeaderRow columns={COLUMNS}>
+          <GridHeaderRow columns={columns}>
             <GridColumnHeader />
             <GridColumnHeader>Name</GridColumnHeader>
-            <GridColumnHeader>Aliases</GridColumnHeader>
-            <GridColumnHeader>Category</GridColumnHeader>
-            <GridColumnHeader align="center">Frozen</GridColumnHeader>
-            <GridColumnHeader align="center">Pantry</GridColumnHeader>
-            <GridColumnHeader>Pack</GridColumnHeader>
+            {visible.aliases ? <GridColumnHeader>Aliases</GridColumnHeader> : null}
+            {visible.category ? <GridColumnHeader>Category</GridColumnHeader> : null}
+            {visible.frozen ? (
+              <GridColumnHeader align="center">Frozen</GridColumnHeader>
+            ) : null}
+            {visible.pantry ? (
+              <GridColumnHeader align="center">Pantry</GridColumnHeader>
+            ) : null}
+            {visible.pack ? <GridColumnHeader>Pack</GridColumnHeader> : null}
+            {visible.ocado ? <GridColumnHeader>Ocado</GridColumnHeader> : null}
             <GridColumnHeader />
           </GridHeaderRow>
 
           {shown.map((row) => (
-            <GridRow key={row.id} columns={COLUMNS} className="min-h-touch py-1">
+            <GridRow key={row.id} columns={columns} className="min-h-touch py-1">
               <GridCell>
                 <SelectButton
                   name={row.name}
@@ -153,31 +254,46 @@ export function IngredientsTable({
               <GridCell>
                 <NameField row={row} run={run} />
               </GridCell>
-              <GridCell>
-                <AliasesField row={row} run={run} />
-              </GridCell>
-              <GridCell>
-                <CategoryField row={row} categories={categories} pending={pending} run={run} />
-              </GridCell>
-              <GridCell align="center">
-                <Flag
-                  label={`Frozen: ${row.name}`}
-                  on={row.frozen}
-                  disabled={pending}
-                  onToggle={() => run(() => setFrozen(row.id, !row.frozen))}
-                />
-              </GridCell>
-              <GridCell align="center">
-                <Flag
-                  label={`Pantry staple: ${row.name}`}
-                  on={row.pantryStaple}
-                  disabled={pending}
-                  onToggle={() => run(() => setPantryStaple(row.id, !row.pantryStaple))}
-                />
-              </GridCell>
-              <GridCell>
-                <PackFields row={row} units={units} pending={pending} run={run} />
-              </GridCell>
+              {visible.aliases ? (
+                <GridCell>
+                  <AliasesField row={row} run={run} />
+                </GridCell>
+              ) : null}
+              {visible.category ? (
+                <GridCell>
+                  <CategoryField row={row} categories={categories} pending={pending} run={run} />
+                </GridCell>
+              ) : null}
+              {visible.frozen ? (
+                <GridCell align="center">
+                  <Flag
+                    label={`Frozen: ${row.name}`}
+                    on={row.frozen}
+                    disabled={pending}
+                    onToggle={() => run(() => setFrozen(row.id, !row.frozen))}
+                  />
+                </GridCell>
+              ) : null}
+              {visible.pantry ? (
+                <GridCell align="center">
+                  <Flag
+                    label={`Pantry staple: ${row.name}`}
+                    on={row.pantryStaple}
+                    disabled={pending}
+                    onToggle={() => run(() => setPantryStaple(row.id, !row.pantryStaple))}
+                  />
+                </GridCell>
+              ) : null}
+              {visible.pack ? (
+                <GridCell>
+                  <PackFields row={row} units={units} pending={pending} run={run} />
+                </GridCell>
+              ) : null}
+              {visible.ocado ? (
+                <GridCell>
+                  <OcadoField row={row} run={run} />
+                </GridCell>
+              ) : null}
               <GridCell align="center">
                 <DeleteButton row={row} pending={pending} run={run} />
               </GridCell>
@@ -187,50 +303,95 @@ export function IngredientsTable({
       </div>
 
       {/*
-        Under 1240: select + name + pantry on line one; category + pack on line two; aliases on
-        line three. Nothing overlaps and nothing needs horizontal scrolling.
+        Under 1240: select and delete as chrome, then labelled fields in two wrapping rows so
+        every control keeps its header. Nothing overlaps and nothing needs horizontal scrolling.
       */}
       <ul className="list-none p-0 min-[1240px]:hidden" aria-label="Ingredients">
         {shown.map((row) => (
           <li key={row.id} className="border-0 border-t border-ink-25 py-3 first:border-t-0">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-3">
               <SelectButton
                 name={row.name}
                 selected={selected.has(row.id)}
                 onToggle={() => toggleSelected(row.id)}
               />
-              <div className="min-w-0 flex-1">
-                <NameField row={row} run={run} />
-              </div>
-              <Flag
-                label={`Pantry staple: ${row.name}`}
-                on={row.pantryStaple}
-                disabled={pending}
-                onToggle={() => run(() => setPantryStaple(row.id, !row.pantryStaple))}
-              />
               <DeleteButton row={row} pending={pending} run={run} />
             </div>
-            <div className="mt-2 flex flex-wrap items-center gap-2 pl-[56px]">
-              <div className="min-w-0 flex-1">
-                <CategoryField row={row} categories={categories} pending={pending} run={run} />
+            <div className="mt-2 flex flex-wrap gap-3">
+              <label className="flex min-w-[140px] flex-1 flex-col gap-1">
+                <CompactLabel>Name</CompactLabel>
+                <NameField row={row} run={run} />
+              </label>
+              {visible.aliases ? (
+                <label className="flex min-w-[140px] flex-1 flex-col gap-1">
+                  <CompactLabel>Aliases</CompactLabel>
+                  <AliasesField row={row} run={run} className="text-xs" />
+                </label>
+              ) : null}
+            </div>
+            {showMeta ? (
+              <div className="mt-2 flex flex-wrap gap-3">
+                {visible.category ? (
+                  <label className="flex min-w-[140px] flex-1 flex-col gap-1">
+                    <CompactLabel>Category</CompactLabel>
+                    <CategoryField
+                      row={row}
+                      categories={categories}
+                      pending={pending}
+                      run={run}
+                    />
+                  </label>
+                ) : null}
+                {visible.pack ? (
+                  <label className="flex min-w-[140px] flex-col gap-1">
+                    <CompactLabel>Pack</CompactLabel>
+                    <PackFields row={row} units={units} pending={pending} run={run} />
+                  </label>
+                ) : null}
+                {visible.frozen ? (
+                  <label className="flex flex-col gap-1">
+                    <CompactLabel>Frozen</CompactLabel>
+                    <Flag
+                      label={`Frozen: ${row.name}`}
+                      on={row.frozen}
+                      disabled={pending}
+                      onToggle={() => run(() => setFrozen(row.id, !row.frozen))}
+                    />
+                  </label>
+                ) : null}
+                {visible.pantry ? (
+                  <label className="flex flex-col gap-1">
+                    <CompactLabel>Pantry</CompactLabel>
+                    <Flag
+                      label={`Pantry staple: ${row.name}`}
+                      on={row.pantryStaple}
+                      disabled={pending}
+                      onToggle={() => run(() => setPantryStaple(row.id, !row.pantryStaple))}
+                    />
+                  </label>
+                ) : null}
               </div>
-              <PackFields row={row} units={units} pending={pending} run={run} />
-              <Flag
-                label={`Frozen: ${row.name}`}
-                on={row.frozen}
-                disabled={pending}
-                onToggle={() => run(() => setFrozen(row.id, !row.frozen))}
-              />
-            </div>
-            <div className="mt-2 pl-[56px]">
-              <AliasesField row={row} run={run} className="text-xs" />
-            </div>
+            ) : null}
+            {visible.ocado ? (
+              <label className="mt-2 flex min-w-0 flex-col gap-1">
+                <CompactLabel>Ocado</CompactLabel>
+                <OcadoField row={row} run={run} />
+              </label>
+            ) : null}
           </li>
         ))}
       </ul>
 
       {shown.length === 0 ? <p className="mt-6 text-base">Nothing matches that.</p> : null}
     </section>
+  );
+}
+
+function CompactLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-display text-xs font-bold uppercase tracking-label text-ink-70">
+      {children}
+    </span>
   );
 }
 
@@ -372,6 +533,28 @@ function PackFields({
         ))}
       </Select>
     </div>
+  );
+}
+
+function OcadoField({
+  row,
+  run,
+}: {
+  row: IngredientRow;
+  run: (action: () => Promise<ActionResult>) => void;
+}) {
+  return (
+    <Input
+      key={row.ocadoUrl ?? ''}
+      defaultValue={row.ocadoUrl ?? ''}
+      aria-label={`Ocado URL for ${row.name}`}
+      placeholder="-"
+      className="text-sm"
+      onBlur={(event) => {
+        const value = event.target.value.trim();
+        if (value !== (row.ocadoUrl ?? '')) run(() => setOcadoUrl(row.id, value));
+      }}
+    />
   );
 }
 

@@ -3,7 +3,7 @@
 import { useCallback, useState, useTransition } from 'react';
 import Link from 'next/link';
 import type { Route } from 'next';
-import { Trash2 } from 'lucide-react';
+import { Trash2, ExternalLink } from 'lucide-react';
 import { Button, IconButton, Input, ProgressBar, TickMark } from '@/components/penrose';
 import { WeekSwitcher } from '@/components/planner/week-switcher';
 import { TraceDialog } from './trace-dialog';
@@ -18,6 +18,7 @@ import {
 } from '@/app/plan/[week]/list/actions';
 import { slotRef } from '@/lib/format';
 import type { ListItem, ShoppingList } from '@/lib/aggregate';
+import { ocadoHref } from '@/lib/ocado';
 import { cn } from '@/lib/cn';
 
 /**
@@ -59,6 +60,7 @@ function Row({
         tabIndex={0}
         onClick={onToggle}
         onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
           if (event.key === ' ' || event.key === 'Enter') {
             event.preventDefault();
             onToggle();
@@ -95,6 +97,17 @@ function Row({
             </button>
           ) : null}
         </div>
+
+        <IconButton asChild variant="quiet" label={`Ocado: ${item.name}`}>
+          <a
+            href={ocadoHref(item.name, item.ocadoUrl)}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <ExternalLink size={20} aria-hidden />
+          </a>
+        </IconButton>
 
         {/*
           Buckets that do not reconcile are joined, never converted. "some" is last when any

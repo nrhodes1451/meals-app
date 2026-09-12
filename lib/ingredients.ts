@@ -14,6 +14,7 @@ export type IngredientRow = {
   pantryStaple: boolean;
   packSize: number | null;
   packUnit: Unit | null;
+  ocadoUrl: string | null;
   aliases: string[];
   /** Recipes referring to this ingredient. Zero means it is safe to delete. */
   uses: number;
@@ -63,6 +64,7 @@ export async function loadIngredients(db: Db): Promise<IngredientRow[]> {
     pantryStaple: row.pantryStaple,
     packSize: row.packSize === null ? null : Number(row.packSize),
     packUnit: row.packUnit,
+    ocadoUrl: row.ocadoUrl,
     aliases: aliases.get(row.id) ?? [],
     uses: uses.get(row.id) ?? 0,
   }));

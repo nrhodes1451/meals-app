@@ -69,6 +69,7 @@ export async function loadIngredientMeta(
           categoryId: row.categoryId,
           packSize: row.packSize === null ? null : Number(row.packSize),
           packUnit: row.packUnit,
+          ocadoUrl: row.ocadoUrl,
         },
       ]),
     ),

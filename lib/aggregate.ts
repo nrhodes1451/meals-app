@@ -34,6 +34,7 @@ export type IngredientMeta = {
   categoryId: number;
   packSize: number | null;
   packUnit: Unit | null;
+  ocadoUrl: string | null;
 };
 
 export type CategoryMeta = { id: number; name: string; position: number };
@@ -68,6 +69,7 @@ export type ListItem = {
   checked: boolean;
   quantity: Quantity;
   uses: Use[];
+  ocadoUrl: string | null;
   /**
    * The one line of context in the trace dialog. Only claims that quantities were left
    * unconverted when they genuinely could not be reconciled.
@@ -163,6 +165,7 @@ function itemsFromMeals(
       checked: checked.has(entry.meta.id),
       quantity,
       uses,
+      ocadoUrl: entry.meta.ocadoUrl,
       trace: traceNote({
         quantity,
         uses,

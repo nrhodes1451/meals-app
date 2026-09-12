@@ -137,6 +137,20 @@ export async function setPack(
   return done();
 }
 
+export async function setOcadoUrl(ingredientId: number, value: string): Promise<ActionResult> {
+  const trimmed = value.trim();
+  if (trimmed !== '' && !/^https?:\/\//i.test(trimmed)) {
+    return { ok: false, error: 'Ocado URL must be a web address, or blank.' };
+  }
+
+  const db = await getDb();
+  await db
+    .update(ingredients)
+    .set({ ocadoUrl: trimmed === '' ? null : trimmed })
+    .where(eq(ingredients.id, ingredientId));
+  return done();
+}
+
 export async function setAliases(ingredientId: number, value: string): Promise<ActionResult> {
   const db = await getDb();
   const wanted = parseAliases(value);

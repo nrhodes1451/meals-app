@@ -57,6 +57,7 @@ const ingredients = new Map<number, IngredientMeta>(
       categoryId: categoryId.get(item.category)!,
       packSize: item.packSize,
       packUnit: item.packUnit,
+      ocadoUrl: null,
     },
   ]),
 );

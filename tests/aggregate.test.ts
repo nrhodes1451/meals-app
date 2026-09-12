@@ -23,6 +23,7 @@ function ingredient(overrides: Partial<IngredientMeta> & { id: number; name: str
     categoryId: 1,
     packSize: null,
     packUnit: null,
+    ocadoUrl: null,
     ...overrides,
   };
 }
@@ -71,6 +72,23 @@ describe('grouping', () => {
     expect(section.items).toHaveLength(1);
     expect(section.items[0].quantity.lines).toEqual(['3']);
     expect(section.items[0].uses).toHaveLength(2);
+    expect(section.items[0].ocadoUrl).toBeNull();
+  });
+
+  it('carries a stored Ocado URL onto the list item', () => {
+    const withUrl = new Map(ingredients);
+    withUrl.set(
+      1,
+      ingredient({ id: 1, name: 'onions', ocadoUrl: 'https://www.ocado.com/products/foo-123' }),
+    );
+    const list = buildShoppingList(
+      [meal(0, 'Dhal', [{ ingredientId: 1, amount: 1, unit: null }])],
+      withUrl,
+      categories,
+      emptyState,
+    );
+
+    expect(list.sections[0].items[0].ocadoUrl).toBe('https://www.ocado.com/products/foo-123');
   });
 
   it('keeps fresh and frozen apart and suffixes the frozen row', () => {

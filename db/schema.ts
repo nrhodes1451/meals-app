@@ -58,6 +58,8 @@ export const ingredients = pgTable('ingredients', {
   /** Nullable until observed. Feeds future waste-minimising meal selection. */
   packSize: numeric('pack_size', { precision: 10, scale: 2 }),
   packUnit: unitEnum('pack_unit'),
+  /** Product page on Ocado. Null means the shopping list searches by name. */
+  ocadoUrl: text('ocado_url'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (t) => ({
   nameFrozenIdx: uniqueIndex('ingredients_name_frozen_idx').on(t.name, t.frozen),

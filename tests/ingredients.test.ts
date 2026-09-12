@@ -14,6 +14,7 @@ const row = (
   pantryStaple: false,
   packSize: null,
   packUnit: null,
+  ocadoUrl: null,
   aliases,
   uses: 0,
 });
