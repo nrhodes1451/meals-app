@@ -81,6 +81,7 @@ function planWeek(slugs: string[]): PlannedMeal[] {
         position,
         recipeId: position + 1,
         recipeName: recipe.name,
+        skipIngredients: false,
         lines: recipe.ingredients.map((line) => ({
           ingredientId: ingredientId.get(line.ingredient)!,
           amount: line.amount,
@@ -91,7 +92,12 @@ function planWeek(slugs: string[]): PlannedMeal[] {
   });
 }
 
-const emptyState = { checked: new Set<number>(), stapleOverrides: new Set<number>(), manual: [] };
+const emptyState = {
+  checked: new Set<number>(),
+  skippedChecked: new Set<number>(),
+  stapleOverrides: new Set<number>(),
+  manual: [],
+};
 
 describe('a real week from the seed', () => {
   const meals = planWeek(WEEK);

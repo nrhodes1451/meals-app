@@ -2,6 +2,9 @@
  * Derives the shopping list from a week's plan. Quantities are computed on read and never
  * stored; the only persisted state is per-shop (checked, manually added, staple overrides).
  *
+ * Meals marked skip-ingredients aggregate into a separate pool so their quantities never mix
+ * with the main shop. Same ingredient, two pools, two rows.
+ *
  * Pure functions over plain data, so the whole rule is testable without a database.
  */
 import { ingredientName, packLabel } from './format';
@@ -19,6 +22,8 @@ export type PlannedMeal = {
   recipeId: number;
   recipeName: string;
   lines: PlannedLine[];
+  /** When true, this meal's lines go into `skipped` instead of the aisle sections. */
+  skipIngredients: boolean;
 };
 
 export type IngredientMeta = {
@@ -36,8 +41,10 @@ export type CategoryMeta = { id: number; name: string; position: number };
 export type ManualItem = { id: number; freeText: string; checked: boolean };
 
 export type ListState = {
-  /** Ingredient ids ticked off this shop. */
+  /** Ingredient ids ticked off this shop (aisle sections). */
   checked: ReadonlySet<number>;
+  /** Ingredient ids ticked off in the skipped section. Independent of `checked`. */
+  skippedChecked: ReadonlySet<number>;
   /** Pantry staples explicitly restored to the list this shop. */
   stapleOverrides: ReadonlySet<number>;
   manual: ManualItem[];
@@ -77,6 +84,8 @@ export type ListSection = {
 
 export type ShoppingList = {
   sections: ListSection[];
+  /** Ingredients from skip-ingredients meals, rolled up among themselves. */
+  skipped: ListItem[];
   /** Pantry staples held back, in the same shape, so the foot block can show quantities. */
   suppressed: ListItem[];
   manual: ManualItem[];
@@ -103,12 +112,12 @@ function traceNote(item: {
   return packNote ? packNote.trim() : null;
 }
 
-export function buildShoppingList(
+function itemsFromMeals(
   meals: PlannedMeal[],
   ingredients: ReadonlyMap<number, IngredientMeta>,
-  categories: readonly CategoryMeta[],
-  state: ListState,
-): ShoppingList {
+  checked: ReadonlySet<number>,
+  stapleOverrides: ReadonlySet<number>,
+): ListItem[] {
   type Accumulator = {
     meta: IngredientMeta;
     measured: Measured[];
@@ -142,7 +151,7 @@ export function buildShoppingList(
     }
   }
 
-  const items: ListItem[] = [...grouped.values()].map((entry) => {
+  return [...grouped.values()].map((entry) => {
     const quantity = formatQuantity(entry.measured, entry.unmeasuredCount);
     const uses = [...entry.uses].sort((a, b) => a.position - b.position);
     return {
@@ -150,8 +159,8 @@ export function buildShoppingList(
       name: ingredientName(entry.meta),
       categoryId: entry.meta.categoryId,
       pantryStaple: entry.meta.pantryStaple,
-      restored: entry.meta.pantryStaple && state.stapleOverrides.has(entry.meta.id),
-      checked: state.checked.has(entry.meta.id),
+      restored: entry.meta.pantryStaple && stapleOverrides.has(entry.meta.id),
+      checked: checked.has(entry.meta.id),
       quantity,
       uses,
       trace: traceNote({
@@ -162,9 +171,22 @@ export function buildShoppingList(
       }),
     };
   });
+}
 
-  const included = items.filter((item) => !item.pantryStaple || item.restored);
-  const suppressed = items
+export function buildShoppingList(
+  meals: PlannedMeal[],
+  ingredients: ReadonlyMap<number, IngredientMeta>,
+  categories: readonly CategoryMeta[],
+  state: ListState,
+): ShoppingList {
+  const shopMeals = meals.filter((meal) => !meal.skipIngredients);
+  const skipMeals = meals.filter((meal) => meal.skipIngredients);
+
+  const shopItems = itemsFromMeals(shopMeals, ingredients, state.checked, state.stapleOverrides);
+  const skipItems = itemsFromMeals(skipMeals, ingredients, state.skippedChecked, new Set());
+
+  const included = shopItems.filter((item) => !item.pantryStaple || item.restored);
+  const suppressed = shopItems
     .filter((item) => item.pantryStaple && !item.restored)
     .sort((a, b) => a.name.localeCompare(b.name, 'en-GB'));
 
@@ -184,6 +206,15 @@ export function buildShoppingList(
     // Empty sections are omitted: the list is a route through a shop, not a table of contents.
     .filter((section) => section.items.length > 0);
 
+  const aisleOrder = new Map(categories.map((category) => [category.id, category.position]));
+  const skipped = skipItems
+    .filter((item) => !item.pantryStaple)
+    .sort((a, b) => {
+      const byAisle = (aisleOrder.get(a.categoryId) ?? 0) - (aisleOrder.get(b.categoryId) ?? 0);
+      if (byAisle !== 0) return byAisle;
+      return a.name.localeCompare(b.name, 'en-GB');
+    });
+
   const total = included.length + state.manual.length;
   const checked =
     included.filter((item) => item.checked).length +
@@ -191,6 +222,7 @@ export function buildShoppingList(
 
   return {
     sections,
+    skipped,
     suppressed,
     manual: state.manual,
     total,
@@ -204,6 +236,7 @@ export type ListSummary = {
   total: number;
   sections: { name: string; count: number }[];
   suppressedCount: number;
+  skippedCount: number;
 };
 
 export function summariseShoppingList(list: ShoppingList): ListSummary {
@@ -214,5 +247,6 @@ export function summariseShoppingList(list: ShoppingList): ListSummary {
       count: section.items.length,
     })),
     suppressedCount: list.suppressed.length,
+    skippedCount: list.skipped.length,
   };
 }

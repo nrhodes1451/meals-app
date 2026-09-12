@@ -52,6 +52,12 @@ export function LiveRail({ week, summary }: { week: string; summary: ListSummary
         </p>
       ) : null}
 
+      {summary.skippedCount > 0 ? (
+        <p className="mt-4 text-sm text-ink-70">
+          {summary.skippedCount} {summary.skippedCount === 1 ? 'ingredient' : 'ingredients'} skipped.
+        </p>
+      ) : null}
+
       <Button asChild block className="mt-6">
         <Link href={`/plan/${week}/list` as Route}>Open shopping list</Link>
       </Button>

@@ -133,6 +133,8 @@ export const planSlots = pgTable('plan_slots', {
   locked: boolean('locked').notNull().default(false),
   /** Ticked off as the meal is cooked. Also the basis of "last eaten". */
   eaten: boolean('eaten').notNull().default(false),
+  /** When true, this meal's ingredients aggregate into a separate shopping-list section. */
+  skipIngredients: boolean('skip_ingredients').notNull().default(false),
 }, (t) => ({
   planPositionIdx: uniqueIndex('plan_slots_plan_position_idx').on(t.planId, t.position),
 }));
@@ -144,7 +146,8 @@ export const planSlots = pgTable('plan_slots', {
 /**
  * Quantities are derived from the plan on read, not stored. This table holds
  * only per-shop state: what has been ticked off, what was added by hand, and
- * which suppressed staples were pulled back in.
+ * which suppressed staples were pulled back in. A skipped tick is a separate
+ * row from the main-shop tick for the same ingredient.
  */
 export const shoppingListItems = pgTable('shopping_list_items', {
   id: serial('id').primaryKey(),
@@ -158,6 +161,8 @@ export const shoppingListItems = pgTable('shopping_list_items', {
   manual: boolean('manual').notNull().default(false),
   /** True when a pantry staple was explicitly restored to the list. */
   stapleOverride: boolean('staple_override').notNull().default(false),
+  /** True when this tick belongs to the skipped-ingredients section, not the main shop. */
+  skipped: boolean('skipped').notNull().default(false),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 }, (t) => ({
   planIdx: index('shopping_list_items_plan_idx').on(t.planId),

@@ -8,6 +8,7 @@ import { getOrCreatePlan, type Plan } from './week';
 export type PlanSlot = SlotState & {
   id: number;
   eaten: boolean;
+  skipIngredients: boolean;
   recipe: RecipeRow | null;
 };
 
@@ -18,7 +19,14 @@ export type LoadedPlan = {
 };
 
 export async function loadSlots(db: Db, planId: number): Promise<
-  { id: number; position: number; recipeId: number | null; locked: boolean; eaten: boolean }[]
+  {
+    id: number;
+    position: number;
+    recipeId: number | null;
+    locked: boolean;
+    eaten: boolean;
+    skipIngredients: boolean;
+  }[]
 > {
   return db
     .select()
@@ -49,6 +57,7 @@ export async function loadPlan(db: Db, weekStarting: string): Promise<LoadedPlan
       recipeId: row.recipeId,
       locked: row.locked,
       eaten: row.eaten,
+      skipIngredients: row.skipIngredients,
       recipe: row.recipeId === null ? null : (byId.get(row.recipeId) ?? null),
     })),
   };

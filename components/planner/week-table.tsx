@@ -11,6 +11,7 @@ import {
   GridRow,
   GridTable,
   IconButton,
+  TickMark,
 } from '@/components/penrose';
 import { PickerDialog } from './picker-dialog';
 import { PlannerFilterBar } from './filter-bar';
@@ -21,6 +22,7 @@ import {
   rollTheWeek,
   setSlotLocked,
   setSlotRecipe,
+  setSlotSkipIngredients,
   unlockAll,
   type ActionResult,
 } from '@/app/plan/[week]/actions';
@@ -30,8 +32,8 @@ import type { RecipeRow } from '@/lib/recipes';
 import type { RollFilters } from '@/lib/roll';
 import { MAX_SLOT_COUNT, MIN_SLOT_COUNT } from '@/lib/week';
 
-/** lock bar, number, meal, diet, time, servings, three 48px controls. */
-const COLUMNS = '4px 44px minmax(200px,1fr) 92px 78px 62px 152px';
+/** lock bar, number, meal, diet, time, servings, skip ingredients, three 48px controls. */
+const COLUMNS = '4px 44px minmax(200px,1fr) 92px 78px 62px 96px 152px';
 
 type PickerRecipe = Pick<
   RecipeRow,
@@ -133,7 +135,7 @@ export function WeekTable({
         the document itself never scrolls sideways.
       */}
       <div className="mt-6 overflow-x-auto">
-        <div className="min-w-[700px]">
+        <div className="min-w-[820px]">
           <GridTable label="This week's meals">
             <GridHeaderRow columns={COLUMNS}>
               <GridColumnHeader />
@@ -142,6 +144,9 @@ export function WeekTable({
               <GridColumnHeader>Diet</GridColumnHeader>
               <GridColumnHeader align="right">Time</GridColumnHeader>
               <GridColumnHeader align="right">Serves</GridColumnHeader>
+              <GridColumnHeader className="whitespace-normal leading-tight">
+                Skip ingredients
+              </GridColumnHeader>
               <GridColumnHeader />
             </GridHeaderRow>
 
@@ -203,6 +208,24 @@ export function WeekTable({
 
                   <GridCell align="right" tabular>
                     {recipe ? `×${recipe.servings}` : ''}
+                  </GridCell>
+
+                  <GridCell>
+                    <button
+                      type="button"
+                      role="checkbox"
+                      aria-checked={slot.skipIngredients}
+                      aria-label={`Skip ingredients for ${ref}`}
+                      disabled={pending || !recipe}
+                      onClick={() =>
+                        run(() =>
+                          setSlotSkipIngredients(week, slot.position, !slot.skipIngredients),
+                        )
+                      }
+                      className="flex size-touch-min shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 disabled:cursor-not-allowed"
+                    >
+                      <TickMark checked={slot.skipIngredients} />
+                    </button>
                   </GridCell>
 
                   <GridCell align="right">

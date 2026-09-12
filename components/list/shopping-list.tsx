@@ -163,7 +163,7 @@ export function ShoppingListView({
         </p>
       ) : null}
 
-      {list.sections.length === 0 && list.manual.length === 0 ? (
+      {list.sections.length === 0 && list.skipped.length === 0 && list.manual.length === 0 ? (
         <p className="mt-8 text-ink-70">Nothing on the list. Pick some meals for the week.</p>
       ) : null}
 
@@ -193,6 +193,34 @@ export function ShoppingListView({
           </ul>
         </section>
       ))}
+
+      {list.skipped.length ? (
+        <section>
+          <div className="sticky top-[190px] z-10 flex items-baseline justify-between gap-4 border-0 border-b border-ink bg-paper py-1 min-[900px]:top-[142px]">
+            <h2 className="font-display text-md font-black uppercase tracking-display">
+              Skipped ingredients
+            </h2>
+            <span className="pen-tabular font-display text-xs font-bold uppercase tracking-label text-primary">
+              {list.skipped.filter((item) => !item.checked).length} left
+            </span>
+          </div>
+
+          <ul className="list-none p-0">
+            {list.skipped.map((item) => (
+              <Row
+                key={`skipped-${item.ingredientId}`}
+                item={item}
+                checked={item.checked}
+                disabled={pending}
+                onToggle={() =>
+                  run(() => setItemChecked(week, item.ingredientId, !item.checked, true))
+                }
+                onTrace={() => setTrace(item)}
+              />
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* Anything with no ingredient record: batteries, a card. Schema calls these manual. */}
       <section>

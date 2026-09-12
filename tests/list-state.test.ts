@@ -3,7 +3,8 @@
  * rows at all. Two invariants matter enough to pin.
  *
  * First, ticking the same item twice must not leave two rows behind, because there is no unique
- * index on (plan, ingredient) to catch it.
+ * index on (plan, ingredient, skipped) to catch it. Shop and skipped ticks for the same
+ * ingredient are two rows.
  *
  * Second, a tick has to survive the plan changing underneath it. Re-rolling a day can drop an
  * ingredient off the derived list; deleting its row would silently lose the tick if the meal
@@ -58,6 +59,7 @@ afterAll(async () => {
 async function upsert(
   ingredientId: number,
   patch: { checked?: boolean; stapleOverride?: boolean },
+  skipped = false,
 ) {
   await db.transaction(async (tx) => {
     const [existing] = await tx
@@ -68,6 +70,7 @@ async function upsert(
           eq(shoppingListItems.planId, planId),
           eq(shoppingListItems.ingredientId, ingredientId),
           eq(shoppingListItems.manual, false),
+          eq(shoppingListItems.skipped, skipped),
         ),
       )
       .limit(1);
@@ -79,7 +82,7 @@ async function upsert(
         .where(eq(shoppingListItems.id, existing.id));
       return;
     }
-    await tx.insert(shoppingListItems).values({ planId, ingredientId, ...patch });
+    await tx.insert(shoppingListItems).values({ planId, ingredientId, skipped, ...patch });
   });
 }
 
@@ -95,6 +98,7 @@ describe('per-shop state', () => {
   it('starts empty, because rows are only written when something is done to the list', async () => {
     const state = await loadListState(db, planId);
     expect(state.checked.size).toBe(0);
+    expect(state.skippedChecked.size).toBe(0);
     expect(state.stapleOverrides.size).toBe(0);
     expect(state.manual).toEqual([]);
   });
@@ -142,5 +146,19 @@ describe('per-shop state', () => {
     // is still there if the meal is rolled back in.
     const state = await loadListState(db, planId);
     expect(state.checked.has(onionId)).toBe(true);
+  });
+
+  it('keeps shop and skipped ticks as two rows for the same ingredient', async () => {
+    await upsert(onionId, { checked: true }, true);
+    expect(await rowsFor(onionId)).toHaveLength(2);
+
+    const state = await loadListState(db, planId);
+    expect(state.checked.has(onionId)).toBe(true);
+    expect(state.skippedChecked.has(onionId)).toBe(true);
+
+    await upsert(onionId, { checked: false }, true);
+    const after = await loadListState(db, planId);
+    expect(after.checked.has(onionId)).toBe(true);
+    expect(after.skippedChecked.has(onionId)).toBe(false);
   });
 });

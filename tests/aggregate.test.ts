@@ -39,10 +39,20 @@ const ingredients = new Map<number, IngredientMeta>(
   ].map((item) => [item.id, item]),
 );
 
-const emptyState: ListState = { checked: new Set(), stapleOverrides: new Set(), manual: [] };
+const emptyState: ListState = {
+  checked: new Set(),
+  skippedChecked: new Set(),
+  stapleOverrides: new Set(),
+  manual: [],
+};
 
-function meal(position: number, name: string, lines: PlannedMeal['lines']): PlannedMeal {
-  return { position, recipeId: position + 100, recipeName: name, lines };
+function meal(
+  position: number,
+  name: string,
+  lines: PlannedMeal['lines'],
+  skipIngredients = false,
+): PlannedMeal {
+  return { position, recipeId: position + 100, recipeName: name, lines, skipIngredients };
 }
 
 describe('grouping', () => {
@@ -224,6 +234,7 @@ describe('counts and progress', () => {
       categories,
       {
         checked: new Set([1]),
+        skippedChecked: new Set(),
         stapleOverrides: new Set(),
         manual: [
           { id: 1, freeText: 'batteries', checked: false },
@@ -306,6 +317,7 @@ describe('rail summary', () => {
       { name: 'Dairy', count: 1 },
     ]);
     expect(summary.suppressedCount).toBe(1);
+    expect(summary.skippedCount).toBe(0);
   });
 });
 
@@ -318,5 +330,100 @@ describe('lines with no ingredient record', () => {
       emptyState,
     );
     expect(list.total).toBe(0);
+  });
+});
+
+describe('skip ingredients', () => {
+  it('keeps a skipped meal off the aisle sections and lists it underneath', () => {
+    const list = buildShoppingList(
+      [
+        meal(0, 'Dhal', [{ ingredientId: 1, amount: 2, unit: null }]),
+        meal(1, 'Soup', [{ ingredientId: 2, amount: 200, unit: 'g' }], true),
+      ],
+      ingredients,
+      categories,
+      emptyState,
+    );
+
+    expect(list.sections.flatMap((section) => section.items.map((item) => item.name))).toEqual([
+      'onions',
+    ]);
+    expect(list.skipped.map((item) => item.name)).toEqual(['spinach']);
+    expect(list.skipped[0].quantity.lines).toEqual(['200g']);
+  });
+
+  it('rolls skipped meals up among themselves', () => {
+    const list = buildShoppingList(
+      [
+        meal(0, 'Dhal', [{ ingredientId: 1, amount: 1, unit: null }], true),
+        meal(1, 'Curry', [{ ingredientId: 1, amount: 2, unit: null }], true),
+      ],
+      ingredients,
+      categories,
+      emptyState,
+    );
+
+    expect(list.sections).toEqual([]);
+    expect(list.skipped).toHaveLength(1);
+    expect(list.skipped[0].quantity.lines).toEqual(['3']);
+    expect(list.skipped[0].uses).toHaveLength(2);
+  });
+
+  it('does not add skipped quantities onto the same shop ingredient', () => {
+    const list = buildShoppingList(
+      [
+        meal(0, 'Dhal', [{ ingredientId: 1, amount: 2, unit: null }]),
+        meal(1, 'Soup', [{ ingredientId: 1, amount: 1, unit: null }], true),
+      ],
+      ingredients,
+      categories,
+      emptyState,
+    );
+
+    expect(list.sections[0].items[0].quantity.lines).toEqual(['2']);
+    expect(list.skipped[0].quantity.lines).toEqual(['1']);
+    expect(list.total).toBe(1);
+  });
+
+  it('omits the skipped section when nothing is skipped', () => {
+    const list = buildShoppingList(
+      [meal(0, 'Dhal', [{ ingredientId: 1, amount: 1, unit: null }])],
+      ingredients,
+      categories,
+      emptyState,
+    );
+    expect(list.skipped).toEqual([]);
+  });
+
+  it('does not count skipped rows in shop totals', () => {
+    const list = buildShoppingList(
+      [
+        meal(0, 'Dhal', [{ ingredientId: 1, amount: 1, unit: null }]),
+        meal(1, 'Soup', [{ ingredientId: 2, amount: 100, unit: 'g' }], true),
+      ],
+      ingredients,
+      categories,
+      emptyState,
+    );
+    expect(list.total).toBe(1);
+    expect(summariseShoppingList(list).skippedCount).toBe(1);
+  });
+
+  it('ticks skipped rows independently of the shop row', () => {
+    const list = buildShoppingList(
+      [
+        meal(0, 'Dhal', [{ ingredientId: 1, amount: 2, unit: null }]),
+        meal(1, 'Soup', [{ ingredientId: 1, amount: 1, unit: null }], true),
+      ],
+      ingredients,
+      categories,
+      {
+        ...emptyState,
+        skippedChecked: new Set([1]),
+      },
+    );
+
+    expect(list.sections[0].items[0].checked).toBe(false);
+    expect(list.skipped[0].checked).toBe(true);
   });
 });

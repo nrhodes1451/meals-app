@@ -230,6 +230,26 @@ export async function removeSlot(week: string, position: number): Promise<Action
   return { ok: true };
 }
 
+export async function setSlotSkipIngredients(
+  week: string,
+  position: number,
+  skipIngredients: boolean,
+): Promise<ActionResult> {
+  const invalid = guard(week);
+  if (invalid) return invalid;
+
+  const db = await getDb();
+  const plan = await getOrCreatePlan(db, week);
+
+  await db
+    .update(planSlots)
+    .set({ skipIngredients })
+    .where(and(eq(planSlots.planId, plan.id), eq(planSlots.position, position)));
+
+  revalidateWeek(week);
+  return { ok: true };
+}
+
 export async function setSlotEaten(
   week: string,
   position: number,

@@ -28,6 +28,7 @@ export async function loadListState(db: Db, planId: number): Promise<ListState> 
     .orderBy(asc(shoppingListItems.id));
 
   const checked = new Set<number>();
+  const skippedChecked = new Set<number>();
   const stapleOverrides = new Set<number>();
   const manual: ListState['manual'] = [];
 
@@ -37,11 +38,15 @@ export async function loadListState(db: Db, planId: number): Promise<ListState> 
       continue;
     }
     if (row.ingredientId === null) continue;
+    if (row.skipped) {
+      if (row.checked) skippedChecked.add(row.ingredientId);
+      continue;
+    }
     if (row.checked) checked.add(row.ingredientId);
     if (row.stapleOverride) stapleOverrides.add(row.ingredientId);
   }
 
-  return { checked, stapleOverrides, manual };
+  return { checked, skippedChecked, stapleOverrides, manual };
 }
 
 export async function loadIngredientMeta(
@@ -94,6 +99,7 @@ export async function loadWeekList(db: Db, weekStarting: string): Promise<WeekLi
       position: slot.position,
       recipeId: slot.recipe!.id,
       recipeName: slot.recipe!.name,
+      skipIngredients: slot.skipIngredients,
       lines: slot.recipe!.lines.map((line) => ({
         ingredientId: line.ingredientId,
         amount: line.amount,

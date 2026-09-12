@@ -24,14 +24,15 @@ function guard(week: string): ActionResult | null {
 /**
  * Rows are created lazily: an untouched week has none, because quantities are derived and the
  * only thing worth storing is what someone did to the list. So every write is an upsert against
- * (plan, ingredient), and there is no unique index to lean on - the pair is only ever created
- * here, inside a transaction.
+ * (plan, ingredient, skipped), and there is no unique index to lean on - the triple is only
+ * ever created here, inside a transaction.
  */
 async function updateItem(
   db: Db,
   planId: number,
   ingredientId: number,
   patch: { checked?: boolean; stapleOverride?: boolean },
+  skipped = false,
 ): Promise<void> {
   await db.transaction(async (tx) => {
     const [existing] = await tx
@@ -42,6 +43,7 @@ async function updateItem(
           eq(shoppingListItems.planId, planId),
           eq(shoppingListItems.ingredientId, ingredientId),
           eq(shoppingListItems.manual, false),
+          eq(shoppingListItems.skipped, skipped),
         ),
       )
       .limit(1);
@@ -54,7 +56,7 @@ async function updateItem(
       return;
     }
 
-    await tx.insert(shoppingListItems).values({ planId, ingredientId, ...patch });
+    await tx.insert(shoppingListItems).values({ planId, ingredientId, skipped, ...patch });
   });
 }
 
@@ -62,13 +64,14 @@ export async function setItemChecked(
   week: string,
   ingredientId: number,
   checked: boolean,
+  skipped = false,
 ): Promise<ActionResult> {
   const invalid = guard(week);
   if (invalid) return invalid;
 
   const db = await getDb();
   const plan = await getOrCreatePlan(db, week);
-  await updateItem(db, plan.id, ingredientId, { checked });
+  await updateItem(db, plan.id, ingredientId, { checked }, skipped);
 
   revalidateWeek(week);
   return { ok: true };
