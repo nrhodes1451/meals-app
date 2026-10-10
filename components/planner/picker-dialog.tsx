@@ -74,7 +74,10 @@ export function PickerDialog({
               type="button"
               role="listitem"
               disabled={taken.has(recipe.id)}
-              onClick={() => onPick(recipe.id)}
+              onClick={() => {
+                setQuery('');
+                onPick(recipe.id);
+              }}
               className="flex min-h-[56px] w-full cursor-pointer items-center gap-4 border-0 border-t border-ink-25 bg-transparent px-1 text-left transition-colors duration-[120ms] ease-pen hover:bg-primary-tint disabled:cursor-not-allowed disabled:opacity-40"
             >
               <span className="min-w-0 flex-1 truncate font-display text-md font-bold text-ink">
