@@ -1,4 +1,4 @@
-import { asc, eq, sql } from 'drizzle-orm';
+import { and, asc, eq, sql } from 'drizzle-orm';
 import type { Db } from '@/db';
 import { categories, ingredientAliases, ingredients, recipeIngredients } from '@/db/schema';
 import type { Unit } from './quantity';
@@ -92,4 +92,45 @@ export function parseAliases(value: string): string[] {
     if (alias) seen.add(alias);
   }
   return [...seen];
+}
+
+/**
+ * The one place a new ingredient row is made, so the admin screen and the photo import follow the
+ * same rules: lower case, one row per name and frozen state, slug unique. Takes a transaction as
+ * readily as the database, so the import can create ingredients and the recipe atomically.
+ */
+export async function insertIngredient(
+  db: Db,
+  input: { name: string; categoryId: number; frozen?: boolean; pantryStaple?: boolean },
+): Promise<{ ok: true; id: number } | { ok: false; error: string }> {
+  const name = input.name.trim().toLowerCase();
+  const frozen = input.frozen ?? false;
+  if (!name) return { ok: false, error: 'Give the ingredient a name.' };
+
+  const clash = await db.query.ingredients.findFirst({
+    where: and(eq(ingredients.name, name), eq(ingredients.frozen, frozen)),
+  });
+  if (clash) {
+    return { ok: false, error: `"${name}${frozen ? ' (frozen)' : ''}" is already in the list.` };
+  }
+
+  const slugBase = `${name}${frozen ? ' frozen' : ''}`
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  const existing = await db.select({ slug: ingredients.slug }).from(ingredients);
+  const taken = new Set(existing.map((row) => row.slug));
+  let slug = slugBase || 'ingredient';
+  for (let n = 2; taken.has(slug); n += 1) slug = `${slugBase}-${n}`;
+
+  const [row] = await db
+    .insert(ingredients)
+    .values({
+      slug,
+      name,
+      categoryId: input.categoryId,
+      frozen,
+      pantryStaple: input.pantryStaple ?? false,
+    })
+    .returning({ id: ingredients.id });
+  return { ok: true, id: row.id };
 }

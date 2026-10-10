@@ -1,7 +1,7 @@
 import { getDb } from '@/db';
 import { AppShell } from '@/components/shell';
 import { LibraryFilterBar } from '@/components/library/filter-bar';
-import { NewRecipeButton } from '@/components/library/new-recipe-button';
+import { ImportRecipeButton, NewRecipeButton } from '@/components/library/new-recipe-button';
 import { RecipeList } from '@/components/library/recipe-list';
 import { SectionHeader } from '@/components/penrose';
 import {
@@ -68,7 +68,12 @@ export default async function LibraryPage({
       <LibraryFilterBar
         filters={filters}
         ingredientOptions={ingredientOptions}
-        action={<NewRecipeButton />}
+        action={
+          <div className="flex flex-wrap gap-2">
+            <ImportRecipeButton />
+            <NewRecipeButton />
+          </div>
+        }
       />
 
       <RecipeList recipes={shown} week={week} />

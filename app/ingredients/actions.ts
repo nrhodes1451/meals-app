@@ -10,7 +10,7 @@ import {
   recipeIngredients,
   unitEnum,
 } from '@/db/schema';
-import { parseAliases } from '@/lib/ingredients';
+import { insertIngredient, parseAliases } from '@/lib/ingredients';
 import type { Unit } from '@/lib/quantity';
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -201,21 +201,8 @@ export async function bulkTogglePantry(ids: number[]): Promise<ActionResult> {
 
 export async function createIngredient(name: string, categoryId: number): Promise<ActionResult> {
   const db = await getDb();
-  const trimmed = name.trim().toLowerCase();
-  if (!trimmed) return { ok: false, error: 'Give the ingredient a name.' };
-
-  const clash = await db.query.ingredients.findFirst({
-    where: and(eq(ingredients.name, trimmed), eq(ingredients.frozen, false)),
-  });
-  if (clash) return { ok: false, error: `"${trimmed}" is already in the list.` };
-
-  const slugBase = trimmed.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const existing = await db.select({ slug: ingredients.slug }).from(ingredients);
-  const taken = new Set(existing.map((row) => row.slug));
-  let slug = slugBase || 'ingredient';
-  for (let n = 2; taken.has(slug); n += 1) slug = `${slugBase}-${n}`;
-
-  await db.insert(ingredients).values({ slug, name: trimmed, categoryId });
+  const created = await insertIngredient(db, { name, categoryId });
+  if (!created.ok) return created;
   return done();
 }
 

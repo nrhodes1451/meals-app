@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { and, eq, isNotNull, ne, sql } from 'drizzle-orm';
 import { getDb } from '@/db';
 import { planSlots, recipeIngredients, recipes, unitEnum } from '@/db/schema';
+import { validateFields, validateQuantity } from '@/lib/recipe-fields';
 import { slugify, uniqueSlug } from '@/lib/slug';
 import type { Unit } from '@/lib/quantity';
 
@@ -31,59 +32,21 @@ export type RecipeInput = {
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
-const UNITS = new Set<string>(unitEnum.enumValues);
-
-/** Numeric columns are strings over the wire and must not be handed junk. */
-function parseAmount(value: string): { ok: true; value: string | null } | { ok: false } {
-  const trimmed = value.trim();
-  if (trimmed === '') return { ok: true, value: null };
-  const number = Number(trimmed);
-  if (!Number.isFinite(number) || number < 0) return { ok: false };
-  return { ok: true, value: String(Math.round(number * 100) / 100) };
-}
-
 export async function saveRecipe(input: RecipeInput): Promise<ActionResult> {
   const db = await getDb();
 
-  const name = input.name.trim();
-  if (!name) return { ok: false, error: 'Give the recipe a name.' };
-
-  const servings = Number(input.servings);
-  if (!Number.isInteger(servings) || servings < 1) {
-    return { ok: false, error: 'Servings must be a whole number, 1 or more.' };
-  }
-
-  let timeHours: string | null = null;
-  if (input.minutes.trim() !== '') {
-    const minutes = Number(input.minutes);
-    if (!Number.isFinite(minutes) || minutes <= 0) {
-      return { ok: false, error: 'Cook time must be a number of minutes.' };
-    }
-    timeHours = String(Math.round((minutes / 60) * 100) / 100);
-  }
-
-  const sourceUrl = input.sourceUrl.trim();
-  if (sourceUrl && !/^https?:\/\//i.test(sourceUrl)) {
-    return { ok: false, error: 'The source link needs to start with http:// or https://.' };
-  }
+  const fields = validateFields(input);
+  if (!fields.ok) return fields;
+  const { name } = fields.value;
 
   const lines: { ingredientId: number; amount: string | null; unit: Unit | null }[] = [];
   for (const [index, line] of input.lines.entries()) {
     if (!Number.isInteger(line.ingredientId) || line.ingredientId <= 0) {
       return { ok: false, error: `Line ${index + 1} has no ingredient.` };
     }
-    const amount = parseAmount(line.amount);
-    if (!amount.ok) {
-      return { ok: false, error: `Line ${index + 1} has an amount that is not a number.` };
-    }
-    if (line.unit !== '' && !UNITS.has(line.unit)) {
-      return { ok: false, error: `Line ${index + 1} has a unit this app does not know.` };
-    }
-    lines.push({
-      ingredientId: line.ingredientId,
-      amount: amount.value,
-      unit: line.unit === '' ? null : line.unit,
-    });
+    const quantity = validateQuantity(line.amount, line.unit, index + 1, unitEnum.enumValues);
+    if (!quantity.ok) return quantity;
+    lines.push({ ingredientId: line.ingredientId, ...quantity.value });
   }
 
   const current = await db.query.recipes.findFirst({ where: eq(recipes.id, input.id) });
@@ -104,16 +67,11 @@ export async function saveRecipe(input: RecipeInput): Promise<ActionResult> {
     await tx
       .update(recipes)
       .set({
-        name,
+        ...fields.value,
         slug,
-        servings,
-        timeHours,
         vegetarian: input.vegetarian,
         keto: input.keto,
         archived: input.archived,
-        // Independent fields. A recipe can have a link and notes, or one, or neither.
-        sourceUrl: sourceUrl || null,
-        method: input.method.trim() || null,
       })
       .where(eq(recipes.id, input.id));
 

@@ -6,5 +6,8 @@ next-env.d.ts
 # Local PGlite data directory
 .pglite/
 
+# Temporary files
+temp/
+
 .env
 .env.local

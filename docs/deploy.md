@@ -64,6 +64,28 @@ gcloud secrets add-iam-policy-binding meal-planner-database-url \
   --role=roles/secretmanager.secretAccessor
 ```
 
+### 2a. Vertex AI for recipe import
+
+`/recipes/import` reads a recipe off a photo with Gemini on Vertex AI. The app authenticates as
+the Cloud Run service account through Application Default Credentials, so there is no key or
+secret to manage.
+
+```bash
+gcloud services enable aiplatform.googleapis.com
+
+gcloud projects add-iam-policy-binding meals-492311 \
+  --member=serviceAccount:meal-planner@meals-492311.iam.gserviceaccount.com \
+  --role=roles/aiplatform.user
+```
+
+The project, location and model default to `meals-492311`, `global` and `gemini-3.8-flash`.
+Override them with `GOOGLE_CLOUD_PROJECT`, `GOOGLE_CLOUD_LOCATION` and `RECIPE_IMPORT_MODEL`
+(for example `--set-env-vars RECIPE_IMPORT_MODEL=...` on deploy) when the model is retired. See
+the Vertex AI model versions page for retirement dates.
+
+Locally, run `gcloud auth application-default login` once. Your own account needs
+`roles/aiplatform.user` on the project too.
+
 ### 3. Migrate and seed (once, from a laptop)
 
 The seed truncates and reinserts. Point it only at an empty Neon database. Once the
