@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
-import { Dices, Lock, Trash2, Unlock } from 'lucide-react';
+import { CalendarPlus, Dices, Lock, Trash2, Unlock } from 'lucide-react';
 import {
   Badge,
   Button,
@@ -17,6 +17,7 @@ import { PickerDialog } from './picker-dialog';
 import { PlannerFilterBar } from './filter-bar';
 import {
   addSlot,
+  copyToNextWeek,
   removeSlot,
   rollSlot,
   rollTheWeek,
@@ -32,8 +33,8 @@ import type { RecipeRow } from '@/lib/recipes';
 import type { RollFilters } from '@/lib/roll';
 import { MAX_SLOT_COUNT, MIN_SLOT_COUNT } from '@/lib/week';
 
-/** lock bar, number, meal, diet, time, servings, skip ingredients, three 48px controls. */
-const COLUMNS = '4px 44px minmax(200px,1fr) 92px 78px 62px 96px 152px';
+/** lock bar, number, meal, diet, time, servings, skip ingredients, four 48px controls. */
+const COLUMNS = '4px 44px minmax(200px,1fr) 92px 78px 62px 96px 204px';
 
 type PickerRecipe = Pick<
   RecipeRow,
@@ -56,6 +57,7 @@ export function WeekTable({
   pickerRecipes: PickerRecipe[];
 }) {
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [flash, setFlash] = useState<Set<number>>(new Set());
   const [pickerFor, setPickerFor] = useState<number | null>(null);
   const [pending, startTransition] = useTransition();
@@ -67,14 +69,16 @@ export function WeekTable({
   }, []);
 
   const run = useCallback(
-    (action: () => Promise<ActionResult>, flashed: number[] = []) => {
+    (action: () => Promise<ActionResult>, flashed: number[] = [], done?: string) => {
       setError(null);
+      setNotice(null);
       startTransition(async () => {
         const result = await action();
         if (!result.ok) {
           setError(result.error);
           return;
         }
+        if (done) setNotice(done);
         if (flashed.length) {
           setFlash(new Set(flashed));
           // The one piece of motion in the design: a 700ms hold, then it fades back.
@@ -129,13 +133,18 @@ export function WeekTable({
           {error}
         </p>
       ) : null}
+      {notice ? (
+        <p role="status" className="mt-4 text-sm text-ink">
+          {notice}
+        </p>
+      ) : null}
 
       {/*
         The table keeps every column at every width. Horizontal scroll lives on this wrapper so
         the document itself never scrolls sideways.
       */}
       <div className="mt-6 overflow-x-auto">
-        <div className="min-w-[820px]">
+        <div className="min-w-[872px]">
           <GridTable label="This week's meals">
             <GridHeaderRow columns={COLUMNS}>
               <GridColumnHeader />
@@ -249,6 +258,20 @@ export function WeekTable({
                         onClick={() => reroll(slot.position)}
                       >
                         <Dices size={20} aria-hidden />
+                      </IconButton>
+                      <IconButton
+                        label={`Copy ${ref} to next week without ingredients`}
+                        variant="quiet"
+                        disabled={pending || !recipe}
+                        onClick={() =>
+                          run(
+                            () => copyToNextWeek(week, slot.position),
+                            [],
+                            `${recipe?.name} copied to next week.`,
+                          )
+                        }
+                      >
+                        <CalendarPlus size={20} aria-hidden />
                       </IconButton>
                       <IconButton
                         label={

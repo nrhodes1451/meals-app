@@ -11,6 +11,7 @@ import {
   isValidWeekStarting,
   MAX_SLOT_COUNT,
   MIN_SLOT_COUNT,
+  shiftWeek,
 } from '@/lib/week';
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -227,6 +228,51 @@ export async function removeSlot(week: string, position: number): Promise<Action
   });
 
   revalidateWeek(week);
+  return { ok: true };
+}
+
+/**
+ * Leftovers: the same meal eaten again next week, already bought for. It arrives with its
+ * ingredients skipped so next week's list does not buy it twice, and locked so rolling next week
+ * leaves it alone. It fills the first unlocked, empty meal, or grows the week when there is none.
+ */
+export async function copyToNextWeek(week: string, position: number): Promise<ActionResult> {
+  const invalid = guard(week);
+  if (invalid) return invalid;
+
+  const db = await getDb();
+  const plan = await getOrCreatePlan(db, week);
+  const slots = await loadSlots(db, plan.id);
+
+  const source = slots.find((slot) => slot.position === position);
+  if (!source) return { ok: false, error: 'That meal is no longer in the week.' };
+  if (source.recipeId === null) return { ok: false, error: 'Pick a meal before copying it.' };
+
+  const nextWeek = shiftWeek(week, 1);
+  const nextPlan = await getOrCreatePlan(db, nextWeek);
+  const nextSlots = await loadSlots(db, nextPlan.id);
+
+  if (nextSlots.some((slot) => slot.recipeId === source.recipeId)) {
+    return { ok: false, error: 'That recipe is already in next week.' };
+  }
+
+  const values = { recipeId: source.recipeId, skipIngredients: true, locked: true };
+  const target = nextSlots.find((slot) => !slot.locked && slot.recipeId === null);
+
+  if (target) {
+    await db.update(planSlots).set(values).where(eq(planSlots.id, target.id));
+  } else if (nextSlots.length < MAX_SLOT_COUNT) {
+    await db
+      .insert(planSlots)
+      .values({ planId: nextPlan.id, position: nextSlots.length, ...values });
+  } else {
+    return {
+      ok: false,
+      error: `Next week already holds ${MAX_SLOT_COUNT} meals. Clear one there first.`,
+    };
+  }
+
+  revalidateWeek(nextWeek);
   return { ok: true };
 }
 
