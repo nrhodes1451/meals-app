@@ -43,7 +43,7 @@ export default async function PlannerPage({
   const filters = parseFilters(await searchParams);
   const db = await getDb();
 
-  const [{ slots, recipes }, { list }, weeks] = await Promise.all([
+  const [{ slots, recipes }, { list, removals }, weeks] = await Promise.all([
     loadPlan(db, week),
     loadWeekList(db, week),
     listPlanWeeks(db),
@@ -70,6 +70,7 @@ export default async function PlannerPage({
           <WeekTable
             week={week}
             slots={slots}
+            removals={removals}
             filters={filters}
             poolSize={poolSize(recipes, filters)}
             poolTotal={unarchived}

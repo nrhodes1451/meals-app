@@ -3,9 +3,11 @@ import type { Db } from '@/db';
 import { categories, ingredients, shoppingListItems } from '@/db/schema';
 import {
   buildShoppingList,
+  orderRemovals,
   type CategoryMeta,
   type IngredientMeta,
   type ListState,
+  type OrderRemoval,
   type PlannedMeal,
   type ShoppingList,
 } from './aggregate';
@@ -81,7 +83,12 @@ export async function loadIngredientMeta(
   };
 }
 
-export type WeekList = { plan: Plan; list: ShoppingList };
+export type WeekList = {
+  plan: Plan;
+  list: ShoppingList;
+  /** What to take off an already-placed order if a meal is dropped, keyed by slot position. */
+  removals: Record<number, OrderRemoval>;
+};
 
 /**
  * The list for a week, recomputed from the plan every time. There is no generate step and there
@@ -111,5 +118,6 @@ export async function loadWeekList(db: Db, weekStarting: string): Promise<WeekLi
   return {
     plan,
     list: buildShoppingList(meals, meta.ingredients, meta.categories, state),
+    removals: orderRemovals(meals, meta.ingredients, meta.categories, state.stapleOverrides),
   };
 }

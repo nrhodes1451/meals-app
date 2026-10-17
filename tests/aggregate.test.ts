@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildShoppingList,
+  orderRemoval,
   summariseShoppingList,
   type CategoryMeta,
   type IngredientMeta,
@@ -443,5 +444,116 @@ describe('skip ingredients', () => {
 
     expect(list.sections[0].items[0].checked).toBe(false);
     expect(list.skipped[0].checked).toBe(true);
+  });
+});
+
+describe('taking a meal off the order', () => {
+  const butter = ingredient({ id: 8, name: 'butter', categoryId: 2 });
+  const withButter = new Map(ingredients).set(8, butter);
+
+  it('reduces an ingredient another meal still needs, naming that meal', () => {
+    const removal = orderRemoval(
+      [
+        meal(0, 'Risotto', [{ ingredientId: 8, amount: 50, unit: 'g' }]),
+        meal(2, 'Shakshuka', [{ ingredientId: 8, amount: 50, unit: 'g' }]),
+      ],
+      0,
+      withButter,
+      categories,
+      new Set(),
+    );
+
+    expect(removal?.remove).toEqual([]);
+    expect(removal?.reduce).toHaveLength(1);
+    const [change] = removal!.reduce;
+    expect(change.name).toBe('butter');
+    expect(change.remove).toEqual(['50g']);
+    expect(change.keep).toEqual(['50g']);
+    expect(change.keptFor.map((use) => use.recipeName)).toEqual(['Shakshuka']);
+  });
+
+  it('removes outright what no other meal uses, in aisle order', () => {
+    const removal = orderRemoval(
+      [
+        meal(0, 'Dhal', [
+          { ingredientId: 6, amount: 500, unit: 'g' },
+          { ingredientId: 1, amount: 2, unit: null },
+        ]),
+        meal(1, 'Curry', [{ ingredientId: 2, amount: 300, unit: 'g' }]),
+      ],
+      0,
+      ingredients,
+      categories,
+      new Set(),
+    );
+
+    expect(removal?.reduce).toEqual([]);
+    expect(removal?.remove.map((change) => [change.name, change.remove])).toEqual([
+      ['onions', ['2']],
+      ['yoghurt', ['500g']],
+    ]);
+  });
+
+  it('keeps every bucket the other meals still need', () => {
+    const removal = orderRemoval(
+      [
+        meal(0, 'Dhal', [{ ingredientId: 1, amount: 1, unit: null }]),
+        meal(1, 'Curry', [{ ingredientId: 1, amount: 2, unit: 'tin' }]),
+        meal(3, 'Stew', [{ ingredientId: 1, amount: null, unit: null }]),
+      ],
+      0,
+      ingredients,
+      categories,
+      new Set(),
+    );
+
+    const [change] = removal!.reduce;
+    expect(change.remove).toEqual(['1']);
+    expect(change.keep).toEqual(['2 tins', 'some']);
+    expect(change.keptFor.map((use) => use.position)).toEqual([1, 3]);
+  });
+
+  it('does not count meals that skip ingredients as still needing something', () => {
+    const removal = orderRemoval(
+      [
+        meal(0, 'Risotto', [{ ingredientId: 8, amount: 50, unit: 'g' }]),
+        meal(1, 'Leftovers', [{ ingredientId: 8, amount: 50, unit: 'g' }], true),
+      ],
+      0,
+      withButter,
+      categories,
+      new Set(),
+    );
+
+    expect(removal?.remove.map((change) => change.name)).toEqual(['butter']);
+  });
+
+  it('has nothing to remove for a meal that already skips ingredients', () => {
+    const removal = orderRemoval(
+      [meal(0, 'Leftovers', [{ ingredientId: 8, amount: 50, unit: 'g' }], true)],
+      0,
+      withButter,
+      categories,
+      new Set(),
+    );
+
+    expect(removal).toEqual({ skipped: true, remove: [], reduce: [], staples: [] });
+  });
+
+  it('lists suppressed staples apart, and treats restored ones as on the order', () => {
+    const lines = [
+      { ingredientId: 4, amount: 1, unit: 'tbsp' as const },
+      { ingredientId: 5, amount: 1, unit: 'tsp' as const },
+    ];
+    const removal = orderRemoval(
+      [meal(0, 'Dhal', lines)],
+      0,
+      ingredients,
+      categories,
+      new Set([4]),
+    );
+
+    expect(removal?.staples).toEqual(['cumin']);
+    expect(removal?.remove.map((change) => change.name)).toEqual(['olive oil']);
   });
 });

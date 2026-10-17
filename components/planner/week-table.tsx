@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
-import { CalendarPlus, Dices, Lock, Trash2, Unlock } from 'lucide-react';
+import { CalendarPlus, Dices, Lock, PackageMinus, Trash2, Unlock } from 'lucide-react';
 import {
   Badge,
   Button,
@@ -13,6 +13,7 @@ import {
   IconButton,
   TickMark,
 } from '@/components/penrose';
+import { OrderRemovalDialog } from './order-removal-dialog';
 import { PickerDialog } from './picker-dialog';
 import { PlannerFilterBar } from './filter-bar';
 import {
@@ -27,14 +28,15 @@ import {
   unlockAll,
   type ActionResult,
 } from '@/app/plan/[week]/actions';
+import type { OrderRemoval } from '@/lib/aggregate';
 import { cookTime, slotLabel, slotRef } from '@/lib/format';
 import type { PlanSlot } from '@/lib/plan';
 import type { RecipeRow } from '@/lib/recipes';
 import type { RollFilters } from '@/lib/roll';
 import { MAX_SLOT_COUNT, MIN_SLOT_COUNT } from '@/lib/week';
 
-/** lock bar, number, meal, diet, time, servings, skip ingredients, four 48px controls. */
-const COLUMNS = '4px 44px minmax(200px,1fr) 92px 78px 62px 96px 204px';
+/** lock bar, number, meal, diet, time, servings, skip ingredients, five 48px controls. */
+const COLUMNS = '4px 44px minmax(200px,1fr) 92px 78px 62px 96px 256px';
 
 type PickerRecipe = Pick<
   RecipeRow,
@@ -44,6 +46,7 @@ type PickerRecipe = Pick<
 export function WeekTable({
   week,
   slots,
+  removals,
   filters,
   poolSize,
   poolTotal,
@@ -51,6 +54,7 @@ export function WeekTable({
 }: {
   week: string;
   slots: PlanSlot[];
+  removals: Record<number, OrderRemoval>;
   filters: RollFilters;
   poolSize: number;
   poolTotal: number;
@@ -60,6 +64,7 @@ export function WeekTable({
   const [notice, setNotice] = useState<string | null>(null);
   const [flash, setFlash] = useState<Set<number>>(new Set());
   const [pickerFor, setPickerFor] = useState<number | null>(null);
+  const [removalFor, setRemovalFor] = useState<number | null>(null);
   const [pending, startTransition] = useTransition();
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -117,6 +122,9 @@ export function WeekTable({
     run(() => addSlot(week, filters), [position]);
   }, [filters, run, slots.length, week]);
 
+  const removalSlot =
+    removalFor === null ? null : slots.find((slot) => slot.position === removalFor);
+
   return (
     <>
       <PlannerFilterBar
@@ -144,7 +152,7 @@ export function WeekTable({
         the document itself never scrolls sideways.
       */}
       <div className="mt-6 overflow-x-auto">
-        <div className="min-w-[872px]">
+        <div className="min-w-[924px]">
           <GridTable label="This week's meals">
             <GridHeaderRow columns={COLUMNS}>
               <GridColumnHeader />
@@ -260,6 +268,14 @@ export function WeekTable({
                         <Dices size={20} aria-hidden />
                       </IconButton>
                       <IconButton
+                        label={`What to take off the order without ${ref}`}
+                        variant="quiet"
+                        disabled={pending || !recipe}
+                        onClick={() => setRemovalFor(slot.position)}
+                      >
+                        <PackageMinus size={20} aria-hidden />
+                      </IconButton>
+                      <IconButton
                         label={`Copy ${ref} to next week without ingredients`}
                         variant="quiet"
                         disabled={pending || !recipe}
@@ -307,6 +323,28 @@ export function WeekTable({
         </span>
       </div>
       <p className="mt-2 text-sm text-ink-70">Locked meals are never re-rolled.</p>
+
+      <OrderRemovalDialog
+        meal={
+          removalSlot?.recipe
+            ? { position: removalSlot.position, name: removalSlot.recipe.name }
+            : null
+        }
+        removal={removalFor === null ? null : (removals[removalFor] ?? null)}
+        pending={pending}
+        onClose={() => setRemovalFor(null)}
+        onSkip={() => {
+          const position = removalFor;
+          setRemovalFor(null);
+          if (position !== null) {
+            run(
+              () => setSlotSkipIngredients(week, position, true),
+              [],
+              `Ingredients skipped for ${slotRef(position)}.`,
+            );
+          }
+        }}
+      />
 
       <PickerDialog
         open={pickerFor !== null}

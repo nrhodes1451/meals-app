@@ -253,3 +253,99 @@ export function summariseShoppingList(list: ShoppingList): ListSummary {
     skippedCount: list.skipped.length,
   };
 }
+
+/**
+ * Taking one meal off an order that has already been placed. Each ingredient the meal put on the
+ * list either comes off entirely or is reduced, because another meal still needs some of it.
+ * Derived from the same grouping as the list, so "keep" always matches what the list would say
+ * with that meal gone.
+ */
+export type OrderChange = {
+  ingredientId: number;
+  name: string;
+  /** What this meal alone put on the order: "50g", "2 tins, some". */
+  remove: string[];
+  /** What the order still needs once this meal is gone. Empty when it comes off entirely. */
+  keep: string[];
+  /** The other meals still using it, in slot order. */
+  keptFor: Use[];
+};
+
+export type OrderRemoval = {
+  /** True when this meal's ingredients are already skipped, so none of it is on the order. */
+  skipped: boolean;
+  /** Ingredients no other meal needs, in aisle order. */
+  remove: OrderChange[];
+  /** Ingredients another meal still needs, in aisle order. */
+  reduce: OrderChange[];
+  /** Pantry staples the meal uses that were never on the list. */
+  staples: string[];
+};
+
+export function orderRemoval(
+  meals: PlannedMeal[],
+  position: number,
+  ingredients: ReadonlyMap<number, IngredientMeta>,
+  categories: readonly CategoryMeta[],
+  stapleOverrides: ReadonlySet<number>,
+): OrderRemoval | null {
+  const target = meals.find((meal) => meal.position === position);
+  if (!target) return null;
+  if (target.skipIngredients) return { skipped: true, remove: [], reduce: [], staples: [] };
+
+  const shopMeals = meals.filter((meal) => !meal.skipIngredients);
+  const others = shopMeals.filter((meal) => meal.position !== position);
+  const none = new Set<number>();
+  const own = new Map(
+    itemsFromMeals([target], ingredients, none, stapleOverrides).map((item) => [
+      item.ingredientId,
+      item,
+    ]),
+  );
+  const rest = new Map(
+    itemsFromMeals(others, ingredients, none, stapleOverrides).map((item) => [
+      item.ingredientId,
+      item,
+    ]),
+  );
+
+  const aisleOrder = new Map(categories.map((category) => [category.id, category.position]));
+  const byAisle = (a: ListItem, b: ListItem) =>
+    (aisleOrder.get(a.categoryId) ?? 0) - (aisleOrder.get(b.categoryId) ?? 0) ||
+    a.name.localeCompare(b.name, 'en-GB');
+
+  const result: OrderRemoval = { skipped: false, remove: [], reduce: [], staples: [] };
+
+  for (const item of [...own.values()].sort(byAisle)) {
+    if (item.pantryStaple && !item.restored) {
+      result.staples.push(item.name);
+      continue;
+    }
+    const kept = rest.get(item.ingredientId);
+    const change: OrderChange = {
+      ingredientId: item.ingredientId,
+      name: item.name,
+      remove: item.quantity.lines,
+      keep: kept?.quantity.lines ?? [],
+      keptFor: kept?.uses ?? [],
+    };
+    (kept ? result.reduce : result.remove).push(change);
+  }
+
+  return result;
+}
+
+/** Every filled meal's removal, keyed by slot position, for the planner to hand to its dialog. */
+export function orderRemovals(
+  meals: PlannedMeal[],
+  ingredients: ReadonlyMap<number, IngredientMeta>,
+  categories: readonly CategoryMeta[],
+  stapleOverrides: ReadonlySet<number>,
+): Record<number, OrderRemoval> {
+  const removals: Record<number, OrderRemoval> = {};
+  for (const meal of meals) {
+    const removal = orderRemoval(meals, meal.position, ingredients, categories, stapleOverrides);
+    if (removal) removals[meal.position] = removal;
+  }
+  return removals;
+}
